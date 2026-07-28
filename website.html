@@ -690,8 +690,38 @@
     .footer { padding: 40px 15px 20px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 25px; }
     .footer-col h3 { font-size: 16px; }
+    
 
-   
+    .footer-col h3 {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-col h3::after {
+        content: '\f078';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 12px;
+        transition: transform 0.3s;
+    }
+    .footer-col.open h3::after { transform: rotate(180deg); }
+    .footer-col > a,
+    .footer-col > p,
+    .footer-col > span,
+    .footer-col > .social-links {
+        display: none;
+    }
+    .footer-col.open > a,
+    .footer-col.open > p,
+    .footer-col.open > span,
+    .footer-col.open > .social-links {
+        display: block;
+    }
+    .footer-col.open > .social-links { display: flex; }
       /* ---- Location Panel ---- */
     #locPanel > div { width: 100% !important; max-width: 100% !important; }
 
@@ -1094,15 +1124,15 @@
                 <div class="classes-grid">
                     <div class="class-card">
                         <img src="aaricls.jpg" class="class-img" alt="Aari Work Class">
-                        <div class="class-content"><h3>Aari Work Class</h3><p>Learn traditional South Indian aari embroidery. Master chain stitch, bead work, and zardosi patterns.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 1 Month </span><span><i class="fas fa-users"></i> 10 Students</span><span><i class="fas fa-rupee-sign"></i> ₹10,000</span></div><button class="btn-enroll" onclick="enrollClass('Aari Work Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
+                        <div class="class-content"><h3>Aari Work Class</h3><p>Learn traditional South Indian aari embroidery. Master chain stitch, bead work, and zardosi patterns.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 1 Month </span><span><i class="fas fa-users"></i> 2000 Students</span><span><i class="fas fa-rupee-sign"></i> ₹10,000</span></div><button class="btn-enroll" onclick="enrollClass('Aari Work Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
                     </div>
                     <div class="class-card">
                         <img src="tailocls.jpg" class="class-img" alt="Tailoring Class">
-                        <div class="class-content"><h3>Tailoring Class</h3><p>Complete course from basics to advanced. Measurements, cutting, stitching for all garments.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 3 Months</span><span><i class="fas fa-users"></i> 25 Students</span><span><i class="fas fa-rupee-sign"></i> ₹2,000</span></div><button class="btn-enroll" onclick="enrollClass('Tailoring Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
+                        <div class="class-content"><h3>Tailoring Class</h3><p>Complete course from basics to advanced. Measurements, cutting, stitching for all garments.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 3 Months</span><span><i class="fas fa-users"></i> 1500 Students</span><span><i class="fas fa-rupee-sign"></i> ₹2,000</span></div><button class="btn-enroll" onclick="enrollClass('Tailoring Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
                     </div>
                     <div class="class-card">
                         <img src="Saree.jpg" class="class-img" alt="Saree Class">
-                        <div class="class-content"><h3>Saree Pre-pleating Class</h3><p>Master perfect saree pleating. Different styles, petticoat stitching, draping techniques.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 2 Weeks</span><span><i class="fas fa-users"></i> 50 Students</span><span><i class="fas fa-rupee-sign"></i> ₹500</span></div><button class="btn-enroll" onclick="enrollClass('Saree Pre-pleating Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
+                        <div class="class-content"><h3>Saree Pre-pleating Class</h3><p>Master perfect saree pleating. Different styles, petticoat stitching, draping techniques.</p><div class="class-meta"><span><i class="fas fa-clock"></i> 2 Weeks</span><span><i class="fas fa-users"></i> 500 Students</span><span><i class="fas fa-rupee-sign"></i> ₹2,000</span></div><button class="btn-enroll" onclick="enrollClass('Saree Pre-pleating Class')"><i class="fab fa-whatsapp"></i> Enroll Now</button></div>
                     </div>
                 </div>
             </section>
@@ -2556,7 +2586,18 @@ document.addEventListener('click', function(e) {
 // Initial fetch + poll every 15 seconds for new notifications
 fetchNotifications();
 setInterval(fetchNotifications, 15000);
-        </script>
+       
+        document.querySelectorAll('.footer-col').forEach(function(col) {
+    const heading = col.querySelector('h3');
+    if (heading) {
+        heading.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                col.classList.toggle('open');
+            }
+        });
+    }
+});
+
     </script>
 </body>
 </html>

@@ -511,6 +511,30 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 @media(max-width:400px){
   .footer-grid { grid-template-columns:1fr; }
 }
+
+@media (max-width: 640px) {
+  .footer-col h4 {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-col h4::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 12px;
+    transition: transform 0.3s;
+    color: var(--secondary-light);
+  }
+  .footer-col.open h4::after { transform: rotate(180deg); }
+  .footer-col ul,
+  .footer-col .footer-contact-item {
+    display: none;
+  }
+  .footer-col.open ul { display: flex; flex-direction: column; }
+  .footer-col.open .footer-contact-item { display: flex; }
+}
 </style>
 </head>
 <body>
@@ -630,15 +654,14 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
         <h3><i class="fas fa-headset"></i> Contact Us</h3>
         <p>Reach out to us for your next event 💛 We're just a message away! Share your event details and we'll help you plan a menu your guests will remember.</p>
         <div class="contact-links">
-          <a href="tel:9941013323"><i class="fas fa-phone"></i><div><div class="lbl">Call Us</div><div class="val">99410 13323</div></div></a>
-          <a href="tel:9382290034"><i class="fas fa-phone"></i><div><div class="lbl">Alternate</div><div class="val">93822 90034</div></div></a>
-          <a href="https://wa.me/919941013323" target="_blank"><i class="fab fa-whatsapp"></i><div><div class="lbl">WhatsApp</div><div class="val">99410 13323</div></div></a>
+          <a href="tel:86107 03658"><i class="fas fa-phone"></i><div><div class="lbl">Call Us</div><div class="val">86107 03658</div></div></a>
+          <a href="https://wa.me/918610703658" target="_blank"><i class="fab fa-whatsapp"></i><div><div class="lbl">WhatsApp</div><div class="val">86107 03658</div></div></a>
           <a href="mailto:murali@sumathicatering.com"><i class="fas fa-envelope"></i><div><div class="lbl">Email</div><div class="val">murali@sumathicatering.com</div></div></a>
           <a href="https://www.sumathicatering.com/" target="_blank"><i class="fas fa-globe"></i><div><div class="lbl">Visit Our Website</div><div class="val">sumathicatering.com</div></div></a>
         </div>
         <div class="quick-actions">
-          <a href="https://wa.me/919941013323?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering%20for%20my%20event." target="_blank" class="btn-book"><i class="fab fa-whatsapp"></i> Book Now</a>
-          <a href="tel:9941013323" class="btn-call"><i class="fas fa-phone"></i> Call Us</a>
+          <a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering%20for%20my%20event." target="_blank" class="btn-book"><i class="fab fa-whatsapp"></i> Book Now</a>
+          <a href="tel:86107 03658" class="btn-call"><i class="fas fa-phone"></i> Call Us</a>
         </div>
         <div class="working-hours">
           <div class="working-hours-header"><i class="fas fa-clock"></i><span>Working Hours</span></div>
@@ -717,15 +740,12 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
         <h3><i class="fas fa-headset"></i> Reach Us Directly</h3>
         <p>Available every day from 8 AM to 10 PM for bookings and enquiries.</p>
         <div class="contact-links">
-          <a href="tel:9941013323"><i class="fas fa-phone"></i><div><div class="lbl">Primary</div><div class="val">99410 13323</div></div></a>
-          <a href="tel:9382290034"><i class="fas fa-phone"></i><div><div class="lbl">Alternate</div><div class="val">93822 90034</div></div></a>
-          <a href="tel:9042013323"><i class="fas fa-phone"></i><div><div class="lbl">Alternate 2</div><div class="val">90420 13323</div></div></a>
-          <a href="https://wa.me/919941013323" target="_blank"><i class="fab fa-whatsapp"></i><div><div class="lbl">WhatsApp</div><div class="val">99410 13323</div></div></a>
-          <a href="mailto:murali@sumathicatering.com"><i class="fas fa-envelope"></i><div><div class="lbl">Email</div><div class="val">murali@sumathicatering.com</div></div></a>
+          <a href="tel:86107 03658"><i class="fas fa-phone"></i><div><div class="lbl">Primary</div><div class="val">86107 03658</div></div></a>
+         <a href="mailto:murali@sumathicatering.com"><i class="fas fa-envelope"></i><div><div class="lbl">Email</div><div class="val">murali@sumathicatering.com</div></div></a>
         </div>
         <div class="quick-actions">
-          <a href="https://wa.me/919941013323?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering." target="_blank" class="btn-book"><i class="fab fa-whatsapp"></i> Book Now</a>
-          <a href="tel:9941013323" class="btn-call"><i class="fas fa-phone"></i> Call Us</a>
+          <a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering." target="_blank" class="btn-book"><i class="fab fa-whatsapp"></i> Book Now</a>
+          <a href="tel:86107 03658" class="btn-call"><i class="fas fa-phone"></i> Call Us</a>
         </div>
         <div class="working-hours">
           <div class="working-hours-header"><i class="fas fa-clock"></i><span>Working Hours</span></div>
@@ -822,8 +842,8 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
       <div class="footer-social">
         <a href="https://www.facebook.com/people/Sumathi-Catering/100067237284718/" title="Facebook"><i class="fab fa-facebook"></i></a>
         <a href="https://www.youtube.com/@sumathicateringserviceoffi4046/shorts" target="_blank" class="yt"><i class="fab fa-youtube"></i></a>
-        <a href="https://wa.me/919941013323" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="tel:9941013323" title="Call"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/918610703658" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:918610703658" title="Call"><i class="fas fa-phone"></i></a>
       </div>
     </div>
 
@@ -836,7 +856,7 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
         <li><a href="#" onclick="showPage('gallery',document.querySelectorAll('.nav-links button')[2]);return false;"><i class="fas fa-chevron-right"></i> Gallery</a></li>
         <li><a href="#" onclick="showPage('contact',document.querySelectorAll('.nav-links button')[3]);return false;"><i class="fas fa-chevron-right"></i> Contact</a></li>
         <li><a href="#" onclick="showPage('reviews',document.querySelectorAll('.nav-links button')[4]);return false;"><i class="fas fa-chevron-right"></i> Reviews</a></li>
-        <li><a href="https://wa.me/919941013323?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering." target="_blank"><i class="fas fa-chevron-right"></i> Book Now</a></li>
+        <li><a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering." target="_blank"><i class="fas fa-chevron-right"></i> Book Now</a></li>
       </ul>
     </div>
 
@@ -861,16 +881,15 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
       <div class="footer-contact-item">
         <i class="fas fa-phone"></i>
         <div class="fc-text">
-          <div class="fc-label">Primary</div>
-          <div class="fc-val">994 101 3323</div>
-          <div class="fc-val">93822 90034</div>
+          <div class="fc-label">Contact</div>
+          <div class="fc-val"> 86107 03658</div>
         </div>
       </div>
       <div class="footer-contact-item">
         <i class="fab fa-whatsapp" ></i>
         <div class="fc-text">
           <div class="fc-label">WhatsApp</div>
-          <div class="fc-val">994 101 3323</div>
+          <div class="fc-val">91 86107 03658</div>
         </div>
       </div>
       <div class="footer-contact-item">
@@ -1032,6 +1051,17 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+document.querySelectorAll('.footer-col').forEach(function(col) {
+  const heading = col.querySelector('h4');
+  if (heading) {
+    heading.addEventListener('click', function() {
+      if (window.innerWidth <= 640) {
+        col.classList.toggle('open');
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
