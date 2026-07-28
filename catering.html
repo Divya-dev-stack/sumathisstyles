@@ -109,13 +109,44 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .home-section .tagline { color:var(--text-light); font-size:14px; margin-bottom:25px; }
 .home-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:15px; }
 .home-card {
-  background:var(--white); border-radius:16px; padding:20px 15px;
+  background:var(--white); border-radius:16px; padding:15px;
   text-align:center; box-shadow:var(--shadow);
   border-bottom:3px solid var(--secondary); cursor:pointer; transition:all 0.3s;
+  overflow:hidden;
 }
 .home-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-hover); }
-.home-card .icon { font-size:2rem; margin-bottom:10px; }
+.home-card img {
+  width:100%; height:110px; object-fit:cover; border-radius:10px; margin-bottom:12px; display:block;
+}
+
+.home-card img.icon {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: block;
+  background: transparent;
+  box-shadow: none;
+  border: 2px solid var(--secondary);
+}
+.home-card img.icon.photo {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--secondary);
+}
 .home-card h3 { font-size:13px; font-weight:600; color:var(--primary-dark); }
+
+@keyframes cardShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px) rotate(-1deg); }
+  40% { transform: translateX(4px) rotate(1deg); }
+  60% { transform: translateX(-3px) rotate(-1deg); }
+  80% { transform: translateX(3px) rotate(1deg); }
+}
+.home-card.shake { animation: cardShake 0.4s ease; }
 
 .home-why { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border-radius:20px; padding:35px; color:#fff; margin:20px 20px 40px; }
 .home-why h3 { font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:20px; }
@@ -123,6 +154,77 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .why-item { background:rgba(255,255,255,0.1); border-radius:12px; padding:18px; text-align:center; backdrop-filter:blur(5px); }
 .why-item i { font-size:24px; color:var(--secondary-light); margin-bottom:8px; display:block; }
 .why-item p { font-size:12px; opacity:0.9; }
+
+/* ══════════════════════════
+   MENU MODAL (Catalogue popup)
+══════════════════════════ */
+.menu-modal {
+  display:none; position:fixed; inset:0; z-index:10000;
+  background:rgba(10,25,25,0.75); backdrop-filter:blur(4px);
+  align-items:flex-start; justify-content:center;
+  padding:40px 16px; overflow-y:auto;
+}
+.menu-modal.open { display:flex; }
+.menu-modal-content {
+  background:var(--light); border-radius:20px; max-width:1150px; width:100%;
+  padding:30px; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  animation:menuModalIn 0.3s ease;
+}
+@keyframes menuModalIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+.menu-modal-close {
+  position:absolute; top:18px; right:18px; width:38px; height:38px;
+  border-radius:50%; background:var(--primary-dark); color:#fff; border:none;
+  font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.3s; z-index:2;
+}
+.menu-modal-close:hover { background:var(--secondary); transform:rotate(90deg); }
+.menu-modal-title {
+  font-family:'Playfair Display',serif; font-size:1.9rem; color:var(--primary-dark);
+  margin-bottom:22px; padding-right:40px;
+}
+.catalogue-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px;
+}
+.catalogue-col {
+  background:#fff; border-radius:12px; overflow:hidden; box-shadow:var(--shadow);
+  border:1px solid rgba(0,128,128,0.1);
+}
+.catalogue-col-head {
+  background:linear-gradient(135deg,#5a5a5a,#3d3d3d); color:#fff; text-align:center; padding:16px 12px;
+}
+.catalogue-col-head h4 { font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:3px; }
+.catalogue-col-head span { font-size:11px; opacity:0.85; text-transform:uppercase; letter-spacing:0.05em; }
+.catalogue-list { list-style:none; }
+.catalogue-list li {
+  display:flex; align-items:center; gap:10px; padding:11px 14px;
+  border-bottom:1px solid rgba(0,128,128,0.08); font-size:13px; color:var(--text);
+}
+.catalogue-list li:last-child { border-bottom:none; }
+.catalogue-list li i { color:var(--primary); font-size:13px; flex-shrink:0; }
+.menu-extra-note {
+  margin-top:22px; background:linear-gradient(135deg,rgba(0,128,128,0.07),rgba(184,115,51,0.07));
+  border-left:4px solid var(--secondary); border-radius:10px; padding:16px 20px; font-size:13px; color:var(--text);
+}
+.menu-price-banner {
+  margin-top:18px; background:linear-gradient(135deg,var(--secondary),var(--secondary-light));
+  border-radius:14px; padding:16px 22px; text-align:center; font-size:15px; font-weight:700; color:var(--dark);
+  box-shadow:var(--copper-glow);
+}
+.menu-price-banner span { background:rgba(255,255,255,0.5); padding:3px 10px; border-radius:6px; }
+.menu-modal-cta {
+  margin-top:22px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+}
+.menu-modal-cta a {
+  padding:12px 24px; border-radius:12px; text-decoration:none; font-weight:600; font-size:13px;
+  display:flex; align-items:center; gap:8px; transition:all 0.3s;
+}
+.menu-modal-cta .mmc-book { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; }
+.menu-modal-cta .mmc-book:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,128,128,0.35); }
+@media(max-width:640px){
+  .menu-modal { padding:16px 8px; }
+  .menu-modal-content { padding:20px 16px; border-radius:16px; }
+  .menu-modal-title { font-size:1.4rem; }
+}
 
 /* ══════════════════════════
    ABOUT PAGE
@@ -393,7 +495,7 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .footer {
   background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
   color: var(--white);
-  padding: 60px 20px 20px;
+  padding: 40px 20px 20px;
   position: relative;
   overflow: hidden;
 }
@@ -408,7 +510,7 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 /* Footer Logo */
 .footer-leaf-wrap {
   display:inline-flex; align-items:center; justify-content:center;
-  position:relative; margin-bottom:14px;
+  position:relative; margin-bottom:10px;
 }
 .footer-leaf-svg { width:140px; height:58px; }
 .footer-leaf-text {
@@ -505,11 +607,12 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
   .contact-grid { grid-template-columns:1fr; }
   .about-grid { grid-template-columns:1fr; }
   .quick-actions { grid-template-columns:1fr; }
-  .footer-grid { grid-template-columns:1fr 1fr; }
+  .footer { padding:24px 20px 16px; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:10px 20px; margin-bottom:15px; }
   .footer-bottom { flex-direction:column; text-align:center; }
 }
 @media(max-width:400px){
-  .footer-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; gap:0; }
 }
 
 @media (max-width: 640px) {
@@ -518,6 +621,8 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0;
+    padding: 12px 0;
   }
   .footer-col h4::after {
     content: '\f078';
@@ -532,8 +637,9 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
   .footer-col .footer-contact-item {
     display: none;
   }
-  .footer-col.open ul { display: flex; flex-direction: column; }
+  .footer-col.open ul { display: flex; flex-direction: column; padding-top:6px; }
   .footer-col.open .footer-contact-item { display: flex; }
+  .footer-col.open .footer-contact-item:first-of-type { margin-top:6px; }
 }
 </style>
 </head>
@@ -565,6 +671,7 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
   <div class="nav-links">
     <button onclick="showPage('home',this)" class="active"><i class="fas fa-home"></i><span> Home</span></button>
     <button onclick="showPage('about',this)"><i class="fas fa-info-circle"></i><span> About</span></button>
+    <button onclick="showPage('services',this)"><i class="fas fa-concierge-bell"></i><span> Services</span></button>
     <button onclick="showPage('gallery',this)"><i class="fas fa-images"></i><span> Gallery</span></button>
     <button onclick="showPage('contact',this)"><i class="fas fa-envelope"></i><span> Contact</span></button>
     <button onclick="showPage('reviews',this)"><i class="fas fa-star"></i><span> Reviews</span></button>
@@ -575,22 +682,22 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 <div id="page-home" class="page active">
   <div class="slider-wrap">
     <div class="slides" id="slides">
-      <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200')">
-        <div class="slide-overlay"><h2>Authentic Tamil Wedding Feasts</h2><p>Traditional flavors for your most special day</p></div>
-      </div>
-      <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1200')">
-        <div class="slide-overlay"><h2>Grand Reception Dinners</h2><p>Lavish spreads that leave lasting memories</p></div>
-      </div>
-      <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200')">
-        <div class="slide-overlay"><h2>Full Sadhya Meals</h2><p>Complete traditional meals with all accompaniments</p></div>
-      </div>
-      <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200')">
-        <div class="slide-overlay"><h2>Morning Tiffin Specials</h2><p>Start celebrations with our signature tiffin items</p></div>
-      </div>
-      <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200')">
-        <div class="slide-overlay"><h2>Sumathi Catering Services</h2><p>Everything you need under one roof</p></div>
-      </div>
-    </div>
+  <div class="slide" style="background-image:url('uploads/home1.jpeg')">
+    <div class="slide-overlay"><h2>Authentic Tamil Wedding Feasts</h2><p>Traditional flavors for your most special day</p></div>
+  </div>
+  <div class="slide" style="background-image:url('uploads/home2.jpeg')">
+    <div class="slide-overlay"><h2>Grand Reception Dinners</h2><p>Lavish spreads that leave lasting memories</p></div>
+  </div>
+  <div class="slide" style="background-image:url('uploads/home3.jpeg')">
+    <div class="slide-overlay"><h2>Full Sadhya Meals</h2><p>Complete traditional meals with all accompaniments</p></div>
+  </div>
+  <div class="slide" style="background-image:url('uploads/home4.jpeg')">
+    <div class="slide-overlay"><h2>Morning Tiffin Specials</h2><p>Start celebrations with our signature tiffin items</p></div>
+  </div>
+  <div class="slide" style="background-image:url('uploads/home5.jpeg')">
+    <div class="slide-overlay"><h2>Sumathi Catering Services</h2><p>Everything you need under one roof</p></div>
+  </div>
+</div>
     <button class="slider-btn prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
     <button class="slider-btn next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
     <div class="slider-dots" id="dots"></div>
@@ -599,13 +706,13 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
   <div class="home-section">
     <h2>Our Menu</h2>
     <p class="tagline">Traditional recipes crafted with care for every occasion</p>
-    <div class="home-cards">
-      <div class="home-card"><div class="icon">🌅</div><h3>Morning Tiffin</h3></div>
-      <div class="home-card"><div class="icon">🌙</div><h3>Reception Dinner</h3></div>
-      <div class="home-card"><div class="icon">🍛</div><h3>Lunch Sadhya</h3></div>
-      <div class="home-card"><div class="icon">🌇</div><h3>Evening Tiffin</h3></div>
-      <div class="home-card"><div class="icon">💍</div><h3>Marriage Package</h3></div>
-      <div class="home-card"><div class="icon">📋</div><h3>General Package</h3></div>
+    <div class="home-cards" id="menuCards">
+      <div class="home-card" onclick="openMenuModal('morning')"><img src="image.png" alt="Morning Tiffin"><h3>Morning Tiffin</h3></div>
+      <div class="home-card" onclick="openMenuModal('reception')"><img src="reception.jpeg" alt="Reception Dinner"><h3>Reception Dinner</h3></div>
+      <div class="home-card" onclick="openMenuModal('lunch')"><img src="lunch.jpeg" alt="Lunch Sadhya"><h3>Lunch Sadhya</h3></div>
+      <div class="home-card" onclick="openMenuModal('evening')"><img src="even.jpeg" alt="Evening Tiffin"><h3>Evening Tiffin</h3></div>
+      <div class="home-card" onclick="openMenuModal('marriage')"><img src="marriage.jpeg" alt="Marriage Package"><h3>Marriage Package</h3></div>
+      <div class="home-card" onclick="openMenuModal('general')"><img src="gen.jpeg" alt="General Package"><h3>General Package</h3></div>
     </div>
   </div>
 
@@ -617,6 +724,19 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
       <div class="why-item"><i class="fas fa-leaf"></i><p>Fresh Ingredients Daily</p></div>
       <div class="why-item"><i class="fas fa-truck"></i><p>On-Time Delivery</p></div>
       <div class="why-item"><i class="fas fa-star"></i><p>Top Rated in Chennai</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MENU MODAL (Catalogue Popup) ══ -->
+<div class="menu-modal" id="menuModal" onclick="if(event.target===this) closeMenuModal()">
+  <div class="menu-modal-content">
+    <button class="menu-modal-close" onclick="closeMenuModal()"><i class="fas fa-times"></i></button>
+    <h3 class="menu-modal-title" id="menuModalTitle">Menu</h3>
+    <div class="catalogue-grid" id="menuModalGrid"></div>
+    <div id="menuModalExtra"></div>
+    <div class="menu-modal-cta">
+      <a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20enquire%20about%20this%20menu." target="_blank" class="mmc-book"><i class="fab fa-whatsapp"></i> Enquire on WhatsApp</a>
     </div>
   </div>
 </div>
@@ -684,6 +804,55 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
     <div class="map-box">
       <div class="map-head"><i class="fas fa-map-marker-alt"></i><span>Find Us —No.2/707, Medavakkam, Main Road, Kovilambakkam Chennai - 600 117</span></div>
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5!2d80.2049!3d12.9141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525d4b7490de91%3A0x5a20e4e8bf12e33a!2sKovilambakkam%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1234567890" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<div id="page-services" class="page">
+  <div class="about-header">
+    <h2><i class="fas fa-concierge-bell"></i> Our Services</h2>
+    <p>Complete event solutions beyond catering — decor, entertainment & more</p>
+    <div class="exp-tag"><i class="fas fa-star"></i>sumathi's Catering Service</div>
+  </div>
+  <div class="about-body">
+    <div class="info-card" style="margin-bottom:30px;">
+      <h3><i class="fas fa-info-circle"></i> Beyond Catering</h3>
+      <p>From Weddings to Corporate Events and other Special Occasions, our professional staff makes sure your event is "one of its kind". Count on Sumathi Catering Service to ensure that your guests leave with a truly unforgettable experience, and that your event is a flawless one from start to finish.</p>
+      <p>Beyond our impressive menus, we are proficient in handling all aspects of your events. Our highly experienced staff permits us to arrange and customize elegant functions and parties to suit your individual style. Our broad range of services can be categorized as follows:</p>
+    </div>
+
+      
+  <div class="home-cards">
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/kolam.jpeg" alt="Mandapam Kolam"><h3>Mandapam Kolam</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/seer.jpeg" alt="Seer Varieties"><h3>Seer Varieties (Sweets & Savories)</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/rec.jpeg" alt="Reception Items"><h3>Reception Items (Rose, Kalkandu, Sandal)</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/water.jpeg" alt="Water Bottle"><h3>All Session Water Bottle</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/services.jpeg" alt="Uniformed Services"><h3>All Session Uniformed Services</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/camera.jpeg" alt="Video & Photo"><h3>Video & Photo</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/thing.jpeg" alt="Seer Patshanangal"><h3>Seer Patshanangal</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/nadaswaram.jpeg" alt="Nadaswaram"><h3>Nadaswaram</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/car.jpeg" alt="Janavasa Car"><h3>Janavasa Car with Lights</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/band.jpeg" alt="Band Set"><h3>Band Set</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/music.jpeg" alt="Light Music"><h3>Light Music / Karnatic</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/arch.jpeg" alt="Reception Backdrop"><h3>Reception Backdrop, Name Board & Welcome Arch</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/flowers.jpeg" alt="Flowers"><h3>Flowers & Manamedai Alangaram</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/mickey.jpeg" alt="Mickey Mouse"><h3>Mickey Mouse</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/jumping.jpeg" alt="Children's Jumping"><h3>Children's Jumping</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/fruit.jpeg" alt="Fruit Stall"><h3>Fruit Stall</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/icecream.jpeg" alt="Ice Cream Stall"><h3>Ice Cream Stall</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/beeda.jpeg" alt="Beeda Stall"><h3>Beeda Stall</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/mehendi.jpeg" alt="Mehendi Stall"><h3>Mehendi Stall</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/bangle.jpeg" alt="Bangle Stall"><h3>Bangle Stall</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/balloon.jpeg" alt="Balloon Decoration"><h3>Balloon Decoration</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/popcorn.jpeg" alt="Pop Corn & Cotton Candy"><h3>Pop Corn & Cotton Candy</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/chocolate.jpeg" alt="Chocolate Fountain"><h3>Chocolate Fountain</h3></div>
+      <div class="home-card" onclick="cardShake(this)"><img class="icon" src="uploads/tag.jpeg" alt="Tag"><h3>Customized Services</h3></div>
+    </div>
+
+    <div class="visit-banner" style="margin-top:30px;">
+      <p><i class="fas fa-phone" style="margin-right:8px;"></i>Want any of these services for your event? Get in touch with us today.</p>
+      <a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20enquire%20about%20your%20services." target="_blank"><i class="fab fa-whatsapp"></i> Enquire Now</a>
     </div>
   </div>
 </div>
@@ -853,9 +1022,10 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
       <ul>
         <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);return false;"><i class="fas fa-chevron-right"></i> Home</a></li>
         <li><a href="#" onclick="showPage('about',document.querySelectorAll('.nav-links button')[1]);return false;"><i class="fas fa-chevron-right"></i> About</a></li>
-        <li><a href="#" onclick="showPage('gallery',document.querySelectorAll('.nav-links button')[2]);return false;"><i class="fas fa-chevron-right"></i> Gallery</a></li>
-        <li><a href="#" onclick="showPage('contact',document.querySelectorAll('.nav-links button')[3]);return false;"><i class="fas fa-chevron-right"></i> Contact</a></li>
-        <li><a href="#" onclick="showPage('reviews',document.querySelectorAll('.nav-links button')[4]);return false;"><i class="fas fa-chevron-right"></i> Reviews</a></li>
+        <li><a href="#" onclick="showPage('services',document.querySelectorAll('.nav-links button')[2]);return false;"><i class="fas fa-chevron-right"></i> Services</a></li>
+        <li><a href="#" onclick="showPage('gallery',document.querySelectorAll('.nav-links button')[3]);return false;"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+        <li><a href="#" onclick="showPage('contact',document.querySelectorAll('.nav-links button')[4]);return false;"><i class="fas fa-chevron-right"></i> Contact</a></li>
+        <li><a href="#" onclick="showPage('reviews',document.querySelectorAll('.nav-links button')[5]);return false;"><i class="fas fa-chevron-right"></i> Reviews</a></li>
         <li><a href="https://wa.me/918610703658?text=Hi%20Sumathi%20Catering,%20I%20want%20to%20book%20catering." target="_blank"><i class="fas fa-chevron-right"></i> Book Now</a></li>
       </ul>
     </div>
@@ -864,12 +1034,12 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
     <div class="footer-col">
       <h4>Our Services</h4>
       <ul>
-        <li><a href="#"><i class="fas fa-utensils"></i> Morning Tiffin</a></li>
-        <li><a href="#"><i class="fas fa-moon"></i> Reception Dinner</a></li>
-        <li><a href="#"><i class="fas fa-leaf"></i> Lunch Sadhya</a></li>
-        <li><a href="#"><i class="fas fa-sun"></i> Evening Tiffin</a></li>
-        <li><a href="#"><i class="fas fa-ring"></i> Marriage Package</a></li>
-        <li><a href="#"><i class="fas fa-clipboard-list"></i> General Package</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('morning');},300);return false;"><i class="fas fa-utensils"></i> Morning Tiffin</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('reception');},300);return false;"><i class="fas fa-moon"></i> Reception Dinner</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('lunch');},300);return false;"><i class="fas fa-leaf"></i> Lunch Sadhya</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('evening');},300);return false;"><i class="fas fa-sun"></i> Evening Tiffin</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('marriage');},300);return false;"><i class="fas fa-ring"></i> Marriage Package</a></li>
+        <li><a href="#" onclick="showPage('home',document.querySelectorAll('.nav-links button')[0]);setTimeout(function(){openMenuModal('general');},300);return false;"><i class="fas fa-clipboard-list"></i> General Package</a></li>
         <li><a href="#"><i class="fas fa-briefcase"></i> Corporate Events</a></li>
         <li><a href="#"><i class="fas fa-birthday-cake"></i> Birthday Parties</a></li>
       </ul>
@@ -936,6 +1106,124 @@ function showPage(id, btn) {
   window.scrollTo(0,0);
 }
 
+// ── CARD SHAKE (Services cards only) ──
+function cardShake(el) {
+  el.classList.remove('shake');
+  void el.offsetWidth; // restart animation trick
+  el.classList.add('shake');
+}
+
+// ── MENU CATALOGUE DATA ──
+const menuData = {
+  morning: {
+    title: "Morning Tiffin",
+    columns: [
+      { name:"Tiffen", sub:"Catalogue", items:["Kesari / Pineapple Pudding","Idli","Pongal","Poori","Chenna Masala","Vadai","Sambhar","Coconut Chutney","Kara Chutney","Filter Coffee","Mineral Water","Leaves Cups","Paper roll"] },
+      { name:"Tiffen II", sub:"Catalogue", items:["Kasi Halwa / Carrot Halwa","Mini Idly / Kushboo Idly","Pongal / Rava Pongal","Mini Othappam","Vadai Curry","Vadai","Sambhar","Coconut Chutney","Kara Chutney","Special Coffee / Special Tea","Leaves","Cups Paper Roll","Mineral Water"] },
+      { name:"Tiffin III", sub:"Catalogue", items:["Kasi Halwa / Ashoka","Idly / Kushboo Idly","Kuzhi Paniharam","Idiyappam","Poori","Veg othappam / Dosai","Medu Vadai / Parppu Vadai","Vadai Curry","Channa Masala","Sambhar","Coconut Chutney","Pudina Chutney, Kara Chutney","Filter Coffee / Tea, Leaves","Cups","Paper roll","Mineral Water"] }
+    ]
+  },
+  lunch: {
+    title: "Lunch Sadhya",
+    columns: [
+      { name:"Lunch I", sub:"Catalogue", items:["Sweet (Gulab Jamun Cup)","Aval Payasam","Madu Vadai","Ice Cream","Potato Poriyal Roast","Beans Carrot Poriyal","Chow Chow Kottu","Rice","Paruppu Ghee","Sambhar","Vathal Kuzhumbu","Tomato Rasam","Curd","Appalam","Mango Thokku","Banana","Sweet Beeda","Mineral Water Bottle","Leaves","Paper roll"] },
+      { name:"Lunch II", sub:"Catalogue", items:["Sweet (Jangiri / Badusha)","Cauliflower Pakoda","Paruppu Payasam","Ice Cream","Malabar Aviyal / Kottu","Urulai Patani Roast","Brinjal Karamani Chops","Beans Uzhili","Veg Pulav / Ghee Rice","Onion Raita","Chapathi / Poli","Kurma","Rice","Sambhar","Rasam","Curd","Appalam","Mango Thokku","Sweet Beeda","Banana","Mineral Water","Leaves","Cups","Paper roll","Banana Leaf"] },
+      { name:"Lunch III", sub:"Catalogue", items:["Sweet (Rasamalai / Kaju Kathali)","Veg Cutlet","Badam Gheer","Ice Cream","Senai Mochi Chops","National Poriyal","Malabar Aviyal / Kottu","Chapathi / Butter Naan","Kurma / Panner Butter Masala","Veg Pulav / Noodles","Onion Raita","Bisebelabath","Curd Rice","Lemon Sevai","Cocount Sevai","Rice","Nendrum / Potato Chips","Appalam","Mango Thokku","Sweet Beeda","Banana","Mineral Water","Leaves","Cups","Paper Roll"] }
+    ]
+  },
+  evening: {
+    title: "Evening Tiffin",
+    columns: [
+      { name:"Evening Tiffen", sub:"Catalogue", items:["Wheat Halwa / Carrot Halwa","Lemon Sevai","Cocount Sevai","Rava Dosai","Mysore Bonda / Thavalavadai","Kosthu / Sambar","Chutney","Coffee / Tea"] },
+      { name:"Evening Tiffen II", sub:"Catalogue", items:["Milk Cake / Jangiri / Poli","Cashew Pakoda / Samosa","Cutlet / Karam Pakoda","Ice Cream","Kitchadi / Lemon Sevai","Chutney","Coffee / Tea"] }
+    ]
+  },
+  reception: {
+    title: "Reception Dinner",
+    columns: [
+      { name:"Catalogue I", sub:"Catalogue", items:["Basundi","Gulabjamun","Potato Chips","Cutlet / Gopi 65","Bisi Bela Bath","Veg Pulav","White Rice","Rasam","Kothamalli Sadam","Cocount Sevai","Chappathy","Naan / Butter Naan","Panner Butter Masala","Navarathna Kurma","Rumani Roti","Potato Fry","Potato Orange Fry","Pickles","Leaves","Chow Chow Kottu","Onion Uthappam / Dosai","Puthina Chutney","Fruits","Ice Cream","Water Bottle","Beeda"] },
+      { name:"Catalogue II", sub:"Catalogue", items:["Rasamalai","Makkan Beda","Neantharan Chips","Sembu 65","Veg Biriyani","Pine Apple Rasam","Curry Leaves Rice","Lemon Sevai","Parota","Pulka","Malai Koftha","Veg. Kurma","Spring Roll","National Poriyal","Senai Chops","Mix. Veg. Pickles","Cabagge Kottu","Kothamalli Chutney","Fruit Salad","3 Varietys / Kulfi"] },
+      { name:"Catalogue III", sub:"Catalogue", items:["Kajuroll","Jangiri","Finger Chips","Spring Roll / Lalipup","Kashmiri Pulav","Paruppu Rasam","Lemon Rice","Chapathi / Butter Naan","Chola Puri","Romali Roti","Palak Panner","Panner Kurma","Punjab Curry","Lemon Sevai","Brinjal Chops","Mango Thokku","Veg. Kottu / Avaiyal","Masala Dosai","Tomato Chutney","Kesar Kulfi"] }
+    ]
+  },
+  marriage: {
+    title: "Marriage Package",
+    columns: [
+      { name:"Evening Tiffen", sub:"100 Nos", items:["Kesari","Mysore Bonda / Medu Pakoda","Cocount Chutney","Filter Coffee","Evening Drinks (400 Nos)","Grape Juice / Badam Kher","Filter Coffee"] },
+      { name:"Reception Meals", sub:"400 Nos", items:["Rasamalai / Mundiri Cake","Veg Cutlet","Paruppu Payasam","Ice Cream","Chappathi / Naan","Kurma / Panner Masala","Veg Pulav","Onion Raitha","Sambhar Rice","Curd Rice","Chapathi / Poli","Rice","Rasam","Potato Chips","Malabar Aviyal","Appalam","Mango Thokku","Banana","Beeda","Water Bottle","Table Paper"] },
+      { name:"Morning Tiffen", sub:"300 Nos", items:["Sweet (Rasamalai / Kaju Kathali)","Veg Cutlet","Badam Gheer","Ice Cream","Senai Mochi Chops","National Poriyal","Malabar Aviyal / Kottu","Chapathi / Butter Naan","Kurma / Panner Butter Masala","Veg Pulav / Noodles","Onion Raita","Bisebelabath","Curd Rice","Lemon Sevai","Cocount Sevai","Rice","Nendrum / Potato Chips","Appalam","Mango Thokku","Sweet Beeda","Banana","Mineral Water","Leaves","Cups","Paper Roll"] }
+    ],
+    particulars: {
+      rows: [
+        ["Tambulam Bag with name Printing","500"],
+        ["Tambulam Tenga","500"],
+        ["Laddu","300"],
+        ["Mixture","10 kg"],
+        ["Water Bottle",""],
+        ["Gas Cylinder",""],
+        ["Service with Uniform",""],
+        ["Service with Supervisors",""],
+        ["Reception Sandanam, Panner with Reception Ladies",""]
+      ]
+    },
+    price: "Rs. 2,25,000 (Total Package)"
+  },
+  general: {
+    title: "General Package",
+    columns: [
+      { name:"Sweets", sub:"Catalogue", items:["Badam Boat","Badam Biscuit","Badam Singoda","Badam Mysore Pak","Bisi Bela Bath","Rajbogh","Kaserbhati","Madhur Milan","Gunj Uthi Shanai","Malai Gulla","Malai ChamCham","Angur Rabadi","Mallai Sandwich","Rasagoola Toast","Milk Brown","Bengali Rakhi","Badam Pista Roll","Badam Mango","Malai Pan","Ras Madam","Pista Sandwich","Malai Roll","Kesar Kali","Water Bottle","Pista Mysore Pak"] },
+      { name:"South Indian", sub:"Catalogue", items:["Idly","Rava Idly","Khusbu Idly","Fry Idly","Fry Sameiy","Idiyapam Plain","Plain Dosa","Masala Dosa","Mysore Masala Dosa","Panner Silda","Veg. Uttapam","Onion Uttapam","Veg Pulav","Semaiya Bakala Bat","Coconut Rices","Bismala Rice","Podina Rice","Vadai Kari","Navratan Kurma","Tomato Rasam","Pineapple Rasam","Imlai Rasam","Masala Vadai","Mysore Bonda","Medu Vada","Kerai Vada","Onion Pakoda","Beans Poriyal","Carrot Poriyal","Veg. Poriyal","Batata Poriyal"] },
+      { name:"Chinese", sub:"Catalogue", items:["Green Maxican Rice","Cauli Flower Rice","Chinese Corandal Rice","Ginger Black Mushroom","Fried Rice","Capsicum Cheese Pepper Rice","Cauliflower Agartin","Chilly Cheese Roll","Vegetable Dumplings","Governor Vegetables","Barvan Panner","Napalithaine","Gobi Manchurian","Baby Corn Vegetable","American Chopsey","Panner Shasalik","Backed Beans","Veg. Cheese Ling","Veg. Spring Roll","Veg. Hong Kong","Noodles","American Noddles","Veg. Cabbage Roll","Fry Mushroom Roll","Chatni Varieties (Green / Onion / Coconut / Tomato / Sweet / Red / Phudina / Navratna)"] },
+      { name:"Cool Drinks / More", sub:"Catalogue", items:["Kajuroll","Jangiri","Finger Chips","Spring Roll / Lalipup","Kashmiri Pulav","Paruppu Rasam","Lemon Rice","Chapathi / Butter Naan","Chola Puri","Romali Roti","Palak Panner","Panner Kurma","Punjab Curry","Lemon Sevai","Brinjal Chops","Mango Thokku","Veg. Kottu / Avaiyal","Masala Dosai","Tomato Chutney","Kesar Kulfi"] }
+    ]
+  }
+};
+
+// ── MENU MODAL LOGIC ──
+function openMenuModal(key) {
+  const data = menuData[key];
+  if (!data) return;
+  document.getElementById('menuModalTitle').textContent = data.title;
+
+  const grid = document.getElementById('menuModalGrid');
+  grid.innerHTML = data.columns.map(col => `
+    <div class="catalogue-col">
+      <div class="catalogue-col-head">
+        <h4>${col.name}</h4>
+        <span>${col.sub || 'Catalogue'}</span>
+      </div>
+      <ul class="catalogue-list">
+        ${col.items.map(it => `<li><i class="fas fa-check-circle"></i>${it}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+  const extraEl = document.getElementById('menuModalExtra');
+  let extraHtml = '';
+  if (data.particulars) {
+    extraHtml += `
+      <div class="menu-extra-note">
+        <b>Additional Particulars Included:</b><br>
+        ${data.particulars.rows.map(r => r[1] ? `${r[0]} — <b>${r[1]}</b>` : r[0]).join(' &nbsp;|&nbsp; ')}
+      </div>
+    `;
+  }
+  if (data.price) {
+    extraHtml += `<div class="menu-price-banner">Package Price: <span>${data.price}</span></div>`;
+  }
+  extraEl.innerHTML = extraHtml;
+
+  document.getElementById('menuModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenuModal() {
+  document.getElementById('menuModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeMenuModal();
+});
+
 // ── SLIDER ──
 let cur = 0;
 const total = 5;
@@ -959,14 +1247,14 @@ const galleryImgs = [
   'uploads/Gal3.jpg',
   'uploads/Gal4.jpg',
   'uploads/Gal5.jpg',
-  'uploads/Gal6.jpg',
+  'uploads/Gal6.jpeg',
   'uploads/Gal7.jpg',
   'uploads/Gal8.jpg',
   'uploads/Gal9.jpg',
   'uploads/Gal10.jpg',
   'uploads/Gal11.jpg',
-  'uploads/Gal12.jpg',
-  'uploads/Gal13.jpg',
+  'uploads/Gal12.jpeg',
+  'uploads/Gal13.jpeg',
   'uploads/Gal14.jpg',
   'uploads/Gal15.jpg',
   'uploads/Gal16.jpeg',
