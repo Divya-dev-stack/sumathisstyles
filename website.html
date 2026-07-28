@@ -538,9 +538,12 @@
     }
 
 
-.footer { 
-    padding-bottom: 90px; 
+  .footer { 
+    padding: 30px 15px 70px; 
 }
+.footer-grid { gap: 15px !important; margin-bottom: 20px !important; }
+.footer-col h3 { font-size: 14px !important; padding: 11px 0 !important; }
+.footer-bottom { padding-top: 12px !important; font-size: 11px !important; }
 
 .checkout-modal { max-width:920px; width:95%; padding:0; }
 .checkout-steps { display:flex; align-items:flex-start; justify-content:center; padding:26px 20px 20px; border-bottom:1px solid #eee; }
@@ -621,7 +624,7 @@
     .stat-item i { font-size: 24px; }
 
     /* ---- Section Headers ---- */
-    .section { padding: 40px 15px; }
+    .section { padding: 25px 15px; }
     .section-header h2 { font-size: 26px; }
     .section-header p { font-size: 13px; }
 
@@ -871,7 +874,34 @@
                 function locCancelModal(){document.getElementById('locAddModal').style.display='none';document.getElementById('locPanel').style.display='flex';}
                 function locSaveAddress(){var n=document.getElementById('locNewName').value.trim();var a=document.getElementById('locNewAddr').value.trim();var p=document.getElementById('locNewPin').value.trim();if(!n||!a){locToastMsg('⚠️ Please enter name and address');return;}var full=a+(p?', '+p:'');if(locEditIndex>=0){locAddresses[locEditIndex]={name:n,detail:full,icon:locAddresses[locEditIndex].icon};locToastMsg('✅ Address updated!');locEditIndex=-1;}else{locAddresses.push({name:n,detail:full,icon:'fa-map-marker-alt'});locSelectedIndex=locAddresses.length-1;locToastMsg('✅ Address saved!');}locPersist();document.getElementById('locAddModal').style.display='none';document.getElementById('locPanel').style.display='flex';locRender();}
                 function locSearch(q){if(!q){locRender();return;}var filtered=locAddresses.filter(function(a){return a.name.toLowerCase().includes(q.toLowerCase())||a.detail.toLowerCase().includes(q.toLowerCase());});locRender(filtered);}
-                function locUseGPS(){if(navigator.geolocation){navigator.geolocation.getCurrentPosition(function(){document.getElementById('locLabel').textContent='Delivering to –';document.getElementById('locLink').textContent='Current Location';document.getElementById('locPanel').style.display='none';locToastMsg('📍 Location detected!');},function(){locToastMsg('⚠️ Location access denied');});}else{locToastMsg('⚠️ GPS not supported');}}
+                function locUseGPS(){
+    if(!navigator.geolocation){ locToastMsg('⚠️ GPS not supported'); return; }
+    locToastMsg('📍 Detecting your location...');
+    navigator.geolocation.getCurrentPosition(async function(pos){
+        const lat = pos.coords.latitude, lon = pos.coords.longitude;
+        let addressText = 'Lat: '+lat.toFixed(4)+', Lon: '+lon.toFixed(4);
+        try{
+            const res = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+lat+'&longitude='+lon+'&localityLanguage=en');
+            const data = await res.json();
+            const parts = [data.locality, data.city, data.principalSubdivision].filter(Boolean);
+            if(parts.length) addressText = parts.join(', ') + (data.postcode ? ' - '+data.postcode : '');
+        }catch(e){}
+        const newAddr = { name:'Current Location', detail:addressText, icon:'fa-location-arrow' };
+        locAddresses.push(newAddr);
+        locSelectedIndex = locAddresses.length - 1;
+        locPersist();
+        document.getElementById('locLabel').textContent = 'Delivering to Current Location –';
+        document.getElementById('locLink').textContent = addressText.substring(0,28)+'...';
+        document.getElementById('locPanel').style.display='none';
+        locToastMsg('📍 Location set: '+addressText);
+    },function(err){
+        if(err.code === 1){
+            locToastMsg('⚠️ Location access denied — please allow location permission in your browser/app settings');
+        } else {
+            locToastMsg('⚠️ Could not detect location, try again');
+        }
+    },{enableHighAccuracy:true, timeout:10000});
+}
                 function locToastMsg(msg){var t=document.getElementById('locToast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},2500);}
                 document.addEventListener('DOMContentLoaded',function(){locRender();});
                 </script>
