@@ -214,6 +214,19 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .btn-cancel-confirm { background:linear-gradient(135deg,var(--danger),#ff6b81); color:#fff; }
 .btn-cancel-confirm:disabled { opacity:0.5; cursor:not-allowed; }
 .btn-cancel-back { background:none; border:1.5px solid #ccc !important; color:var(--text); }
+
+/* Admin hidden entry + warning modal */
+.admin-hidden-row { text-align:center; padding:22px 0 6px; }
+.admin-hidden-link { display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#c9c9c9; cursor:pointer; user-select:none; letter-spacing:0.5px; }
+.admin-hidden-link:hover { color:#999; }
+.admin-warn-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:6000; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:all 0.25s; padding:20px; }
+.admin-warn-overlay.active { opacity:1; visibility:visible; }
+.admin-warn-box { background:#fff; border-radius:16px; width:100%; max-width:380px; padding:28px 24px; text-align:center; transform:scale(0.95); transition:transform 0.25s; }
+.admin-warn-overlay.active .admin-warn-box { transform:scale(1); }
+.admin-warn-box i.warn-ico { font-size:44px; color:var(--danger); margin-bottom:14px; display:block; }
+.admin-warn-box h4 { color:var(--text); font-size:16px; margin-bottom:10px; }
+.admin-warn-box p { font-size:13px; color:var(--text-light); line-height:1.6; margin-bottom:18px; }
+.admin-warn-box button { background:linear-gradient(135deg,var(--primary),var(--primary-light)); color:#fff; border:none; padding:10px 30px; border-radius:20px; font-weight:600; font-size:13.5px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -235,7 +248,7 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
             <div class="acc-grid-item" onclick="openPanel('panelOrders')"><i class="fas fa-box"></i><span>Orders</span></div>
             <div class="acc-grid-item" onclick="openPanel('panelWishlist')"><i class="fas fa-heart"></i><span>Wishlist</span></div>
             <div class="acc-grid-item" onclick="openPanel('panelCoins')"><i class="fas fa-coins" style="color:var(--secondary);"></i><span>Super Coins</span></div>
-            <div class="acc-grid-item" onclick="openHelp()"><i class="fas fa-headset"></i><span>Help Center</span></div>
+            <div class="acc-grid-item" onclick="openPanel('panelHelp')"><i class="fas fa-headset"></i><span>Help Center</span></div>
         </div>
 
         <div class="acc-menu-card">
@@ -256,6 +269,11 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 
         <div class="acc-menu-card">
             <div class="acc-menu-row acc-logout-row" onclick="doLogout()"><i class="fas fa-sign-out-alt acc-ico"></i><span class="acc-label">Log Out</span></div>
+        </div>
+
+        <!-- HIDDEN ADMIN ENTRY -->
+        <div class="admin-hidden-row">
+            <span class="admin-hidden-link" onclick="openAdminDashboard()"><i class="fas fa-lock" style="font-size:10px;"></i> Admin</span>
         </div>
     </div>
 
@@ -416,6 +434,43 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
     <div id="panelFAQ" class="acc-panel">
         <div class="acc-panel-header"><button class="acc-back-btn" onclick="openPanel('panelHome')"><i class="fas fa-arrow-left"></i></button><h3><i class="fas fa-question-circle"></i> Browse FAQs</h3></div>
         <div class="settings-card" id="faqListContainer"></div>
+    </div>
+
+    <!-- ==== HELP CENTER PANEL ==== -->
+    <div id="panelHelp" class="acc-panel">
+        <div class="acc-panel-header">
+            <button class="acc-back-btn" onclick="openPanel('panelHome')"><i class="fas fa-arrow-left"></i></button>
+            <h3><i class="fas fa-headset"></i> Help Center</h3>
+        </div>
+        <div class="settings-card">
+            <div style="text-align:center;padding:10px 0 20px;">
+                <i class="fas fa-headset" style="font-size:44px;color:var(--primary);margin-bottom:14px;display:block;"></i>
+                <h4 style="color:var(--text);margin-bottom:10px;">We're Here to Help!</h4>
+                <p style="font-size:13px;color:var(--text-light);line-height:1.75;text-align:left;">
+                    If you have any questions or queries regarding your order, please feel free to contact us using the provided contact number. If you notice any changes or issues after updating the app, or if you have any suggestions or ideas that could improve the app, please share them with us via email. We value your feedback, and if your suggestions are practical and beneficial, we will be happy to consider implementing them in a future update.
+                </p>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;background:var(--gray);border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+                <i class="fas fa-phone" style="color:var(--primary);font-size:16px;"></i>
+                <div><div style="font-size:11.5px;color:var(--text-light);">Contact Number</div><div style="font-size:14px;font-weight:700;color:var(--text);">861 070 3658</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;background:var(--gray);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
+                <i class="fas fa-envelope" style="color:var(--primary);font-size:16px;"></i>
+                <div><div style="font-size:11.5px;color:var(--text-light);">Email</div><div style="font-size:14px;font-weight:700;color:var(--text);">divyadeveloper@gmail.com</div></div>
+            </div>
+
+            <button class="btn-save" style="width:100%;margin-bottom:10px;" onclick="callSupport()">
+                <i class="fas fa-phone"></i> Call Us
+            </button>
+            <button class="btn-save" style="width:100%;margin:0;background:linear-gradient(135deg,var(--secondary),var(--secondary-light));" onclick="openHelpMail()">
+                <i class="fas fa-envelope"></i> Mail Us
+            </button>
+
+            <p style="font-size:11.5px;color:var(--text-light);text-align:center;margin-top:14px;">
+                <i class="fas fa-clock"></i> We usually respond within 24-48 hours.
+            </p>
+        </div>
     </div>
 
     <!-- ==== NOTIFICATIONS PANEL ==== -->
@@ -750,6 +805,17 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
         </div>
     </div>
 </div>
+
+<!-- ADMIN ACCESS WARNING MODAL -->
+<div class="admin-warn-overlay" id="adminWarnOverlay" onclick="if(event.target===this)closeAdminWarning()">
+    <div class="admin-warn-box">
+        <i class="fas fa-shield-alt warn-ico"></i>
+        <h4>Restricted Area</h4>
+        <p>This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. If you believe this is a mistake, please contact the site administrator.</p>
+        <button onclick="closeAdminWarning()">Okay, Got it</button>
+    </div>
+</div>
+
 <script>
 /* ============================================================
    SHARED USER SESSION (via localStorage key 'sumathiUser')
@@ -815,6 +881,33 @@ function openPanel(id) {
 }
 
 function openHelp() { window.open('https://wa.me/918610703658?text=' + encodeURIComponent('Hi Sumathi, I need help with my order.'), '_blank'); }
+
+function callSupport() { window.location.href = 'tel:8610703658'; }
+
+function openHelpMail() {
+    const u = getUser();
+    const email = "divyadeveloper@gmail.com";
+    const subject = encodeURIComponent("Sumathi's Style App - Query / Feedback");
+    const nameLine = u && u.name ? u.name : '';
+    const phoneLine = u && u.phone ? u.phone : '';
+    const body = encodeURIComponent(
+        "Hi Team,\n\n" +
+        "Name: " + nameLine + "\n" +
+        "Phone: " + phoneLine + "\n\n" +
+        "I have a query / issue / suggestion regarding:\n\n" +
+        "[Please describe here]\n\n" +
+        "Thanks."
+    );
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+/* ---- Admin hidden warning ---- */
+function openAdminWarning() {
+    document.getElementById('adminWarnOverlay').classList.add('active');
+}
+function closeAdminWarning() {
+    document.getElementById('adminWarnOverlay').classList.remove('active');
+}
 
 function toggleSwitch(el, key) {
     el.classList.toggle('active');
@@ -890,74 +983,6 @@ function savePersonalInfo() {
 function refreshProfileHeaderNameOnly(u) {
     document.getElementById('hpName').textContent = u.name || 'User';
 }
-
-/* ---------- EMAIL OTP ---------- */
-function resetEmailEditState() {
-    emailEditing = false;
-    const input = document.getElementById('editEmail');
-    const btn = document.getElementById('emailEditBtn');
-    const icon = document.getElementById('emailEditIcon');
-    const sendBtn = document.getElementById('emailSendOtpBtn');
-    if (!input) return;
-    input.readOnly = true;
-    btn.classList.remove('editing');
-    icon.className = 'fas fa-pen';
-    sendBtn.disabled = true;
-    sendBtn.style.opacity = '0.5';
-    sendBtn.style.cursor = 'not-allowed';
-    const u = getUser();
-    input.value = (u && u.email) ? u.email : '';
-}
-function toggleEmailEdit() {
-    const input = document.getElementById('editEmail');
-    const btn = document.getElementById('emailEditBtn');
-    const icon = document.getElementById('emailEditIcon');
-    const sendBtn = document.getElementById('emailSendOtpBtn');
-    emailEditing = !emailEditing;
-    if (emailEditing) {
-        input.readOnly = false;
-        input.focus();
-        btn.classList.add('editing');
-        icon.className = 'fas fa-times';
-        sendBtn.disabled = false;
-        sendBtn.style.opacity = '1';
-        sendBtn.style.cursor = 'pointer';
-    } else {
-        resetEmailEditState();
-    }
-}
-function sendEmailOTP() {
-    const email = document.getElementById('editEmail').value.trim();
-    if (!email || !email.includes('@') || !email.includes('.')) { showToast('Enter a valid email address!', 'error'); return; }
-    pendingEmailValue = email;
-    document.getElementById('emailOtpTarget').textContent = email;
-    document.getElementById('emailViewMode').style.display = 'none';
-    document.getElementById('emailOtpMode').style.display = 'block';
-    ['emailOtp1','emailOtp2','emailOtp3','emailOtp4','emailOtp5','emailOtp6'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('emailOtp1').focus();
-    showToast('OTP sent to your email! (Demo: 123456)', 'success');
-}
-function cancelEmailOTP() {
-    const otpMode = document.getElementById('emailOtpMode');
-    const viewMode = document.getElementById('emailViewMode');
-    if (!otpMode || !viewMode) return;
-    otpMode.style.display = 'none';
-    viewMode.style.display = 'block';
-    pendingEmailValue = '';
-}
-function verifyEmailOTP() {
-    const otp = ['emailOtp1','emailOtp2','emailOtp3','emailOtp4','emailOtp5','emailOtp6'].map(id => document.getElementById(id).value).join('');
-    if (otp.length < 6) { showToast('Please enter the full 6-digit OTP!', 'error'); return; }
-    if (otp !== DEMO_OTP) { showToast('Invalid OTP! (Demo OTP is 123456)', 'error'); return; }
-    const u = getUser() || {};
-    u.email = pendingEmailValue;
-    setUser(u);
-    window.parent.postMessage({ sumathiUserUpdated: u }, '*');
-    cancelEmailOTP();
-    resetEmailEditState();
-    showToast('Email verified & updated! ✅', 'success');
-}
-
 
 /* ---------- EMAIL: Edit button -> Send OTP -> Verify -> Save ---------- */
 function resetEmailEditState() {
@@ -1275,7 +1300,6 @@ async function loadWishlist() {
 }
 
 /* ---------- SUPER COINS ---------- */
-/* Coins = 10 per ₹500 spent across this user's non-cancelled orders (from get_submissions.php) */
 async function loadCoins() {
     const u = getUser();
     document.getElementById('coinBalance').textContent = '0';
@@ -1408,12 +1432,7 @@ window.addEventListener('storage', function(e) {
     if (e.key === 'sumathiUser') refreshProfileHeader();
 }); 
 
-/* ============================================================
-   PASTE THIS BLOCK JUST BEFORE:  document.addEventListener('DOMContentLoaded', ...
-   inside your <script> tag in settings.html
-   ============================================================ */
-
-/* ---------- 1) REQUEST MY DATA (real export - downloads a JSON file) ---------- */
+/* ---------- REQUEST MY DATA (real export - downloads a JSON file) ---------- */
 async function requestDataDownload() {
     const u = getUser();
     if (!u || !u.phone) { showToast('Please login to request your data!', 'error'); return; }
@@ -1421,7 +1440,6 @@ async function requestDataDownload() {
     showToast('Preparing your data export...', 'success');
 
     try {
-        // Pull user's orders from existing backend
         const ordersRes = await fetch('get_submissions.php?type=orders');
         const ordersData = await ordersRes.json();
         const myOrders = (Array.isArray(ordersData) ? ordersData : [])
@@ -1435,7 +1453,6 @@ async function requestDataDownload() {
             saved_addresses: getAddresses()
         };
 
-        // Trigger actual file download in the browser
         const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1446,7 +1463,6 @@ async function requestDataDownload() {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
-        // Also notify backend so a copy can be logged/emailed if you want (optional endpoint)
         fetch('request_data_export.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1457,13 +1473,12 @@ async function requestDataDownload() {
         document.getElementById('dataStatusBox').classList.add('show');
         showToast('Your data file has been downloaded! ✅', 'success');
      } catch (e) {
-    console.error('Data export failed:', e);
-    showToast('Unable to prepare your data export right now.', 'error');
-}
+        console.error('Data export failed:', e);
+        showToast('Unable to prepare your data export right now.', 'error');
     }
+}
 
-
-/* ---------- 2) CONSENT MANAGEMENT (now also saves to backend, not just localStorage) ---------- */
+/* ---------- CONSENT MANAGEMENT (also saves to backend) ---------- */
 function toggleSwitch(el, key) {
     el.classList.toggle('active');
     const val = el.classList.contains('active') ? '1' : '0';
@@ -1479,7 +1494,7 @@ function toggleSwitch(el, key) {
     }
 }
 
-/* ---------- 3) GRIEVANCE REDRESSAL (real submit to backend) ---------- */
+/* ---------- GRIEVANCE REDRESSAL (real submit to backend) ---------- */
 async function submitGrievance() {
     const u = getUser();
     const subject = document.getElementById('grievanceSubject').value.trim();
@@ -1518,7 +1533,7 @@ async function submitGrievance() {
     }
 }
 
-/* ---------- 4) DE-ACTIVATE ACCOUNT (real action) ---------- */
+/* ---------- DE-ACTIVATE ACCOUNT (real action) ---------- */
 function deactivateAccount() {
     const u = getUser();
     if (!u || !u.phone) { showToast('Please login first!', 'error'); return; }
@@ -1541,7 +1556,7 @@ function deactivateAccount() {
     refreshProfileHeader();
 }
 
-/* ---------- 5) DELETE ACCOUNT (real action) ---------- */
+/* ---------- DELETE ACCOUNT (real action) ---------- */
 function deleteAccount() {
     const confirmText = document.getElementById('deleteConfirmText').value.trim();
     if (confirmText !== 'DELETE') { showToast('Please type DELETE exactly to confirm!', 'error'); return; }
@@ -1564,6 +1579,14 @@ function deleteAccount() {
     showToast('Your account has been permanently deleted.', 'success');
     openPanel('panelHome');
     refreshProfileHeader();
+}
+
+/* ---------- Admin ACCOUNT (real action) ---------- */
+
+function openAdminDashboard() {
+    if (confirm('This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. ')) {
+        window.top.location.href = 'admin.html';
+    }
 }
 </script>
 </body>
