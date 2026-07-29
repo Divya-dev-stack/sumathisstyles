@@ -273,7 +273,7 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 
         <!-- HIDDEN ADMIN ENTRY -->
         <div class="admin-hidden-row">
-            <span class="admin-hidden-link" onclick="openAdminDashboard()"><i class="fas fa-lock" style="font-size:10px;"></i> Admin</span>
+            <span class="admin-hidden-link" onclick="openAdminDashboard()"><i class="fas fa-lock" style="font-size:10px;"></i> Admin Dashboard</span>
         </div>
     </div>
 
@@ -451,14 +451,6 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
                 </p>
             </div>
 
-            <div style="display:flex;align-items:center;gap:12px;background:var(--gray);border-radius:12px;padding:14px 16px;margin-bottom:12px;">
-                <i class="fas fa-phone" style="color:var(--primary);font-size:16px;"></i>
-                <div><div style="font-size:11.5px;color:var(--text-light);">Contact Number</div><div style="font-size:14px;font-weight:700;color:var(--text);">861 070 3658</div></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;background:var(--gray);border-radius:12px;padding:14px 16px;margin-bottom:20px;">
-                <i class="fas fa-envelope" style="color:var(--primary);font-size:16px;"></i>
-                <div><div style="font-size:11.5px;color:var(--text-light);">Email</div><div style="font-size:14px;font-weight:700;color:var(--text);">divyadeveloper@gmail.com</div></div>
-            </div>
 
             <button class="btn-save" style="width:100%;margin-bottom:10px;" onclick="callSupport()">
                 <i class="fas fa-phone"></i> Call Us
@@ -886,7 +878,7 @@ function callSupport() { window.location.href = 'tel:8610703658'; }
 
 function openHelpMail() {
     const u = getUser();
-    const email = "divyadeveloper@gmail.com";
+    const email = "divyadeveloper2025@gmail.com";
     const subject = encodeURIComponent("Sumathi's Style App - Query / Feedback");
     const nameLine = u && u.name ? u.name : '';
     const phoneLine = u && u.phone ? u.phone : '';
