@@ -30,26 +30,36 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController controller;
 
-  // Call, Mail, WhatsApp open panna use aagum
+  // Mail, Call, WhatsApp, UPI links external app-la open aagum
   Future<void> openExternalUrl(String url) async {
     final Uri uri = Uri.parse(url);
 
     try {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      final bool opened = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!opened) {
+        debugPrint('Could not open: $url');
+      }
     } catch (e) {
       debugPrint('Could not open: $url');
+      debugPrint(e.toString());
     }
   }
 
-  // Location permission request pannum function
+  // Location permission request pannum
   Future<void> requestLocationPermission() async {
-    final status = await Permission.location.request();
+    final PermissionStatus status = await Permission.location.request();
+
     if (status.isDenied) {
       debugPrint('Location permission denied');
     }
+
     if (status.isPermanentlyDenied) {
-      // User "Don't ask again" click pannirundha, settings open pannum
-      openAppSettings();
+      // "Don't ask again" select pannirundha app settings open aagum
+      await openAppSettings();
     }
   }
 
@@ -57,19 +67,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void initState() {
     super.initState();
 
-    // App start aagumbodhe location permission ketkum
+    // App start aagumbodhu location permission ketkum
     requestLocationPermission();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      // Website button-la irundhu Call/Mail request receive pannum
+
+      // Website-la irundhu Call/Mail/UPI request receive pannum
       ..addJavaScriptChannel(
         'FlutterApp',
         onMessageReceived: (JavaScriptMessage message) {
           openExternalUrl(message.message);
         },
       )
-      // Mail, Call, WhatsApp link direct-ah mobile app-la open aagum
+
+      // Mail, Call, WhatsApp, UPI links direct-ah mobile app-la open aagum
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) async {
@@ -78,31 +90,34 @@ class _WebViewScreenState extends State<WebViewScreen> {
             if (url.startsWith('mailto:') ||
                 url.startsWith('tel:') ||
                 url.startsWith('whatsapp:') ||
-                url.startsWith('https://wa.me/')) {
+                url.startsWith('https://wa.me/') ||
+                url.startsWith('upi://')) {
               await openExternalUrl(request.url);
 
-              // WebView error page open aagama stop pannum
+              // WebView-la error page open aagama stop pannum
               return NavigationDecision.prevent;
             }
 
+            // Other website links WebView-kulla open aagum
             return NavigationDecision.navigate;
           },
         ),
       )
-      // Un website
+
+      // Un website URL
       ..loadRequest(
         Uri.parse(
           'https://sumathisstyles-production.up.railway.app/website.html',
         ),
       );
 
-    // Android-la WebView geolocation permissions handle pannanum
+    // Android WebView geolocation permission handle pannum
     if (controller.platform is AndroidWebViewController) {
-      final androidController =
+      final AndroidWebViewController androidController =
           controller.platform as AndroidWebViewController;
+
       androidController.setGeolocationPermissionsPromptCallbacks(
         onShowPrompt: (request) async {
-          // Website-la irundhu location kekkumbodhu, allow pannum
           return const GeolocationPermissionsResponse(
             allow: true,
             retain: true,
@@ -115,7 +130,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: WebViewWidget(controller: controller)),
+      body: SafeArea(
+        child: WebViewWidget(
+          controller: controller,
+        ),
+      ),
     );
   }
 }

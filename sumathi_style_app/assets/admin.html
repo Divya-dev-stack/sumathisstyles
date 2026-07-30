@@ -199,6 +199,9 @@ select.status-select{padding:5px 8px;border-radius:6px;border:1.5px solid var(--
 </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -246,13 +249,16 @@ select.status-select{padding:5px 8px;border-radius:6px;border:1.5px solid var(--
       <div class="nav-section">Finance</div>
       <div class="nav-item" onclick="showPage('revenue')"><span class="icon">💰</span> Revenue</div>
     </div>
-    <div class="sidebar-logout" onclick="doLogout()"><span class="icon">🚪</span> Logout</div>
+       <div class="sidebar-logout" onclick="doLogout()"><span class="icon">🚪</span> Logout</div>
   </div>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button id="back-btn" class="btn btn-outline" style="font-size:12px;padding:5px 12px;" onclick="window.location.href = '/sumathi_style_app/assets/html/settings.html'">← Back</button>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+      </div>
       <div style="display:flex;align-items:center;gap:14px;">
         <div class="topbar-info" id="topbar-date"></div>
         <button class="btn btn-wa" onclick="showPage('ordersmgmt')" style="font-size:12px;padding:6px 14px;">🧾 Go to Orders</button>
@@ -753,6 +759,9 @@ function showPage(id) {
     if(n.getAttribute('onclick')===`showPage('${id}')`) n.classList.add('active');
   });
   document.getElementById('topbar-title').textContent=titles[id];
+
+  const backBtn=document.getElementById('back-btn');
+  if(backBtn) backBtn.style.display=(id==='dashboard')?'inline-block':'none';
   if(id==='dashboard') refreshDashboard();
   if(id==='products') renderProducts();
   if(id==='ordersmgmt') renderOrders();
@@ -849,7 +858,16 @@ async function loadContactsFromServer(){
 // Any submission whose service text mentions "catering" is treated as a Catering enquiry;
 // everything else stays under Boutique.
 function isCateringContact(c){
-  return String(c.service||'').toLowerCase().includes('catering');
+  const svc=String(c.service||'').toLowerCase();
+  const formType=String(c.form_type||c.type||c.page||c.source||'').toLowerCase();
+  // If explicitly marked as boutique, force boutique
+  if(formType.includes('boutique')||svc.includes('boutique')) return false;
+  // If explicitly marked as catering OR service contains catering
+  if(formType.includes('catering')||svc.includes('catering')) return true;
+  // If service contains food/meal/event related terms, treat as catering
+  const cateringKeywords=['catering','food','meal','lunch','dinner','breakfast','tiffin','party food','wedding food'];
+  const combined=svc+' '+formType;
+  return cateringKeywords.some(k=>combined.includes(k));
 }
 function splitContacts(contacts){
   return {

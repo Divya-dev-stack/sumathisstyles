@@ -1285,8 +1285,9 @@ function openLightbox(src) {
 }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
-async function submitCateringContact(e) {
+ async function submitCateringContact(e) {
   e.preventDefault();
+
   const payload = {
     type: 'contact',
     name: document.getElementById('cateringContactName').value.trim(),
@@ -1296,16 +1297,30 @@ async function submitCateringContact(e) {
     message: document.getElementById('cateringContactMessage').value.trim(),
     source: 'catering'
   };
+
   try {
-    const res = await fetch('submit_forms.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const res = await fetch(
+      'https://sumathisstyles-production.up.railway.app/submit_forms.php',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
     const data = await res.json();
+
     if (data.status === 'success') {
       showToast('✅ Enquiry sent! We will contact you soon.');
       e.target.reset();
     } else {
       showToast(data.message || 'Unable to send enquiry');
     }
+
   } catch (err) {
+    console.error('Enquiry error:', err);
     showToast('Unable to send enquiry right now');
   }
 }

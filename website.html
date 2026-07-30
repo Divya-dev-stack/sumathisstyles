@@ -2031,9 +2031,29 @@ function removeFromCart(productId) {
     }
 
     function initiateUpiPay(upiUrl) {
+    try {
         window.location.href = upiUrl;
-        setTimeout(() => { showUpiConfirmStep(); }, 800);
-    }
+    } catch (e) {}
+    setTimeout(() => {
+        showUpiFallback();
+    }, 1200);
+}
+
+function showUpiFallback() {
+    const amount = Number(pendingOrder.amount || 0);
+    const detail = document.getElementById('coPaymentDetail');
+    detail.innerHTML = `
+        <i class="fas fa-exclamation-circle" style="font-size:36px;color:var(--secondary);margin-bottom:12px;"></i>
+        <h4 style="color:var(--text);margin-bottom:10px;font-size:15px;">UPI app didn't open?</h4>
+        <p style="font-size:13px;color:#888;max-width:280px;margin-bottom:16px;">If the payment app did not open automatically, please pay ₹${amount.toLocaleString()} manually via GPay/PhonePe to <b>shanusumi221525@okhdfcbank</b>, then confirm below.</p>
+        <button class="btn-enroll co-place-order-btn" style="background:linear-gradient(135deg,var(--success),#2ed573);" onclick="placeOrderFromCheckout('upi')">
+            <i class="fas fa-check-circle"></i> Yes, I've Paid
+        </button>
+        <button class="btn-outline" style="margin-top:10px;width:100%;padding:10px;" onclick="placeOrderFromCheckout('cod')">
+            <i class="fas fa-money-bill-wave"></i> Pay via Cash on Delivery Instead
+        </button>
+    `;
+}
 
     function showUpiConfirmStep() {
         const amount = Number(pendingOrder.amount || 0);
@@ -2477,6 +2497,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadReviews();
     updateCartUI();
     adjustHeaderOffsets();
+
+    // Footer fix: hide on load since default section is 'home'
+    const footer = document.querySelector('.footer');
+    if (footer) footer.style.display = 'none';
+
 
     // Restore login state from localStorage (shared with settings.html iframe)
     try {
