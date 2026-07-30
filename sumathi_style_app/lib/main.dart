@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const WebViewScreen(),
+      home: WebViewScreen(),
     );
   }
 }
@@ -28,60 +28,57 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController controller;
 
+  // Call, Mail, WhatsApp open panna use aagum
+  Future<void> openExternalUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+
+    try {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {
+      debugPrint('Could not open: $url');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+
+      // Website button-la irundhu Call/Mail request receive pannum
+      ..addJavaScriptChannel(
+        'FlutterApp',
+        onMessageReceived: (JavaScriptMessage message) {
+          openExternalUrl(message.message);
+        },
+      )
+
+      // Mail, Call, WhatsApp link direct-ah mobile app-la open aagum
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) async {
-            final String url = request.url;
+            final String url = request.url.toLowerCase();
 
-            // Email link
-            if (url.startsWith('mailto:')) {
-              final Uri emailUri = Uri.parse(url);
+            if (url.startsWith('mailto:') ||
+                url.startsWith('tel:') ||
+                url.startsWith('whatsapp:') ||
+                url.startsWith('https://wa.me/')) {
+              await openExternalUrl(request.url);
 
-              await launchUrl(
-                emailUri,
-                mode: LaunchMode.externalApplication,
-              );
-
-              // WebView-la error page open aagama stop pannum
+              // WebView error page open aagama stop pannum
               return NavigationDecision.prevent;
             }
 
-            // Phone call link
-            if (url.startsWith('tel:')) {
-              final Uri phoneUri = Uri.parse(url);
-
-              await launchUrl(
-                phoneUri,
-                mode: LaunchMode.externalApplication,
-              );
-
-              return NavigationDecision.prevent;
-            }
-
-            // WhatsApp link
-            if (url.startsWith('whatsapp:') ||
-                url.startsWith('https://wa.me')) {
-              final Uri whatsappUri = Uri.parse(url);
-
-              await launchUrl(
-                whatsappUri,
-                mode: LaunchMode.externalApplication,
-              );
-
-              return NavigationDecision.prevent;
-            }
-
-            // Other website links WebView-kulla open aagum
             return NavigationDecision.navigate;
           },
         ),
       )
+
+      // Un website
       ..loadRequest(
         Uri.parse(
           'https://sumathisstyles-production.up.railway.app/website.html',
