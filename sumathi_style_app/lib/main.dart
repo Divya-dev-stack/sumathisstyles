@@ -96,11 +96,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ),
       );
 
-    // Android-la WebView geolocation enable pannanum
+    // Android-la WebView geolocation permissions handle pannanum
     if (controller.platform is AndroidWebViewController) {
       final androidController =
           controller.platform as AndroidWebViewController;
-      androidController.setGeolocationEnabled(true);
       androidController.setGeolocationPermissionsPromptCallbacks(
         onShowPrompt: (request) async {
           // Website-la irundhu location kekkumbodhu, allow pannum

@@ -598,6 +598,9 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast i { color:var(--secondary-light); }
 
+/* Footer visible only on Reviews page */
+#siteFooter { display:none; }
+
 /* Responsive */
 @media(max-width:640px){
   .nav-links button span { display:none; }
@@ -981,8 +984,8 @@ Team: Murali (Director) | 50 Cooks | 50 Hospitality Staff | 50 Reception | 50 Su
   </div>
 </div>
 
-<!-- ══ FOOTER ══ -->
-<footer class="footer">
+<!-- ══ FOOTER (shown only on Reviews page) ══ -->
+<footer class="footer" id="siteFooter">
   <div class="footer-grid">
 
     <!-- Brand -->
@@ -1104,6 +1107,12 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   if(btn) btn.classList.add('active');
   window.scrollTo(0,0);
+
+  // Footer Reviews page-la mattum kaatanum
+  const footer = document.getElementById('siteFooter');
+  if (footer) {
+    footer.style.display = (id === 'reviews') ? 'block' : 'none';
+  }
 }
 
 // ── CARD SHAKE (Services cards only) ──
