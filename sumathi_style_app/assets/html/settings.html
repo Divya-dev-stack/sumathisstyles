@@ -1576,7 +1576,12 @@ function deleteAccount() {
 /* ---------- Admin ACCOUNT (real action) ---------- */
 
 function openAdminDashboard() {
-    if (confirm('This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. ')) {
+    const stayHere = confirm(
+        'This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. If you believe this is a mistake, please contact the site administrator.'
+    );
+    if (stayHere) {
+        return;
+    } else {
         window.top.location.href = 'admin.html';
     }
 }

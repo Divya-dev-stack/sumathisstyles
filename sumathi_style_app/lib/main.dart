@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,9 +41,24 @@ class _WebViewScreenState extends State<WebViewScreen> {
     }
   }
 
+  // Location permission request pannum function
+  Future<void> requestLocationPermission() async {
+    final status = await Permission.location.request();
+    if (status.isDenied) {
+      debugPrint('Location permission denied');
+    }
+    if (status.isPermanentlyDenied) {
+      // User "Don't ask again" click pannirundha, settings open pannum
+      openAppSettings();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // App start aagumbodhe location permission ketkum
+    requestLocationPermission();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -78,6 +95,22 @@ class _WebViewScreenState extends State<WebViewScreen> {
           'https://sumathisstyles-production.up.railway.app/website.html',
         ),
       );
+
+    // Android-la WebView geolocation enable pannanum
+    if (controller.platform is AndroidWebViewController) {
+      final androidController =
+          controller.platform as AndroidWebViewController;
+      androidController.setGeolocationEnabled(true);
+      androidController.setGeolocationPermissionsPromptCallbacks(
+        onShowPrompt: (request) async {
+          // Website-la irundhu location kekkumbodhu, allow pannum
+          return const GeolocationPermissionsResponse(
+            allow: true,
+            retain: true,
+          );
+        },
+      );
+    }
   }
 
   @override
