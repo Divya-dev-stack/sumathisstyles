@@ -33,10 +33,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     final Uri uri = Uri.parse(url);
 
     try {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } catch (e) {
       debugPrint('Could not open: $url');
     }
@@ -48,7 +45,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-
       // Website button-la irundhu Call/Mail request receive pannum
       ..addJavaScriptChannel(
         'FlutterApp',
@@ -56,7 +52,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
           openExternalUrl(message.message);
         },
       )
-
       // Mail, Call, WhatsApp link direct-ah mobile app-la open aagum
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -77,7 +72,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
           },
         ),
       )
-
       // Un website
       ..loadRequest(
         Uri.parse(
@@ -89,11 +83,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: WebViewWidget(
-          controller: controller,
-        ),
-      ),
+      body: SafeArea(child: WebViewWidget(controller: controller)),
     );
   }
 }
