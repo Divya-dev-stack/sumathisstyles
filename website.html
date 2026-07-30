@@ -2143,7 +2143,7 @@ function removeFromCart(productId) {
         }
         const footer = document.querySelector('.footer');
         if (footer) {
-            const showFooterSections = ['home','shop','classes','custom','contact','reviews','wishlist','settings'];
+            const showFooterSections = ['reviews'];
             footer.style.display = showFooterSections.includes(sectionId) ? 'block' : 'none';
         }
     }
