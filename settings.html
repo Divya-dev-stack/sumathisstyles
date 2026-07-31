@@ -874,43 +874,14 @@ function openPanel(id) {
 
 function openHelp() { window.open('https://wa.me/918610703658?text=' + encodeURIComponent('Hi Sumathi, I need help with my order.'), '_blank'); }
 
-   
-// Common helper: Iframe-la irundhalum, main window-la irukura
-// FlutterApp channel-a kandupidichu message anupum
-function sendToFlutter(url) {
-    try {
-        if (window.top && window.top.FlutterApp) {
-            window.top.FlutterApp.postMessage(url);
-            return;
-        }
-    } catch (e) {
-        // Cross-origin case-la error varum, adha ignore pannitu keela poi check pannum
-    }
-    if (window.FlutterApp) {
-        window.FlutterApp.postMessage(url);
-    } else {
-        // Normal browser-la direct open pannum
-        window.location.href = url;
-    }
-}
-
-function callSupport() {
-    const phoneUrl = 'tel:8610703658';
-    sendToFlutter(phoneUrl);
-}
+function callSupport() { window.location.href = 'tel:8610703658'; }
 
 function openHelpMail() {
     const u = getUser();
-
     const email = "divyadeveloper2025@gmail.com";
-
-    const subject = encodeURIComponent(
-        "Sumathi's Style App - Query / Feedback"
-    );
-
+    const subject = encodeURIComponent("Sumathi's Style App - Query / Feedback");
     const nameLine = u && u.name ? u.name : '';
     const phoneLine = u && u.phone ? u.phone : '';
-
     const body = encodeURIComponent(
         "Hi Team,\n\n" +
         "Name: " + nameLine + "\n" +
@@ -919,12 +890,9 @@ function openHelpMail() {
         "[Please describe here]\n\n" +
         "Thanks."
     );
-
-    const mailUrl =
-        `mailto:${email}?subject=${subject}&body=${body}`;
-
-    sendToFlutter(mailUrl);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 }
+
 /* ---- Admin hidden warning ---- */
 function openAdminWarning() {
     document.getElementById('adminWarnOverlay').classList.add('active');
@@ -1608,7 +1576,12 @@ function deleteAccount() {
 /* ---------- Admin ACCOUNT (real action) ---------- */
 
 function openAdminDashboard() {
-    if (confirm('This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. ')) {
+    const stayHere = confirm(
+        'This page is a Admin Dashboard. You are logged in as a regular user, so you cannot use this page. If you believe this is a mistake, please contact the site administrator.'
+    );
+    if (stayHere) {
+        return;
+    } else {
         window.top.location.href = 'admin.html';
     }
 }

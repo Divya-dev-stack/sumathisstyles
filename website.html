@@ -2492,15 +2492,24 @@ function showUpiFallback() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
     loadProducts();
     loadReviews();
     updateCartUI();
     adjustHeaderOffsets();
 
+    // ✅ NEW: If admin dashboard sent us back with ?openSettings=1, open Settings section directly
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('openSettings') === '1') {
+        showSection('settings');
+        // Clean up the URL so refresh doesn't keep reopening settings
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // Footer fix: hide on load since default section is 'home'
     const footer = document.querySelector('.footer');
     if (footer) footer.style.display = 'none';
+    
 
 
     // Restore login state from localStorage (shared with settings.html iframe)
