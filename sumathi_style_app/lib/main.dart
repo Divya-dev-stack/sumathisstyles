@@ -30,11 +30,11 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   late final WebViewController controller;
 
-  // Mail, Call, WhatsApp, UPI links external app-la open aagum
+  // External links open panna
   Future<void> openExternalUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-
     try {
+      final Uri uri = Uri.parse(url);
+
       final bool opened = await launchUrl(
         uri,
         mode: LaunchMode.externalApplication,
@@ -44,21 +44,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
         debugPrint('Could not open: $url');
       }
     } catch (e) {
-      debugPrint('Could not open: $url');
+      debugPrint('Error opening: $url');
       debugPrint(e.toString());
     }
   }
 
-  // Location permission request pannum
+  // Location permission
   Future<void> requestLocationPermission() async {
-    final PermissionStatus status = await Permission.location.request();
+    final PermissionStatus status =
+        await Permission.location.request();
 
     if (status.isDenied) {
       debugPrint('Location permission denied');
     }
 
     if (status.isPermanentlyDenied) {
-      // "Don't ask again" select pannirundha app settings open aagum
       await openAppSettings();
     }
   }
@@ -67,13 +67,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void initState() {
     super.initState();
 
-    // App start aagumbodhu location permission ketkum
     requestLocationPermission();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
 
-      // Website-la irundhu Call/Mail/UPI request receive pannum
+      // HTML-la FlutterApp.postMessage use pannina handle aagum
       ..addJavaScriptChannel(
         'FlutterApp',
         onMessageReceived: (JavaScriptMessage message) {
@@ -81,42 +80,48 @@ class _WebViewScreenState extends State<WebViewScreen> {
         },
       )
 
-      // Mail, Call, WhatsApp, UPI links direct-ah mobile app-la open aagum
+      // Mail, Call, WhatsApp, UPI, Instagram external-ah open aagum
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
-            final String url = request.url.toLowerCase();
+          onNavigationRequest:
+              (NavigationRequest request) async {
+            final String url = request.url;
+            final String lowerUrl = url.toLowerCase();
 
-            if (url.startsWith('mailto:') ||
-                url.startsWith('tel:') ||
-                url.startsWith('whatsapp:') ||
-                url.startsWith('https://wa.me/') ||
-                url.startsWith('upi://')) {
-              await openExternalUrl(request.url);
+            if (lowerUrl.startsWith('mailto:') ||
+                lowerUrl.startsWith('tel:') ||
+                lowerUrl.startsWith('sms:') ||
+                lowerUrl.startsWith('whatsapp:') ||
+                lowerUrl.startsWith('https://wa.me/') ||
+                lowerUrl.startsWith('upi://') ||
+                lowerUrl.startsWith('intent://') ||
+                lowerUrl.startsWith('instagram://')) {
+              
+              await openExternalUrl(url);
 
-              // WebView-la error page open aagama stop pannum
+              // WebView webpage not available page show aagama stop pannum
               return NavigationDecision.prevent;
             }
 
-            // Other website links WebView-kulla open aagum
             return NavigationDecision.navigate;
           },
         ),
       )
 
-      // Un website URL
+      // Main website
       ..loadRequest(
         Uri.parse(
           'https://sumathisstyles-production.up.railway.app/website.html',
         ),
       );
 
-    // Android WebView geolocation permission handle pannum
+    // Android WebView location permission
     if (controller.platform is AndroidWebViewController) {
       final AndroidWebViewController androidController =
           controller.platform as AndroidWebViewController;
 
-      androidController.setGeolocationPermissionsPromptCallbacks(
+      androidController
+          .setGeolocationPermissionsPromptCallbacks(
         onShowPrompt: (request) async {
           return const GeolocationPermissionsResponse(
             allow: true,
