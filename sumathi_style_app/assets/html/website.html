@@ -771,6 +771,10 @@
     to { transform: translateY(0); }
 }
 
+@media (max-width: 768px) {
+    .footer { display: none !important; }
+}
+
     </style>
 </head>
 <body>
@@ -868,6 +872,24 @@
                 function locToggleDD(i){locOpenDropdown=(locOpenDropdown===i)?-1:i;locRender();}
                 function locSelectAddr(i,e){locOpenDropdown=-1;locSelectedIndex=i;locRender();}
                 function locConfirm(){if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}var a=locAddresses[locSelectedIndex];document.getElementById('locLabel').textContent='Deliver to '+a.name+' –';document.getElementById('locLink').textContent=a.detail.substring(0,28)+'...';document.getElementById('locPanel').style.display='none';locToastMsg('📍 Delivering to '+a.name+'!');}
+                function locConfirm(){
+    if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}
+    var a=locAddresses[locSelectedIndex];
+    var deliverText='Deliver to '+a.name+' –';
+    var addrShort=a.detail.substring(0,28)+'...';
+
+    document.getElementById('locLabel').textContent=deliverText;
+    document.getElementById('locLink').textContent=addrShort;
+
+    // Product popup pill-um update pannanum
+    var pdText=document.getElementById('pdLocText');
+    var pdLink=document.getElementById('pdLocLink');
+    if(pdText) pdText.textContent=deliverText;
+    if(pdLink) pdLink.textContent=addrShort;
+
+    document.getElementById('locPanel').style.display='none';
+    locToastMsg('📍 Delivering to '+a.name+'!');
+}
                 function locOpenEdit(i){locEditIndex=i;locOpenDropdown=-1;var a=locAddresses[i];document.getElementById('locModalTitle').textContent='Edit Address';document.getElementById('locNewName').value=a.name;document.getElementById('locNewAddr').value=a.detail;document.getElementById('locNewPin').value='';document.getElementById('locPanel').style.display='none';document.getElementById('locAddModal').style.display='flex';}
                 function locDeleteAddr(i){if(confirm('Delete "'+locAddresses[i].name+'" address?')){locAddresses.splice(i,1);if(locSelectedIndex===i)locSelectedIndex=-1;locOpenDropdown=-1;locPersist();locRender();locToastMsg('🗑️ Address deleted');}}
                 function locAddNew(){locEditIndex=-1;document.getElementById('locModalTitle').textContent='Add New Address';document.getElementById('locNewName').value='';document.getElementById('locNewAddr').value='';document.getElementById('locNewPin').value='';document.getElementById('locPanel').style.display='none';document.getElementById('locAddModal').style.display='flex';}
