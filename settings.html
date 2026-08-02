@@ -874,9 +874,18 @@ function openPanel(id) {
 
 function openHelp() { window.open('https://wa.me/918610703658?text=' + encodeURIComponent('Hi Sumathi, I need help with my order.'), '_blank'); }
 
-function callSupport() { window.location.href = 'tel:8610703658'; }
+function callSupport() {
+    const url = 'tel:8610703658';
+    if (window.top && window.top.FlutterApp) {
+        window.top.FlutterApp.postMessage(url);
+    } else if (window.parent && window.parent.FlutterApp) {
+        window.parent.FlutterApp.postMessage(url);
+    } else {
+        window.location.href = url;
+    }
+}
 
-function openHelpMail() {
+  function openHelpMail() {
     const u = getUser();
     const email = "divyadeveloper2025@gmail.com";
     const subject = encodeURIComponent("Sumathi's Style App - Query / Feedback");
@@ -890,7 +899,14 @@ function openHelpMail() {
         "[Please describe here]\n\n" +
         "Thanks."
     );
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    const url = `mailto:${email}?subject=${subject}&body=${body}`;
+    if (window.top && window.top.FlutterApp) {
+        window.top.FlutterApp.postMessage(url);
+    } else if (window.parent && window.parent.FlutterApp) {
+        window.parent.FlutterApp.postMessage(url);
+    } else {
+        window.location.href = url;
+    }
 }
 
 /* ---- Admin hidden warning ---- */
