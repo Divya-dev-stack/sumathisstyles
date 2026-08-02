@@ -51,8 +51,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   // Location permission
   Future<void> requestLocationPermission() async {
-    final PermissionStatus status =
-        await Permission.location.request();
+    final PermissionStatus status = await Permission.location.request();
 
     if (status.isDenied) {
       debugPrint('Location permission denied');
@@ -61,6 +60,39 @@ class _WebViewScreenState extends State<WebViewScreen> {
     if (status.isPermanentlyDenied) {
       await openAppSettings();
     }
+  }
+
+  // window.open() / target="_blank" links ah intercept panna JS override
+  // Idhu HTML edit pannama, ella mailto/tel/whatsapp/window.open cases um
+  // FlutterApp channel vazhiya vara vaikkum
+  Future<void> _injectWindowOpenOverride() async {
+    await controller.runJavaScript('''
+      (function() {
+        window.open = function(url) {
+          if (window.FlutterApp) {
+            window.FlutterApp.postMessage(url);
+          }
+          return null;
+        };
+
+        // target="_blank" ulla anchor tags ah um intercept pannum
+        document.addEventListener('click', function(e) {
+          var el = e.target;
+          while (el && el.tagName !== 'A') {
+            el = el.parentElement;
+          }
+          if (el && el.tagName === 'A' && el.target === '_blank') {
+            var href = el.getAttribute('href');
+            if (href) {
+              e.preventDefault();
+              if (window.FlutterApp) {
+                window.FlutterApp.postMessage(href);
+              }
+            }
+          }
+        }, true);
+      })();
+    ''');
   }
 
   @override
@@ -83,8 +115,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
       // Mail, Call, WhatsApp, UPI, Instagram external-ah open aagum
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest:
-              (NavigationRequest request) async {
+          onPageFinished: (String url) {
+            // Ovvoru page load aana pinnadi um override inject pannanum
+            _injectWindowOpenOverride();
+          },
+          onNavigationRequest: (NavigationRequest request) async {
             final String url = request.url;
             final String lowerUrl = url.toLowerCase();
 
@@ -96,7 +131,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 lowerUrl.startsWith('upi://') ||
                 lowerUrl.startsWith('intent://') ||
                 lowerUrl.startsWith('instagram://')) {
-              
               await openExternalUrl(url);
 
               // WebView webpage not available page show aagama stop pannum
@@ -120,8 +154,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       final AndroidWebViewController androidController =
           controller.platform as AndroidWebViewController;
 
-      androidController
-          .setGeolocationPermissionsPromptCallbacks(
+      androidController.setGeolocationPermissionsPromptCallbacks(
         onShowPrompt: (request) async {
           return const GeolocationPermissionsResponse(
             allow: true,
