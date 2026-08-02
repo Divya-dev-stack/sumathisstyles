@@ -492,6 +492,16 @@
         .pd-return-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #555; }
         .pd-return-item i { color: #008080; font-size: 14px; }
 
+        /* NEW: delivery-location bar shown above the product image in the popup */
+        .pd-top-loc-bar {
+            display: flex; align-items: center; gap: 8px;
+            background: #e8f2fd; padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 4px; cursor: pointer; font-size: 13px; font-weight: 600; color: #212121;
+        }
+        .pd-top-loc-bar i.fa-map-marker-alt { color: #1a73e8; font-size: 14px; }
+        .pd-top-loc-bar span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pd-top-loc-bar i.fa-chevron-right { color: #1a73e8; font-size: 11px; }
+
         @media (max-width: 700px) {
             .pd-modal { grid-template-columns: 1fr; max-width: 100%; }
             .pd-left { border-radius: 12px 12px 0 0; max-height: none; position: relative; }
@@ -889,25 +899,6 @@
                 function locRender(list){var src=list||locAddresses;var el=document.getElementById('locAddrList');if(!src||src.length===0){el.innerHTML='<div style="padding:20px;text-align:center;color:#878787;font-size:13px;font-family:Poppins,sans-serif;">No addresses found</div>';return;}el.innerHTML=src.map(function(a,i){var realIdx=list?locAddresses.indexOf(a):i;var selected=(realIdx===locSelectedIndex);return'<div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;cursor:pointer;border-bottom:1px solid #f5f5f5;position:relative;'+(selected?'background:#f5f9ff;':'background:#fff;')+'" onclick="locSelectAddr('+realIdx+',event)">'+'<div style="display:flex;align-items:flex-start;gap:12px;flex:1;">'+'<div style="width:38px;height:38px;border-radius:8px;border:1px solid #e0e0e0;background:'+(selected?'#e8f2fd':'#fff')+';display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">'+'<i class="fas '+a.icon+'" style="color:'+(selected?'#1a73e8':'#555')+';font-size:14px;"></i>'+'</div>'+'<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:14px;font-weight:700;color:#212121;font-family:Poppins,sans-serif;">'+a.name+'</span>'+(selected?'<span style="background:#e8f2fd;color:#1a73e8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">Selected</span>':'')+'</div>'+'<div style="font-size:12px;color:#878787;line-height:1.5;font-family:Poppins,sans-serif;max-width:220px;">'+a.detail+'</div></div></div>'+'<button onclick="event.stopPropagation();locToggleDD('+realIdx+')" style="background:none;border:none;cursor:pointer;color:#666;font-size:18px;font-weight:700;padding:2px 6px;border-radius:4px;line-height:1;flex-shrink:0;" title="Options">⋯</button>'+(locOpenDropdown===realIdx?'<div style="position:absolute;right:12px;top:36px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.13);z-index:999;min-width:130px;overflow:hidden;"><div onclick="event.stopPropagation();locOpenEdit('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#212121;font-family:Poppins,sans-serif;"><i class="fas fa-edit" style="color:#1a73e8;font-size:13px;"></i> Edit</div><div onclick="event.stopPropagation();locDeleteAddr('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#dc3545;font-family:Poppins,sans-serif;"><i class="fas fa-trash" style="color:#dc3545;font-size:13px;"></i> Delete</div></div>':'')+'</div>';}).join('');}
                 function locToggleDD(i){locOpenDropdown=(locOpenDropdown===i)?-1:i;locRender();}
                 function locSelectAddr(i,e){locOpenDropdown=-1;locSelectedIndex=i;locRender();}
-                function locConfirm(){if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}var a=locAddresses[locSelectedIndex];document.getElementById('locLabel').textContent='Deliver to '+a.name+' –';document.getElementById('locLink').textContent=a.detail.substring(0,28)+'...';document.getElementById('locPanel').style.display='none';locToastMsg('📍 Delivering to '+a.name+'!');}
-                function locConfirm(){
-    if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}
-    var a=locAddresses[locSelectedIndex];
-    var deliverText='Deliver to '+a.name+' –';
-    var addrShort=a.detail.substring(0,28)+'...';
-
-    document.getElementById('locLabel').textContent=deliverText;
-    document.getElementById('locLink').textContent=addrShort;
-
-    // Product popup pill-um update pannanum
-    var pdText=document.getElementById('pdLocText');
-    var pdLink=document.getElementById('pdLocLink');
-    if(pdText) pdText.textContent=deliverText;
-    if(pdLink) pdLink.textContent=addrShort;
-
-    document.getElementById('locPanel').style.display='none';
-    locToastMsg('📍 Delivering to '+a.name+'!');
-}
                 function locOpenEdit(i){locEditIndex=i;locOpenDropdown=-1;var a=locAddresses[i];document.getElementById('locModalTitle').textContent='Edit Address';document.getElementById('locNewName').value=a.name;document.getElementById('locNewAddr').value=a.detail;document.getElementById('locNewPin').value='';document.getElementById('locPanel').style.display='none';document.getElementById('locAddModal').style.display='flex';}
                 function locDeleteAddr(i){if(confirm('Delete "'+locAddresses[i].name+'" address?')){locAddresses.splice(i,1);if(locSelectedIndex===i)locSelectedIndex=-1;locOpenDropdown=-1;locPersist();locRender();locToastMsg('🗑️ Address deleted');}}
                 function locAddNew(){locEditIndex=-1;document.getElementById('locModalTitle').textContent='Add New Address';document.getElementById('locNewName').value='';document.getElementById('locNewAddr').value='';document.getElementById('locNewPin').value='';document.getElementById('locPanel').style.display='none';document.getElementById('locAddModal').style.display='flex';}
@@ -932,6 +923,12 @@
         locPersist();
         document.getElementById('locLabel').textContent = 'Delivering to Current Location –';
         document.getElementById('locLink').textContent = addressText.substring(0,28)+'...';
+        const pdTextGps=document.getElementById('pdLocText');
+        const pdLinkGps=document.getElementById('pdLocLink');
+        const pdTopGps=document.getElementById('pdTopLocText');
+        if(pdTextGps) pdTextGps.textContent = 'Deliver to Current Location –';
+        if(pdLinkGps) pdLinkGps.textContent = addressText.substring(0,28)+'...';
+        if(pdTopGps) pdTopGps.textContent = 'Deliver to Current Location – ' + addressText.substring(0,28)+'...';
         document.getElementById('locPanel').style.display='none';
         locToastMsg('📍 Location set: '+addressText);
     },function(err){
@@ -943,6 +940,28 @@
     },{enableHighAccuracy:true, timeout:10000});
 }
                 function locToastMsg(msg){var t=document.getElementById('locToast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},2500);}
+                function locConfirm(){
+    if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}
+    var a=locAddresses[locSelectedIndex];
+    var deliverText='Deliver to '+a.name+' –';
+    var addrShort=a.detail.substring(0,28)+'...';
+
+    document.getElementById('locLabel').textContent=deliverText;
+    document.getElementById('locLink').textContent=addrShort;
+
+    // Product popup pill-um update pannanum
+    var pdText=document.getElementById('pdLocText');
+    var pdLink=document.getElementById('pdLocLink');
+    if(pdText) pdText.textContent=deliverText;
+    if(pdLink) pdLink.textContent=addrShort;
+
+    // Image ku mela irukura pudhusa location bar-um update pannanum
+    var pdTopText=document.getElementById('pdTopLocText');
+    if(pdTopText) pdTopText.textContent='Deliver to '+a.name+' – '+addrShort;
+
+    document.getElementById('locPanel').style.display='none';
+    locToastMsg('📍 Delivering to '+a.name+'!');
+}
                 document.addEventListener('DOMContentLoaded',function(){locRender();});
                 </script>
                 <a href="https://www.instagram.com/_bridal__designer_/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -1016,6 +1035,11 @@
         <div class="pd-modal" id="pdModal">
             <button class="pd-close" onclick="closePDModal()"><i class="fas fa-times"></i></button>
             <div class="pd-left" id="pdLeft">
+                <div class="pd-top-loc-bar" onclick="document.getElementById('locPanel').style.display='flex';">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="pdTopLocText">Select delivery location</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
                 <div class="pd-main-img-wrap">
                     <div class="pd-img-skeleton" id="pdImgSkeleton"></div>
                     <img id="pdMainImg" src="" alt="" class="pd-main-img" onload="pdImageLoaded()" onerror="pdImageError()">
@@ -1656,6 +1680,18 @@ function renderPriceList() {
         }
     }
 
+    function pdSyncTopLocBar() {
+        const pdTopText = document.getElementById('pdTopLocText');
+        if (!pdTopText) return;
+        const pdText = document.getElementById('pdLocText');
+        if (pdText && pdText.textContent && pdText.textContent !== 'Location not set') {
+            const pdLink = document.getElementById('pdLocLink');
+            pdTopText.textContent = pdText.textContent + ' ' + (pdLink ? pdLink.textContent : '');
+        } else {
+            pdTopText.textContent = 'Select delivery location';
+        }
+    }
+
     function openPDModal(productId) {
         const p = products.find(x => x.id === productId);
         if (!p) return;
@@ -1708,7 +1744,9 @@ function renderPriceList() {
         document.getElementById('pdPincodeInput').value = '';
         pdUpdateDeliveryInfo();
 
-
+        // Delivery-location bar above the image — sync with whatever the person
+        // already selected via the top location panel.
+        pdSyncTopLocBar();
 
         // Sizes only (no colors)
         const sizesEl = document.getElementById('pdSizes');
@@ -1869,7 +1907,6 @@ function pdUpdateDeliveryInfo() {
         <div class="product-info" style="padding-top:16px;cursor:pointer;" onclick="openPDModal(${p.id})">
             <h3 style="font-size:14px;font-weight:500;color:#212121;-webkit-line-clamp:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</h3>
             <div class="product-price-row">
-                <span class="product-price-original">₹${p.originalPrice}</span>
                 <span class="product-price-discounted">₹${p.price}</span>
             </div>
         </div>
