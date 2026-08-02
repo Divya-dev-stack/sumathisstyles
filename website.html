@@ -864,7 +864,7 @@
                     try { localStorage.setItem('sumathiAddresses', JSON.stringify(locAddresses)); } catch (e) {}
                 }
                 var locEditIndex=-1,locSelectedIndex=-1,locOpenDropdown=-1;
-                function locRender(list){var src=list||locAddresses;var el=document.getElementById('locAddrList');if(!src||src.length===0){el.innerHTML='<div style="padding:20px;text-align:center;color:#878787;font-size:13px;font-family:Poppins,sans-serif;">No addresses found</div>';return;}el.innerHTML=src.map(function(a,i){var realIdx=list?locAddresses.indexOf(a):i;var selected=(realIdx===locSelectedIndex);return'<div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;cursor:pointer;border-bottom:1px solid #f5f5f5;position:relative;'+(selected?'background:#f5f9ff;':'background:#fff;')+'" onclick="locSelectAddr('+realIdx+',event)">'+'<div style="display:flex;align-items:flex-start;gap:12px;flex:1;">'+'<div style="width:38px;height:38px;border-radius:8px;border:1px solid #e0e0e0;background:'+(selected?'#e8f2fd':'#fff')+';display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">'+'<i class="fas '+a.icon+'" style="color:'+(selected?'#1a73e8':'#555')+';font-size:14px;"></i>'+'</div>'+'<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:14px;font-weight:700;color:#212121;font-family:Poppins,sans-serif;">'+a.name+'</span>'+(selected?'<span style="background:#e8f2fd;color:#1a73e8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">Selected</span>':'')+'</div>'+'<div style="font-size:12px;color:#878787;line-height:1.5;font-family:Poppins,sans-serif;max-width:220px;">'+a.detail+'</div></div></div>'+'<button onclick="event.stopPropagation();locToggleDD('+realIdx+')" style="background:none;border:none;cursor:pointer;color:#666;font-size:18px;font-weight:700;padding:2px 6px;border-radius:4px;line-height:1;flex-shrink:0;" title="Options">⋯</button>'+(locOpenDropdown===realIdx?'<div style="position:absolute;right:12px;top:36px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.13);z-index:999;min-width:130px;overflow:hidden;"><div onclick="event.stopPropagation();locOpenEdit('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#212121;font-family:Poppins,sans-serif;"><i class="fas fa-edit" style="color:#1a73e8;font-size:13px;"></i> Edit</div><div onclick="event.stopPropagation();locDeleteAddr('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#dc3545;font-family:Poppins,sans-serif;"><i class="fas fa-trash" style="color:#dc3545;font-size:13px;"></i> Delete</div></div>':'')+'</div>';}).join('');}
+                function locRender(list){var src=list||locAddresses;var el=document.getElementById('locAddrList');if(!src||src.length===0){el.innerHTML='<div style="padding:20px;text-align:center;color:#878787;font-size:13px;font-family:Poppins,sans-serif;">No addresses found</div>';return;}el.innerHTML=src.map(function(a,i){var realIdx=list?locAddresses.indexOf(a):i;var selected=(realIdx===locSelectedIndex);return'<div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;cursor:pointer;border-bottom:1px solid #f5f5f5;position:relative;'+(selected?'background:#f5f9ff;':'background:#fff;')+'" onclick="locSelectAddr('+realIdx+',event)">'+'<div style="display:flex;align-items:flex-start;gap:12px;flex:1;">'+'<div style="width:38px;height:38px;border-radius:8px;border:1px solid #e0e0e0;background:'+(selected?'#e8f2fd':'#fff')+';display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">'+'<i class="fas '+a.icon+'" style="color:'+(selected?'#1a73e8':'#555')+';font-size:14px;"></i>'+'</div>'+'<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:14px;font-weight:700;color:#212121;font-family:Poppins,sans-serif;">'+a.name+'</span>'+(selected?'<span style="background:#e8f2fd;color:#1a73e8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">Selected</span>':'')+'</div>'+'<div style="font-size:12px;color:#878787;line-height:1.5;font-family:Poppins,sans-serif;max-width:220px;">'+a.detail+'</div></div></div>'+'<button onclick="event.stopPropagation();locToggleDD('+realIdx+')" style="background:none;border:none;cursor:pointer;color:#666;font-size:18px;font-weight:700;padding:2px 6px;border-radius:4px;line-height:1;flex-shrink:0;" title="Options">⋯</button>'+(locOpenDropdown===realIdx?'<div style="position:absolute;right:12px;top:36px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.13);z-index:10;min-width:130px;overflow:hidden;"><div onclick="event.stopPropagation();locOpenEdit('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#212121;font-family:Poppins,sans-serif;"><i class="fas fa-edit" style="color:#1a73e8;font-size:13px;"></i> Edit</div><div onclick="event.stopPropagation();locDeleteAddr('+realIdx+')" style="display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:#dc3545;font-family:Poppins,sans-serif;"><i class="fas fa-trash" style="color:#dc3545;font-size:13px;"></i> Delete</div></div>':'')+'</div>';}).join('');}
                 function locToggleDD(i){locOpenDropdown=(locOpenDropdown===i)?-1:i;locRender();}
                 function locSelectAddr(i,e){locOpenDropdown=-1;locSelectedIndex=i;locRender();}
                 function locConfirm(){if(locSelectedIndex<0){locToastMsg('⚠️ Please select an address first');return;}var a=locAddresses[locSelectedIndex];document.getElementById('locLabel').textContent='Deliver to '+a.name+' –';document.getElementById('locLink').textContent=a.detail.substring(0,28)+'...';document.getElementById('locPanel').style.display='none';locToastMsg('📍 Delivering to '+a.name+'!');}
@@ -1087,7 +1087,7 @@
                     <div class="hero-exp"><i class="fas fa-award"></i> 30+ Years of Trusted Experience in Tailoring & Catering</div>
                     <div class="hero-btns">
                         <a href="#" class="btn-primary" onclick="showSection('shop')"><i class="fas fa-shopping-bag"></i> Shop Now</a>
-                        <a href="poster.html" class="btn-primary"><i class="fas fa-ruler-combined"></i> Bridal Package</a>
+                        <a href="poster.html" class="btn-primary" target="_blank"><i class="fas fa-ruler-combined"></i> Bridal Package</a>
                         <a href="tel:8610703658" class="btn-call"><i class="fas fa-phone"></i> Call Now</a>
                     </div>
                 </div>
@@ -2031,29 +2031,9 @@ function removeFromCart(productId) {
     }
 
     function initiateUpiPay(upiUrl) {
-    try {
         window.location.href = upiUrl;
-    } catch (e) {}
-    setTimeout(() => {
-        showUpiFallback();
-    }, 1200);
-}
-
-function showUpiFallback() {
-    const amount = Number(pendingOrder.amount || 0);
-    const detail = document.getElementById('coPaymentDetail');
-    detail.innerHTML = `
-        <i class="fas fa-exclamation-circle" style="font-size:36px;color:var(--secondary);margin-bottom:12px;"></i>
-        <h4 style="color:var(--text);margin-bottom:10px;font-size:15px;">UPI app didn't open?</h4>
-        <p style="font-size:13px;color:#888;max-width:280px;margin-bottom:16px;">If the payment app did not open automatically, please pay ₹${amount.toLocaleString()} manually via GPay/PhonePe to <b>shanusumi221525@okhdfcbank</b>, then confirm below.</p>
-        <button class="btn-enroll co-place-order-btn" style="background:linear-gradient(135deg,var(--success),#2ed573);" onclick="placeOrderFromCheckout('upi')">
-            <i class="fas fa-check-circle"></i> Yes, I've Paid
-        </button>
-        <button class="btn-outline" style="margin-top:10px;width:100%;padding:10px;" onclick="placeOrderFromCheckout('cod')">
-            <i class="fas fa-money-bill-wave"></i> Pay via Cash on Delivery Instead
-        </button>
-    `;
-}
+        setTimeout(() => { showUpiConfirmStep(); }, 800);
+    }
 
     function showUpiConfirmStep() {
         const amount = Number(pendingOrder.amount || 0);
@@ -2146,7 +2126,7 @@ function showUpiFallback() {
     openCheckoutFlow();
 }
 
-    function showSection(sectionId, clickedLink, skipHistory) {
+     function showSection(sectionId, clickedLink) {
         document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
         const section = document.getElementById(sectionId);
         if (section) { section.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -2163,23 +2143,10 @@ function showUpiFallback() {
         }
         const footer = document.querySelector('.footer');
         if (footer) {
-            const showFooterSections = ['reviews'];
+            const showFooterSections = ['home','shop','classes','custom','contact','reviews','wishlist','settings'];
             footer.style.display = showFooterSections.includes(sectionId) ? 'block' : 'none';
         }
-
-        // Back button ku history entry create pannurom (Flipkart mari
-        // one-by-one back navigation)
-        if (!skipHistory) {
-            history.pushState({ sumathiSection: sectionId }, '', '#' + sectionId);
-        }
     }
-
-    // Phone back button press pannumbodhu idhu trigger aagum
-    window.addEventListener('popstate', function(e) {
-        const state = e.state;
-        const sectionId = (state && state.sumathiSection) ? state.sumathiSection : 'home';
-        showSection(sectionId, null, true);
-    });
 
     function showModal(type) { 
     document.getElementById(type + 'Modal').classList.add('active'); 
@@ -2505,25 +2472,11 @@ function showUpiFallback() {
     });
 }
 
-   document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     loadProducts();
     loadReviews();
     updateCartUI();
     adjustHeaderOffsets();
-
-    // ✅ NEW: If admin dashboard sent us back with ?openSettings=1, open Settings section directly
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('openSettings') === '1') {
-        showSection('settings');
-        // Clean up the URL so refresh doesn't keep reopening settings
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    // Footer fix: hide on load since default section is 'home'
-    const footer = document.querySelector('.footer');
-    if (footer) footer.style.display = 'none';
-    
-
 
     // Restore login state from localStorage (shared with settings.html iframe)
     try {
