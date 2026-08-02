@@ -95,6 +95,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
     ''');
   }
 
+  // Cache clear pannitu, aprom fresh ah site load pannum
+  // Idhu illama, old cached settings.html (navbar illama irundhadhu) andha
+  // version WebView cache la irundhu kaanum vaipu irukku
+  Future<void> _clearCacheAndLoad() async {
+    await controller.clearCache();
+    await controller.clearLocalStorage();
+    await controller.loadRequest(
+      Uri.parse(
+        'https://sumathisstyles-production.up.railway.app/website.html',
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -140,14 +153,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
             return NavigationDecision.navigate;
           },
         ),
-      )
-
-      // Main website
-      ..loadRequest(
-        Uri.parse(
-          'https://sumathisstyles-production.up.railway.app/website.html',
-        ),
       );
+
+    // Cache clear pannitu, aprom main website load pannum
+    _clearCacheAndLoad();
 
     // Android WebView location permission
     if (controller.platform is AndroidWebViewController) {
