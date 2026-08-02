@@ -2146,7 +2146,7 @@ function showUpiFallback() {
     openCheckoutFlow();
 }
 
-     function showSection(sectionId, clickedLink) {
+    function showSection(sectionId, clickedLink, skipHistory) {
         document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
         const section = document.getElementById(sectionId);
         if (section) { section.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -2166,7 +2166,20 @@ function showUpiFallback() {
             const showFooterSections = ['reviews'];
             footer.style.display = showFooterSections.includes(sectionId) ? 'block' : 'none';
         }
+
+        // Back button ku history entry create pannurom (Flipkart mari
+        // one-by-one back navigation)
+        if (!skipHistory) {
+            history.pushState({ sumathiSection: sectionId }, '', '#' + sectionId);
+        }
     }
+
+    // Phone back button press pannumbodhu idhu trigger aagum
+    window.addEventListener('popstate', function(e) {
+        const state = e.state;
+        const sectionId = (state && state.sumathiSection) ? state.sumathiSection : 'home';
+        showSection(sectionId, null, true);
+    });
 
     function showModal(type) { 
     document.getElementById(type + 'Modal').classList.add('active'); 
