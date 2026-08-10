@@ -163,6 +163,18 @@
           .form-row { grid-template-columns: 1fr; }
         }
 
+        /* ===== PRODUCT DETAIL MODAL ===== */
+        .pd-modal { max-width:460px; width:92%; padding:0; overflow:hidden; }
+        .pd-modal .modal-close { background:rgba(255,255,255,0.9); border-radius:50%; width:34px; height:34px; z-index:10; }
+        .pd-img-wrap { width:100%; height:340px; background:var(--gray); overflow:hidden; }
+        .pd-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+        .pd-body { padding:24px; }
+        .pd-body h2 { text-align:left; font-size:22px; margin-bottom:8px; }
+        .pd-desc { color:var(--text-light); font-size:14px; margin-bottom:16px; line-height:1.5; }
+        .pd-rating { display:inline-flex; align-items:center; gap:3px; background:#388e3c; color:#fff; font-size:12px; font-weight:700; padding:2px 8px; border-radius:4px; margin-bottom:14px; }
+        .pd-price { font-size:26px; font-weight:700; color:var(--primary); margin-bottom:20px; }
+        .pd-actions { display:flex; gap:10px; }
+
         @media (max-width: 768px) {
             .shop-layout { gap: 10px; }
             .shop-cat-sidebar { width: 68px; position: static; border-radius: 12px; }
@@ -181,6 +193,7 @@
             .section { padding: 15px 15px 40px; }
             .section-header h2 { font-size: 26px; }
             .cart-sidebar { width: 100%; right: -100%; }
+            .pd-img-wrap { height: 260px; }
         }
         @media (max-width: 420px) {
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -293,6 +306,24 @@
         </div>
     </div>
 
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal pd-modal">
+            <button class="modal-close" onclick="closeModal('productDetail')"><i class="fas fa-times"></i></button>
+            <div class="pd-img-wrap"><img id="pdImage" src="" alt=""></div>
+            <div class="pd-body">
+                <h2 id="pdName"></h2>
+                <div class="pd-rating"><span id="pdRating"></span> <i class="fas fa-star" style="font-size:10px;"></i></div>
+                <p class="pd-desc" id="pdDesc"></p>
+                <div class="pd-price" id="pdPrice"></div>
+                <div class="pd-actions">
+                    <button class="btn-add-cart" id="pdAddCartBtn"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                    <button class="btn-buy" id="pdBuyBtn"><i class="fas fa-bolt"></i> Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Checkout Modal (Flipkart-style: Address -> Order Summary -> Payment) -->
     <div class="modal-overlay" id="buyNowModal">
         <div class="modal checkout-modal">
@@ -388,6 +419,7 @@
         let selectedPayment = 'Cash on Delivery';
         let checkoutStep = 1;
         let selectedCoPayMethod = null;
+        let currentDetailId = null;
 
         function normalizeCategorySlug(value) {
             const text = (value || '').toLowerCase().trim();
@@ -543,6 +575,34 @@
         }
 
         function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); }
+
+        /* ===== PRODUCT DETAIL MODAL ===== */
+
+        function openProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            currentDetailId = productId;
+
+            document.getElementById('pdImage').src = product.image;
+            document.getElementById('pdImage').alt = product.name;
+            document.getElementById('pdName').textContent = product.name;
+            document.getElementById('pdDesc').textContent = product.desc;
+            document.getElementById('pdRating').textContent = product.rating;
+            document.getElementById('pdPrice').textContent = '₹' + product.price;
+
+            const inCart = cart.some(item => item.id === productId);
+            const addBtn = document.getElementById('pdAddCartBtn');
+            if (inCart) {
+                addBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> View Cart';
+                addBtn.onclick = function() { closeModal('productDetail'); toggleCart(); };
+            } else {
+                addBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
+                addBtn.onclick = function() { addToCart(productId); closeModal('productDetail'); };
+            }
+            document.getElementById('pdBuyBtn').onclick = function() { closeModal('productDetail'); buyNow(productId); };
+
+            showModal('productDetail');
+        }
 
         /* ===== CHECKOUT FLOW (Address -> Order Summary -> Payment) ===== */
 
@@ -746,12 +806,6 @@
                 items: cart.map(item => ({ name: item.name, image: item.image, qty: item.qty, price: item.price }))
             };
             openCheckoutFlow();
-        }
-
-        function openProductDetail(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            showToast(`Opening: ${product.name}`, 'success');
         }
 
         function showModal(type) { document.getElementById(type + 'Modal').classList.add('active'); }
