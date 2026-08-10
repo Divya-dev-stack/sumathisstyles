@@ -1,6 +1,17 @@
 <?php
 mysqli_report(MYSQLI_REPORT_OFF);
 
+// ===== CORS headers FIRST - before anything else runs =====
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+// ===== END CORS =====
+
 define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
 define('DB_USER', getenv('MYSQLUSER') ?: 'root');
 define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
@@ -18,6 +29,7 @@ function getConnection() {
 
     if ($conn->connect_error) {
         http_response_code(500);
+        header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
         exit();
     }
@@ -25,6 +37,7 @@ function getConnection() {
     $conn->query("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "`");
     if (!$conn->select_db(DB_NAME)) {
         http_response_code(500);
+        header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Could not select database: ' . $conn->error]);
         exit();
     }
@@ -190,13 +203,4 @@ function getConnection() {
 }
 
 $conn = getConnection();
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
 ?>

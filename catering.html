@@ -1300,7 +1300,7 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
 
   try {
     const res = await fetch(
-      'https://sumathisstyles-production.up.railway.app/submit_forms.php',
+      'submit_forms.php',
       {
         method: 'POST',
         headers: {
@@ -1318,7 +1318,7 @@ function closeLightbox() { document.getElementById('lightbox').classList.remove(
     } else {
       showToast(data.message || 'Unable to send enquiry');
     }
-
+ 
   } catch (err) {
     console.error('Enquiry error:', err);
     showToast('Unable to send enquiry right now');
