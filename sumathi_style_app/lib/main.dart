@@ -169,7 +169,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     await controller.clearLocalStorage();
     await controller.loadRequest(
       Uri.parse(
-        'http://192.168.1.5/style/index.html'
+        'https://sumathisstyles.vercel.app/'
       ),
     );
   }
