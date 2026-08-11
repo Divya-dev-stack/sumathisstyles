@@ -1,39 +1,16 @@
 <?php
+require_once 'db.php';
 header('Content-Type: application/json');
 
-// ✅ FIX: Railway la 'localhost' MySQL kedaiyathu. Railway automatically
-// inject pannura environment variables use pannanum — unga baakki PHP files
-// (get_products.php / submit_forms.php) la enna variable names use panningalo,
-// adha ithuvum match pannanum. Common Railway MySQL env var names keela kudukaren.
-
-$host   = getenv('MYSQLHOST')     ?: getenv('DB_HOST');
-$user   = getenv('MYSQLUSER')     ?: getenv('DB_USER');
-$pass   = getenv('MYSQLPASSWORD') ?: getenv('DB_PASSWORD');
-$dbname = getenv('MYSQLDATABASE') ?: getenv('DB_NAME');
-$port   = getenv('MYSQLPORT')     ?: getenv('DB_PORT') ?: 3306;
-
-if (!$host || !$user || !$dbname) {
-    echo json_encode(['status' => 'error', 'message' => 'DB env vars missing. Check Railway variable names.']);
-    exit;
-}
-
-$conn = new mysqli($host, $user, $pass, $dbname, $port);
-if ($conn->connect_error) {
-    echo json_encode(['status' => 'error', 'message' => 'DB connection failed: ' . $conn->connect_error]);
-    exit;
-}
+// ✅ FIX: db.php already handles connection (works on both local XAMPP
+// and Railway, since db.php has localhost/root fallback + Railway env var
+// support built in). No need for separate getenv() logic here.
 
 $target = $_POST['target'] ?? '';
 
 // Table/column names - unga schema la vera peru irundha idha maathunga:
 // orders table:   id, name, mobile, product, amount, status, created_at, source, measurement, voice_note, notes
 // contacts table: id, name, phone, email, service, message, created_at
-//
-// ⚠️ Keela irukura 4 puthu cases (data_requests_all / grievances_all / deactivated_all /
-// deleted_accounts_all) — table names naan "get_customer_requests.php" file pattern paathu
-// GUESS pannirukken (data_requests, grievances, deactivated_accounts, deleted_accounts).
-// Unga get_customer_requests.php la exact table name vera maadhiri irundha, keela irukura
-// table name mattum maathi update pannunga.
 
 try {
     switch ($target) {
