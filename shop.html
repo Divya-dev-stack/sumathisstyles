@@ -194,6 +194,14 @@
         .pd-actions-desktop { display:flex; gap:12px; margin-bottom:22px; }
         .pd-actions-desktop button { padding:13px; font-size:14px; }
         .pd-desc { color:var(--text-light); font-size:13.5px; line-height:1.6; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #eee; }
+        
+        /* ===== PRODUCT HIGHLIGHTS ===== */
+        .pd-highlights { background: var(--gray); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+        .pd-highlights-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+        .pd-highlight-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text); margin-bottom: 10px; }
+        .pd-highlight-item:last-child { margin-bottom: 0; }
+        .pd-highlight-item i { color: var(--primary); margin-top: 2px; font-size: 14px; flex-shrink: 0; }
+        
         .pd-delivery-box { border:1px solid #eee; border-radius:12px; padding:16px; margin-bottom:16px; }
         .pd-delivery-row { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text); padding:8px 0; }
         .pd-delivery-row i { color:var(--primary); width:16px; margin-top:2px; }
@@ -389,7 +397,17 @@
                         <button class="btn-buy" id="pdBuyBtn"><i class="fas fa-bolt"></i> Buy Now</button>
                     </div>
 
+                    <!-- Description -->
                     <p class="pd-desc" id="pdDesc"></p>
+
+                    <!-- Product Highlights -->
+                    <div class="pd-highlights" id="pdHighlights">
+                        <div class="pd-highlights-title">Product Highlights</div>
+                        <div class="pd-highlight-item"><i class="fas fa-check-circle"></i><span><strong>Premium Fabric Quality</strong> — Handpicked materials for lasting comfort</span></div>
+                        <div class="pd-highlight-item"><i class="fas fa-check-circle"></i><span><strong>Custom Stitching</strong> — Tailored to your exact measurements</span></div>
+                        <div class="pd-highlight-item"><i class="fas fa-check-circle"></i><span><strong>30 Years Experience</strong> — Trusted craftsmanship since 1994</span></div>
+                        <div class="pd-highlight-item"><i class="fas fa-check-circle"></i><span><strong>Perfect Fitting</strong> — Expert cut & finish guaranteed</span></div>
+                    </div>
 
                     <div class="pd-delivery-box">
                         <div class="pd-delivery-row">
@@ -526,6 +544,9 @@
         let pdQty = 1;
         let wishlist = [];
 
+        // Detect if running inside iframe (index.html)
+        const isInIframe = window.parent !== window;
+
         function normalizeCategorySlug(value) {
             const text = (value || '').toLowerCase().trim();
             if (!text) return 'other';
@@ -564,7 +585,7 @@
                         categoryLabel: p.category || p.cat || 'Other',
                         image: photos[0],
                         images: photos,
-                        desc: p.description || 'Custom stitched product',
+                        desc: p.description || 'Custom stitched product with premium fabric quality. Designed with 30 years of tailoring expertise for perfect fitting and comfort.',
                         badge: '',
                         sizes: [],
                         highlights: Array.isArray(p.highlights) ? p.highlights : [],
@@ -584,12 +605,16 @@
 
         function createProductCard(p) {
             const inCart = cart.some(item => item.id === p.id);
+            const inWishlist = wishlist.includes(p.id);
             return `<div class="product-card fade-in">
-                <div style="position:relative;" onclick="openProductDetail(${p.id})">
-                    <img src="${p.image}" class="product-img" alt="${p.name}" loading="lazy">
+                <div style="position:relative;">
+                    <img src="${p.image}" class="product-img" alt="${p.name}" loading="lazy" onclick="handleProductClick(${p.id})">
                     ${p.badge ? `<span class="product-badge ${p.badge==='Hot'?'hot':p.badge==='New'?'new':''}">${p.badge}</span>` : ''}
+                    <button onclick="event.stopPropagation();handleWishlistClick(${p.id})" id="wishBtn${p.id}" style="position:absolute;top:10px;right:10px;background:white;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:14px;color:${inWishlist?'#dc3545':'#bbb'};transition:all 0.2s;z-index:2;">
+                        <i class="${inWishlist?'fas':'far'} fa-heart"></i>
+                    </button>
                 </div>
-                <div class="product-info" onclick="openProductDetail(${p.id})">
+                <div class="product-info" onclick="handleProductClick(${p.id})">
                     <h3>${p.name}</h3>
                     <p>${p.desc}</p>
                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
@@ -640,6 +665,40 @@
                 targetItem.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
             }
         }
+
+        // ====== IFRAME COMMUNICATION ======
+        function handleProductClick(id) {
+            if (isInIframe) {
+                window.parent.postMessage({ sumathiOpenPD: id }, '*');
+            } else {
+                openProductDetail(id);
+            }
+        }
+
+        function handleWishlistClick(id) {
+            if (isInIframe) {
+                window.parent.postMessage({ sumathiToggleWishlist: id, navigate: true }, '*');
+            } else {
+                const idx = wishlist.indexOf(id);
+                if (idx === -1) {
+                    wishlist.push(id);
+                    showToast('Added to Wishlist ❤️', 'success');
+                } else {
+                    wishlist.splice(idx, 1);
+                    showToast('Removed from Wishlist', '');
+                }
+                renderProducts('shopProducts', (currentCategory === 'All' || currentCategory === 'all') ? products : products.filter(p => categoryMatches(p, currentCategory)));
+            }
+        }
+
+        // Listen for messages from parent (index.html) to sync wishlist
+        window.addEventListener('message', function(event) {
+            const data = event.data || {};
+            if (data.sumathiWishlistSync && Array.isArray(data.sumathiWishlistSync)) {
+                wishlist = data.sumathiWishlistSync;
+                renderProducts('shopProducts', (currentCategory === 'All' || currentCategory === 'all') ? products : products.filter(p => categoryMatches(p, currentCategory)));
+            }
+        });
 
         function addToCart(productId, qty) {
             const product = products.find(p => p.id === productId);
@@ -733,6 +792,24 @@
 
         function toggleWishlist() {
             if (!currentDetailId) return;
+            
+            // If inside iframe, tell parent to handle it
+            if (isInIframe) {
+                window.parent.postMessage({ sumathiToggleWishlist: currentDetailId, navigate: false }, '*');
+                const btn = document.getElementById('pdWishlistBtn');
+                const idx = wishlist.indexOf(currentDetailId);
+                if (idx > -1) {
+                    wishlist.splice(idx, 1);
+                    btn.classList.remove('active');
+                    btn.innerHTML = '<i class="far fa-heart"></i>';
+                } else {
+                    wishlist.push(currentDetailId);
+                    btn.classList.add('active');
+                    btn.innerHTML = '<i class="fas fa-heart"></i>';
+                }
+                return;
+            }
+
             const btn = document.getElementById('pdWishlistBtn');
             const idx = wishlist.indexOf(currentDetailId);
             if (idx > -1) {
@@ -756,7 +833,7 @@
             renderPdImages(product);
             document.getElementById('pdQty').textContent = pdQty;
             document.getElementById('pdName').textContent = product.name;
-            document.getElementById('pdDesc').textContent = product.desc;
+            document.getElementById('pdDesc').textContent = product.desc || 'Custom stitched product with premium fabric quality. Designed with 30 years of tailoring expertise for perfect fitting and comfort.';
             document.getElementById('pdRating').textContent = product.rating;
             document.getElementById('pdRatingCount').textContent = '(' + (product.ratingCount || 'New') + ')';
             document.getElementById('pdPrice').textContent = '₹' + product.price;
