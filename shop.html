@@ -74,15 +74,9 @@
         .product-badge { position: absolute; top: 10px; left: 10px; background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--dark); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
         .product-badge.hot { background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; }
         .product-badge.new { background: linear-gradient(135deg, var(--success), #2ed573); color: white; }
-        .product-rating-badge { position: absolute; bottom: -10px; left: 12px; background: #388e3c; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 3; }
-        .product-info { padding: 16px 12px 4px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-info { padding: 10px 12px 4px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-info h3 { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
         .product-info p { display: none; }
-        .product-price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; margin-bottom: 2px; flex-wrap: wrap; }
-        .product-price-discounted { font-size: 18px; font-weight: 700; color: #212121; }
-        .product-price-original { font-size: 13px; color: #878787; text-decoration: line-through; }
-        .product-discount-tag { font-size: 12px; color: #26a541; font-weight: 600; }
-        .product-offer-text { font-size: 11px; color: #26a541; font-weight: 600; margin-bottom: 10px; }
         .product-actions { display: flex; gap: 8px; margin-top: auto; padding: 0 12px 10px; }
         .btn-add-cart { flex: 1; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); border: none; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .btn-add-cart:hover { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); }
@@ -174,23 +168,14 @@
         .pd-modal .modal-close { background:rgba(255,255,255,0.95); border-radius:50%; width:34px; height:34px; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
         .pd-layout { display:flex; max-height:88vh; overflow-y:auto; }
 
-        .pd-media { width:400px; flex-shrink:0; position:relative; background:var(--gray); display:flex; flex-direction:column; }
-        .pd-top-loc-bar {
-            display:flex; align-items:center; gap:8px;
-            background:#e8f2fd; padding:10px 14px;
-            cursor:pointer; font-size:12.5px; font-weight:600; color:#212121;
-            flex-shrink:0;
-        }
-        .pd-top-loc-bar i.fa-map-marker-alt { color:#1a73e8; font-size:13px; flex-shrink:0; }
-        .pd-top-loc-bar span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .pd-top-loc-bar i.fa-chevron-right { color:#1a73e8; font-size:10px; flex-shrink:0; }
-        .pd-img-slider { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; height:400px; scrollbar-width:none; flex:1; }
+        .pd-media { width:400px; flex-shrink:0; position:relative; background:var(--gray); }
+        .pd-img-slider { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; height:420px; scrollbar-width:none; }
         .pd-img-slider::-webkit-scrollbar { display:none; }
-        .pd-img-slider img { width:100%; height:400px; object-fit:cover; flex-shrink:0; scroll-snap-align:start; }
+        .pd-img-slider img { width:100%; height:420px; object-fit:cover; flex-shrink:0; scroll-snap-align:start; }
         .pd-img-dots { position:absolute; bottom:14px; left:0; right:0; display:flex; justify-content:center; gap:6px; }
         .pd-img-dots span { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.6); transition:all .2s; }
         .pd-img-dots span.active { background:var(--white); width:18px; border-radius:4px; }
-        .pd-wishlist-btn { position:absolute; top:56px; right:14px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.95); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); color:var(--danger); font-size:16px; }
+        .pd-wishlist-btn { position:absolute; top:14px; right:14px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.95); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); color:var(--danger); font-size:16px; }
         .pd-wishlist-btn.active i { font-weight:900; }
 
         .pd-info { flex:1; padding:26px 28px 100px; min-width:0; }
@@ -199,22 +184,21 @@
         .pd-rating-row { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
         .pd-rating { display:inline-flex; align-items:center; gap:3px; background:#388e3c; color:#fff; font-size:12px; font-weight:700; padding:2px 8px; border-radius:4px; }
         .pd-rating-count { font-size:12px; color:var(--text-light); }
-        .pd-price-row { display:flex; align-items:baseline; gap:10px; margin-bottom:6px; flex-wrap:wrap; }
+        .pd-price-row { margin-bottom:8px; }
         .pd-price { font-size:28px; font-weight:700; color:var(--text); }
-        .pd-price-original { font-size:16px; color:#878787; text-decoration:line-through; }
-        .pd-discount-tag { font-size:14px; color:#26a541; font-weight:700; }
-        .pd-free-delivery { display:inline-block; background:rgba(40,167,69,0.1); color:var(--success); font-size:12px; font-weight:600; padding:6px 12px; border-radius:8px; margin-bottom:18px; margin-top:8px; }
+        .pd-free-delivery { display:inline-block; background:rgba(40,167,69,0.1); color:var(--success); font-size:12px; font-weight:600; padding:6px 12px; border-radius:8px; margin-bottom:18px; }
         .pd-qty-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; font-size:14px; font-weight:600; }
         .pd-qty-control { display:flex; align-items:center; border:1.5px solid #e0e0e0; border-radius:8px; overflow:hidden; }
         .pd-qty-control button { width:34px; height:34px; border:none; background:var(--gray); font-size:16px; cursor:pointer; color:var(--primary); font-weight:700; }
         .pd-qty-control span { width:38px; text-align:center; font-size:14px; font-weight:700; }
         .pd-actions-desktop { display:flex; gap:12px; margin-bottom:22px; }
         .pd-actions-desktop button { padding:13px; font-size:14px; }
+        .pd-desc { color:var(--text-light); font-size:13.5px; line-height:1.6; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #eee; }
         .pd-delivery-box { border:1px solid #eee; border-radius:12px; padding:16px; margin-bottom:16px; }
         .pd-delivery-row { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text); padding:8px 0; }
         .pd-delivery-row i { color:var(--primary); width:16px; margin-top:2px; }
         .pd-delivery-row strong { display:block; font-size:13px; margin-bottom:2px; }
-        .pd-delivery-row a { color:var(--primary); font-weight:600; text-decoration:none; cursor:pointer; }
+        .pd-delivery-row a { color:var(--primary); font-weight:600; text-decoration:none; }
         .pd-pincode-check { display:flex; gap:8px; margin-top:8px; }
         .pd-pincode-check input { flex:1; padding:9px 12px; border:1.5px solid #e0e0e0; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; }
         .pd-pincode-check input:focus { outline:none; border-color:var(--primary); }
@@ -235,9 +219,9 @@
 
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .product-img { height: 160px; }
-            .product-info { padding: 16px 12px 4px; }
+            .product-info { padding: 12px; }
             .product-info h3 { font-size: 13px; }
-            .product-price-discounted { font-size: 16px; }
+            .product-info p { font-size: 11px; margin-bottom: 8px; }
             .product-actions { flex-direction: column; gap: 8px; }
             .btn-add-cart, .btn-buy { padding: 8px; font-size: 12px; }
             .section { padding: 15px 15px 40px; }
@@ -250,11 +234,9 @@
             .pd-layout { flex-direction:column; max-height:100vh; padding-bottom:80px; }
             .pd-media { width:100%; }
             .pd-img-slider, .pd-img-slider img { height:300px; }
-            .pd-wishlist-btn { top:48px; }
             .pd-info { padding:18px 16px 20px; }
             .pd-info h2 { font-size:18px; }
             .pd-price { font-size:22px; }
-            .pd-price-original { font-size:14px; }
             .pd-actions-desktop { display:none; }
             .pd-sticky-cta {
                 display:flex; gap:10px; position:fixed; left:0; right:0; bottom:0;
@@ -379,11 +361,6 @@
             <button class="modal-close" onclick="closeModal('productDetail')"><i class="fas fa-times"></i></button>
             <div class="pd-layout">
                 <div class="pd-media">
-                    <div class="pd-top-loc-bar" onclick="pdOpenLocation()">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span id="pdTopLocText">Select delivery location</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
                     <div class="pd-img-slider" id="pdImgSlider"></div>
                     <div class="pd-img-dots" id="pdImgDots"></div>
                     <button class="pd-wishlist-btn" id="pdWishlistBtn" onclick="toggleWishlist()"><i class="far fa-heart"></i></button>
@@ -395,11 +372,7 @@
                         <span class="pd-rating"><span id="pdRating"></span> <i class="fas fa-star" style="font-size:10px;"></i></span>
                         <span class="pd-rating-count" id="pdRatingCount"></span>
                     </div>
-                    <div class="pd-price-row">
-                        <span class="pd-price" id="pdPrice"></span>
-                        <span class="pd-price-original" id="pdPriceOriginal"></span>
-                        <span class="pd-discount-tag" id="pdDiscountTag"></span>
-                    </div>
+                    <div class="pd-price-row"><span class="pd-price" id="pdPrice"></span></div>
                     <div class="pd-free-delivery"><i class="fas fa-truck"></i> Free delivery above ₹500</div>
 
                     <div class="pd-qty-row">
@@ -416,12 +389,14 @@
                         <button class="btn-buy" id="pdBuyBtn"><i class="fas fa-bolt"></i> Buy Now</button>
                     </div>
 
+                    <p class="pd-desc" id="pdDesc"></p>
+
                     <div class="pd-delivery-box">
                         <div class="pd-delivery-row">
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
                                 <strong>Delivery details</strong>
-                                <div id="pdLocLine">Location not set - <a onclick="pdOpenLocation()">Select delivery location</a></div>
+                                <div>Location not set - <a href="#" onclick="return false;">Select delivery location</a></div>
                             </div>
                         </div>
                         <div class="pd-delivery-row">
@@ -551,18 +526,6 @@
         let pdQty = 1;
         let wishlist = [];
 
-        /* ===== Pricing helpers: show the stored price as the "offer price"
-           and derive a strikethrough MRP + discount %, Flipkart-style. ===== */
-        function getMRP(price) {
-            const mrp = Math.round((Number(price || 0) / 0.72) / 10) * 10;
-            return Math.max(mrp, Number(price || 0) + 10);
-        }
-        function getDiscountPercent(price) {
-            const mrp = getMRP(price);
-            if (!mrp) return 0;
-            return Math.round(((mrp - price) / mrp) * 100);
-        }
-
         function normalizeCategorySlug(value) {
             const text = (value || '').toLowerCase().trim();
             if (!text) return 'other';
@@ -621,22 +584,23 @@
 
         function createProductCard(p) {
             const inCart = cart.some(item => item.id === p.id);
-            const mrp = getMRP(p.price);
-            const discount = getDiscountPercent(p.price);
             return `<div class="product-card fade-in">
                 <div style="position:relative;" onclick="openProductDetail(${p.id})">
                     <img src="${p.image}" class="product-img" alt="${p.name}" loading="lazy">
                     ${p.badge ? `<span class="product-badge ${p.badge==='Hot'?'hot':p.badge==='New'?'new':''}">${p.badge}</span>` : ''}
-                    <span class="product-rating-badge">${p.rating} <i class="fas fa-star" style="font-size:10px;"></i></span>
                 </div>
                 <div class="product-info" onclick="openProductDetail(${p.id})">
                     <h3>${p.name}</h3>
-                    <div class="product-price-row">
-                        <span class="product-price-discounted">₹${p.price.toLocaleString()}</span>
-                        <span class="product-price-original">₹${mrp.toLocaleString()}</span>
-                        <span class="product-discount-tag">${discount}% off</span>
+                    <p>${p.desc}</p>
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <div style="display:inline-flex;align-items:center;gap:3px;background:#388e3c;color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;">
+                            ${p.rating} <i class="fas fa-star" style="font-size:10px;"></i>
+                        </div>
+                        <span style="font-size:12px;color:#878787;">(${p.ratingCount || '500+'})</span>
                     </div>
-                    <div class="product-offer-text">Free delivery above ₹500</div>
+                    <div style="margin-bottom:12px;">
+                        <span style="font-size:20px;font-weight:700;color:#212121;">₹${p.price}</span>
+                    </div>
                 </div>
                 <div class="product-actions">
                     ${inCart
@@ -731,40 +695,6 @@
             return start.toLocaleDateString('en-IN', opts) + ' - ' + end.toLocaleDateString('en-IN', opts);
         }
 
-        /* Opens the shared "select delivery location" panel that lives in the
-           parent page (index.html). Since shop.html is loaded in an iframe on
-           the same site, we can reach into the parent document directly. */
-        function pdOpenLocation() {
-            try {
-                const parentPanel = window.parent && window.parent.document.getElementById('locPanel');
-                if (parentPanel) {
-                    parentPanel.style.display = 'flex';
-                    return;
-                }
-            } catch (e) {}
-            showToast('Please use the location selector at the top of the page', '');
-        }
-
-        /* Reflects whatever address the person already picked (stored by
-           index.html under 'sumathiAddresses' in localStorage) if available. */
-        function pdSyncLocationText() {
-            const topEl = document.getElementById('pdTopLocText');
-            const lineEl = document.getElementById('pdLocLine');
-            let text = 'Select delivery location';
-            try {
-                const saved = JSON.parse(localStorage.getItem('sumathiSelectedAddress') || 'null');
-                if (saved && saved.name) {
-                    text = 'Deliver to ' + saved.name + ' – ' + (saved.detail || '').substring(0, 28) + '...';
-                }
-            } catch (e) {}
-            if (topEl) topEl.textContent = text;
-            if (lineEl) {
-                lineEl.innerHTML = (text === 'Select delivery location')
-                    ? 'Location not set - <a onclick="pdOpenLocation()">Select delivery location</a>'
-                    : text + ' - <a onclick="pdOpenLocation()">Change</a>';
-            }
-        }
-
         function renderPdImages(product) {
             const slider = document.getElementById('pdImgSlider');
             const dots = document.getElementById('pdImgDots');
@@ -826,19 +756,13 @@
             renderPdImages(product);
             document.getElementById('pdQty').textContent = pdQty;
             document.getElementById('pdName').textContent = product.name;
+            document.getElementById('pdDesc').textContent = product.desc;
             document.getElementById('pdRating').textContent = product.rating;
             document.getElementById('pdRatingCount').textContent = '(' + (product.ratingCount || 'New') + ')';
-
-            const mrp = getMRP(product.price);
-            const discount = getDiscountPercent(product.price);
-            document.getElementById('pdPrice').textContent = '₹' + product.price.toLocaleString();
-            document.getElementById('pdPriceOriginal').textContent = '₹' + mrp.toLocaleString();
-            document.getElementById('pdDiscountTag').textContent = discount + '% off';
-
+            document.getElementById('pdPrice').textContent = '₹' + product.price;
             document.getElementById('pdDeliveryEstimate').textContent = getDeliveryEstimateText();
             document.getElementById('pdPincode').value = '';
             document.getElementById('pdPincodeMsg').style.display = 'none';
-            pdSyncLocationText();
 
             const wishBtn = document.getElementById('pdWishlistBtn');
             const inWishlist = wishlist.includes(productId);
