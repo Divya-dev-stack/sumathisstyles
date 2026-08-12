@@ -535,9 +535,15 @@
                 </div>
 
 
-
-                <div class="pd-delivery">
+              <!-- Delivery Check -->
+                 <div class="pd-delivery">
                     <div class="pd-delivery-title">Delivery details</div>
+                    <div class="pd-delivery-loc-pill" onclick="document.getElementById('locPanel').style.display='flex';">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="pd-delivery-loc-text" id="pdLocText">Location not set</span>
+                        <span class="pd-delivery-loc-link" id="pdLocLink">Select delivery location</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
                     <div class="pd-delivery-date-box">
                         <i class="fas fa-truck"></i>
                         <div>
@@ -551,23 +557,30 @@
                     <div class="pd-delivery-info" id="pdDeliveryInfo" style="display:none;"></div>
                 </div>
 
+                <!-- Returns -->
                 <div class="pd-returns">
-                    <span class="pd-return-item"><i class="fas fa-shield-alt"></i> Secure Payment</span>
-                    <span class="pd-return-item"><i class="fas fa-medal"></i> Authentic Quality</span>
+                    <div class="pd-return-item"><i class="fas fa-shield-alt"></i> Secure Payment</div>
+                    <div class="pd-return-item"><i class="fas fa-medal"></i> Authentic Quality</div>
                 </div>
-            </div>
-        </div>
-    </div>
 
+                <hr class="pd-divider">
 
-     <div class="pd-description" id="pdDescription">
+                   <!-- Description -->
+                <div class="pd-description" id="pdDescription">
                     <div class="pd-description-title">Description</div>
                     <p class="pd-description-text" id="pdDescText">Product description here</p>
                 </div>
 
-                <div class="pd-highlights" id="pdHighlights" style="display:none;">
+                <!-- Highlights -->
+                <div class="pd-highlights" id="pdHighlights">
                     <div class="pd-highlights-title">Product Highlights</div>
                 </div>
+            </div>
+        </div>
+    </div>
+                
+      
+
 
     <!-- Checkout Modal (Flipkart-style: Address -> Order Summary -> Payment) -->
     <div class="modal-overlay" id="buyNowModal">
