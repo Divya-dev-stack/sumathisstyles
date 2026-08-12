@@ -170,7 +170,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     await controller.loadRequest(
       Uri.parse(
         'https://r9tlh3kw-8080.inc1.devtunnels.ms/#'
-
+      )
     );
   }
 
