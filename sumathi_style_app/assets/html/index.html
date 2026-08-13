@@ -2406,25 +2406,35 @@ function removeFromCart(productId) {
     }
 
     async function loadReviews() {
-        try {
-            const res = await fetch('get_submissions.php?type=reviews');
-            const data = await res.json();
-            if (Array.isArray(data) && data.length) {
-                reviews = data.map(r => ({
+    try {
+        const res = await fetch('get_submissions.php?type=reviews');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length) {
+            // Filter out very short / test reviews (e.g. "Hi", "test", single words)
+            const validReviews = data.filter(r => {
+                const text = (r.review_text || r.text || '').trim();
+                return text.length >= 15; // real reviews are usually longer than a greeting
+            });
+
+            if (validReviews.length) {
+                reviews = validReviews.map(r => ({
                     name: r.name || 'Anonymous',
                     rating: Number(r.rating || 5),
                     text: r.review_text || r.text || '',
                     avatar: (r.name || 'A').trim().charAt(0).toUpperCase()
                 }));
             } else {
+                // No valid reviews from database — show default reviews instead
                 reviews = [...defaultReviews];
             }
-        } catch (e) {
+        } else {
             reviews = [...defaultReviews];
         }
-        renderReviews();
+    } catch (e) {
+        reviews = [...defaultReviews];
     }
-
+    renderReviews();
+}
     function renderReviews() {
         const container = document.getElementById('reviewsGrid');
         if (!container) return;
