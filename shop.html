@@ -764,37 +764,55 @@
             }
         });
 
-        async function loadProducts() {
-            try {
-                const res = await fetch('get_products.php?ts=' + Date.now());
-                const data = await res.json();
-                products = (data.products || []).map(p => {
-                    const photos = (Array.isArray(p.photos) && p.photos.length) ? p.photos : (p.photo ? [p.photo] : [PD_FALLBACK_IMG]);
-                    return {
-                        id: Number(p.id),
-                        name: p.name || '',
-                        price: Number(p.price || 0),
-                        category: normalizeCategorySlug(p.category || p.cat || ''),
-                        categoryLabel: p.category || p.cat || 'Other',
-                        image: photos[0],
-                        images: photos,
-                        desc: p.description || 'Custom stitched product',
-                        badge: '',
-                        sizes: [],
-                        highlights: Array.isArray(p.highlights) ? p.highlights : [],
-                        rating: 4.7,
-                        ratingCount: 'New Listing'
-                    };
-                });
-                const filtered = (currentCategory === 'All' || currentCategory === 'all')
-                    ? products
-                    : products.filter(p => categoryMatches(p, currentCategory));
-                renderProducts('shopProducts', filtered);
-            } catch (e) {
-                products = [];
-                document.getElementById('shopProducts').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px;">Unable to load products. Please try again later.</p>';
+        
+                async function loadProducts() {
+    try {
+        const res = await fetch('get_products.php?ts=' + Date.now());
+        const data = await res.json();
+
+        const seenIds = new Set();
+        let dupeFound = false;
+
+        products = (data.products || []).map((p, index) => {
+            const photos = (Array.isArray(p.photos) && p.photos.length) ? p.photos : (p.photo ? [p.photo] : [PD_FALLBACK_IMG]);
+
+            let id = Number(p.id);
+            if (!id || seenIds.has(id)) {
+                dupeFound = true;
+                id = Number(`${Date.now()}${index}`.slice(-9));
             }
+            seenIds.add(id);
+
+            return {
+                id,
+                name: p.name || '',
+                price: Number(p.price || 0),
+                category: normalizeCategorySlug(p.category || p.cat || ''),
+                categoryLabel: p.category || p.cat || 'Other',
+                image: photos[0],
+                images: photos,
+                desc: p.description || 'Custom stitched product',
+                badge: '',
+                sizes: [],
+                highlights: Array.isArray(p.highlights) ? p.highlights : [],
+                rating: 4.7,
+                ratingCount: 'New Listing'
+            };
+        });
+
+        if (dupeFound) {
+            console.warn('⚠️ Duplicate or missing product IDs found in get_products.php response — check your database/admin panel.');
         }
+
+        const filtered = (currentCategory === 'All' || currentCategory === 'all')
+            ? products
+            : products.filter(p => categoryMatches(p, currentCategory));
+        renderProducts('shopProducts', filtered);
+    } catch (e) {
+        products = [];
+        document.getElementById('shopProducts').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px;">Unable to load products. Please try again later.</p>';
+    }
+}
 
         function createProductCard(p) {
             const inCart = cart.some(item => item.id === p.id);
