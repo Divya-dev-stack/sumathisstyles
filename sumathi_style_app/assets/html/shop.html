@@ -723,9 +723,36 @@
                 wishlist = Array.isArray(saved) ? saved.map(Number) : [];
             } catch (e) { wishlist = []; }
         }
-        function saveWishlistToStorage() {
-            try { localStorage.setItem('sumathiWishlist', JSON.stringify(wishlist)); } catch (e) {}
+        age() 
+          function saveWishlistToStorage() {
+    try {
+        localStorage.setItem('sumathiWishlist', JSON.stringify(wishlist));
+    } catch (e) {}
+
+    // 🔧 Notify parent page (index.html navbar) so its wishlist count badge updates instantly
+    try {
+        if (window.parent && window.parent !== window) {
+            // Try calling a known update function in parent, if it exists
+            if (typeof window.parent.updateWishlistCount === 'function') {
+                window.parent.updateWishlistCount(wishlist.length);
+            }
+            if (typeof window.parent.loadWishlistFromStorage === 'function') {
+                window.parent.loadWishlistFromStorage();
+            }
+            // Fallback: directly update common badge element IDs in parent, if present
+            const badge = window.parent.document.getElementById('wishCount')
+                       || window.parent.document.getElementById('wishlistCount')
+                       || window.parent.document.querySelector('.wishlist-count');
+            if (badge) badge.textContent = wishlist.length;
+
+            // Also dispatch a custom event on parent window, in case it listens for it
+            window.parent.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: { count: wishlist.length, wishlist } }));
         }
+    } catch (e) {
+        console.warn('Could not sync wishlist count to parent page:', e);
+    }
+}
+    
         function toggleWishlist(id, btnEl) {
             const idx = wishlist.indexOf(id);
             if (idx === -1) {
