@@ -169,7 +169,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     await controller.clearLocalStorage();
     await controller.loadRequest(
       Uri.parse(
-        'https://r9tlh3kw-8080.inc1.devtunnels.ms/#'
+        'https://sumathisstyles.infinityfreeapp.com/'
       )
     );
   }
