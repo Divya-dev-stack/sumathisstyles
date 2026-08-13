@@ -283,6 +283,15 @@
         .pd-highlight-item i { color: #008080; margin-top: 2px; flex-shrink: 0; }
         .pd-delivery { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
         .pd-delivery-title { font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 12px; }
+
+        /* 🔧 FIX: delivery-location pill styling — was plain unstyled text before,
+           now matches index.html's blue "Select delivery location" pill look */
+        .pd-delivery-loc-pill { display: flex; align-items: center; gap: 10px; background: #e8f2fd; padding: 12px 14px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
+        .pd-delivery-loc-pill i.fa-map-marker-alt { color: #212121; font-size: 15px; }
+        .pd-delivery-loc-text { font-size: 14px; font-weight: 700; color: #212121; }
+        .pd-delivery-loc-link { font-size: 14px; font-weight: 600; color: #1a73e8; margin-left: 4px; }
+        .pd-delivery-loc-pill i.fa-chevron-right { color: #1a73e8; font-size: 11px; margin-left: 4px; }
+
         .pd-delivery-date-box { display: flex; align-items: flex-start; gap: 10px; background: #f5f5f5; padding: 12px 14px; border-radius: 8px; }
         .pd-delivery-date-box i.fa-truck { color: #212121; font-size: 16px; margin-top: 2px; }
         .pd-delivery-date-text { font-size: 14px; font-weight: 700; color: #212121; margin-bottom: 3px; }
@@ -538,7 +547,7 @@
               <!-- Delivery Check -->
                  <div class="pd-delivery">
                     <div class="pd-delivery-title">Delivery details</div>
-                    <div class="pd-delivery-loc-pill" onclick="document.getElementById('locPanel').style.display='flex';">
+                    <div class="pd-delivery-loc-pill" onclick="if(window.parent && window.parent.document.getElementById('locPanel')) window.parent.document.getElementById('locPanel').style.display='flex';">
                         <i class="fas fa-map-marker-alt"></i>
                         <span class="pd-delivery-loc-text" id="pdLocText">Location not set</span>
                         <span class="pd-delivery-loc-link" id="pdLocLink">Select delivery location</span>
@@ -917,6 +926,27 @@
             return start.toLocaleDateString('en-IN', opts) + ' - ' + end.toLocaleDateString('en-IN', opts);
         }
 
+        // 🔧 Sync the delivery-location text in the popup with whatever the user
+        // already picked via the parent page's location panel (index.html).
+        function pdSyncLocFromParent() {
+            const pdText = document.getElementById('pdLocText');
+            const pdLink = document.getElementById('pdLocLink');
+            if (!pdText || !pdLink) return;
+            try {
+                if (window.parent && window.parent.document) {
+                    const parentLabel = window.parent.document.getElementById('locLabel');
+                    const parentLink = window.parent.document.getElementById('locLink');
+                    if (parentLabel && parentLink && parentLabel.textContent && parentLabel.textContent !== 'Location not set') {
+                        pdText.textContent = parentLabel.textContent.replace(/\s*–$/, '');
+                        pdLink.textContent = parentLink.textContent;
+                        return;
+                    }
+                }
+            } catch (e) {}
+            pdText.textContent = 'Location not set';
+            pdLink.textContent = 'Select delivery location';
+        }
+
         function pdChangeQty(delta) {
             pdQty = Math.max(1, Math.min(10, pdQty + delta));
             document.getElementById('pdQty').textContent = pdQty;
@@ -966,6 +996,8 @@
             document.getElementById('pdDeliveryDate').textContent = 'Delivery by ' + getDeliveryEstimateText();
             document.getElementById('pdPincodeInput').value = '';
             document.getElementById('pdDeliveryInfo').style.display = 'none';
+
+            pdSyncLocFromParent();
 
             const hiEl = document.getElementById('pdHighlights');
             if (product.highlights && product.highlights.length) {
