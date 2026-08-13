@@ -284,8 +284,6 @@
         .pd-delivery { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
         .pd-delivery-title { font-size: 16px; font-weight: 700; color: #212121; margin-bottom: 12px; }
 
-        /* 🔧 FIX: delivery-location pill styling — was plain unstyled text before,
-           now matches index.html's blue "Select delivery location" pill look */
         .pd-delivery-loc-pill { display: flex; align-items: center; gap: 10px; background: #e8f2fd; padding: 12px 14px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
         .pd-delivery-loc-pill i.fa-map-marker-alt { color: #212121; font-size: 15px; }
         .pd-delivery-loc-text { font-size: 14px; font-weight: 700; color: #212121; }
@@ -723,36 +721,33 @@
                 wishlist = Array.isArray(saved) ? saved.map(Number) : [];
             } catch (e) { wishlist = []; }
         }
-        age() 
-          function saveWishlistToStorage() {
-    try {
-        localStorage.setItem('sumathiWishlist', JSON.stringify(wishlist));
-    } catch (e) {}
 
-    // 🔧 Notify parent page (index.html navbar) so its wishlist count badge updates instantly
-    try {
-        if (window.parent && window.parent !== window) {
-            // Try calling a known update function in parent, if it exists
-            if (typeof window.parent.updateWishlistCount === 'function') {
-                window.parent.updateWishlistCount(wishlist.length);
-            }
-            if (typeof window.parent.loadWishlistFromStorage === 'function') {
-                window.parent.loadWishlistFromStorage();
-            }
-            // Fallback: directly update common badge element IDs in parent, if present
-            const badge = window.parent.document.getElementById('wishCount')
-                       || window.parent.document.getElementById('wishlistCount')
-                       || window.parent.document.querySelector('.wishlist-count');
-            if (badge) badge.textContent = wishlist.length;
+        function saveWishlistToStorage() {
+            try {
+                localStorage.setItem('sumathiWishlist', JSON.stringify(wishlist));
+            } catch (e) {}
 
-            // Also dispatch a custom event on parent window, in case it listens for it
-            window.parent.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: { count: wishlist.length, wishlist } }));
+            // 🔧 Notify parent page (index.html navbar) so its wishlist count badge updates instantly
+            try {
+                if (window.parent && window.parent !== window) {
+                    if (typeof window.parent.updateWishlistCount === 'function') {
+                        window.parent.updateWishlistCount(wishlist.length);
+                    }
+                    if (typeof window.parent.loadWishlistFromStorage === 'function') {
+                        window.parent.loadWishlistFromStorage();
+                    }
+                    const badge = window.parent.document.getElementById('wishCount')
+                               || window.parent.document.getElementById('wishlistCount')
+                               || window.parent.document.querySelector('.wishlist-count');
+                    if (badge) badge.textContent = wishlist.length;
+
+                    window.parent.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: { count: wishlist.length, wishlist } }));
+                }
+            } catch (e) {
+                console.warn('Could not sync wishlist count to parent page:', e);
+            }
         }
-    } catch (e) {
-        console.warn('Could not sync wishlist count to parent page:', e);
-    }
-}
-    
+
         function toggleWishlist(id, btnEl) {
             const idx = wishlist.indexOf(id);
             if (idx === -1) {
@@ -791,55 +786,54 @@
             }
         });
 
-        
-                async function loadProducts() {
-    try {
-        const res = await fetch('get_products.php?ts=' + Date.now());
-        const data = await res.json();
+        async function loadProducts() {
+            try {
+                const res = await fetch('get_products.php?ts=' + Date.now());
+                const data = await res.json();
 
-        const seenIds = new Set();
-        let dupeFound = false;
+                const seenIds = new Set();
+                let dupeFound = false;
 
-        products = (data.products || []).map((p, index) => {
-            const photos = (Array.isArray(p.photos) && p.photos.length) ? p.photos : (p.photo ? [p.photo] : [PD_FALLBACK_IMG]);
+                products = (data.products || []).map((p, index) => {
+                    const photos = (Array.isArray(p.photos) && p.photos.length) ? p.photos : (p.photo ? [p.photo] : [PD_FALLBACK_IMG]);
 
-            let id = Number(p.id);
-            if (!id || seenIds.has(id)) {
-                dupeFound = true;
-                id = Number(`${Date.now()}${index}`.slice(-9));
+                    let id = Number(p.id);
+                    if (!id || seenIds.has(id)) {
+                        dupeFound = true;
+                        id = Number(`${Date.now()}${index}`.slice(-9));
+                    }
+                    seenIds.add(id);
+
+                    return {
+                        id,
+                        name: p.name || '',
+                        price: Number(p.price || 0),
+                        category: normalizeCategorySlug(p.category || p.cat || ''),
+                        categoryLabel: p.category || p.cat || 'Other',
+                        image: photos[0],
+                        images: photos,
+                        desc: p.description || 'Custom stitched product',
+                        badge: '',
+                        sizes: [],
+                        highlights: Array.isArray(p.highlights) ? p.highlights : [],
+                        rating: 4.7,
+                        ratingCount: 'New Listing'
+                    };
+                });
+
+                if (dupeFound) {
+                    console.warn('⚠️ Duplicate or missing product IDs found in get_products.php response — check your database/admin panel.');
+                }
+
+                const filtered = (currentCategory === 'All' || currentCategory === 'all')
+                    ? products
+                    : products.filter(p => categoryMatches(p, currentCategory));
+                renderProducts('shopProducts', filtered);
+            } catch (e) {
+                products = [];
+                document.getElementById('shopProducts').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px;">Unable to load products. Please try again later.</p>';
             }
-            seenIds.add(id);
-
-            return {
-                id,
-                name: p.name || '',
-                price: Number(p.price || 0),
-                category: normalizeCategorySlug(p.category || p.cat || ''),
-                categoryLabel: p.category || p.cat || 'Other',
-                image: photos[0],
-                images: photos,
-                desc: p.description || 'Custom stitched product',
-                badge: '',
-                sizes: [],
-                highlights: Array.isArray(p.highlights) ? p.highlights : [],
-                rating: 4.7,
-                ratingCount: 'New Listing'
-            };
-        });
-
-        if (dupeFound) {
-            console.warn('⚠️ Duplicate or missing product IDs found in get_products.php response — check your database/admin panel.');
         }
-
-        const filtered = (currentCategory === 'All' || currentCategory === 'all')
-            ? products
-            : products.filter(p => categoryMatches(p, currentCategory));
-        renderProducts('shopProducts', filtered);
-    } catch (e) {
-        products = [];
-        document.getElementById('shopProducts').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px;">Unable to load products. Please try again later.</p>';
-    }
-}
 
         function createProductCard(p) {
             const inCart = cart.some(item => item.id === p.id);
