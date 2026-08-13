@@ -1,403 +1,133 @@
 <?php
 mysqli_report(MYSQLI_REPORT_OFF);
 
-// ============================================================
-// CORS
-// ============================================================
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-// ============================================================
-// INFINITYFREE MYSQL DATABASE CONFIG
-// ============================================================
-
 define('DB_HOST', 'sql211.infinityfree.com');
 define('DB_USER', 'if0_42630205');
 define('DB_PASS', 'Uq7hPG4GqJw');
 define('DB_NAME', 'if0_42630205_sumathistyles');
-define('DB_PORT', 3306);
-
-
-// ============================================================
-// DATABASE CONNECTION
-// ============================================================
 
 function getConnection() {
-
     static $conn = null;
 
     if ($conn instanceof mysqli) {
         return $conn;
     }
 
-    $conn = @new mysqli(
-        DB_HOST,
-        DB_USER,
-        DB_PASS,
-        DB_NAME,
-        DB_PORT
-    );
+    $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-    // Connection error
     if ($conn->connect_error) {
-
         http_response_code(500);
-        header('Content-Type: application/json');
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Database connection failed: ' . $conn->connect_error
-        ]);
-
+        echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $conn->connect_error]);
         exit();
     }
 
-    // UTF-8
     $conn->set_charset('utf8mb4');
 
-    // ========================================================
-    // PRODUCTS
-    // ========================================================
+    $conn->query("CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        category VARCHAR(100) DEFAULT '',
+        price DECIMAL(10,2) DEFAULT 0,
+        description TEXT,
+        stock VARCHAR(50) DEFAULT 'Available',
+        visible TINYINT(1) DEFAULT 1,
+        photo VARCHAR(500) DEFAULT '',
+        photos TEXT,
+        highlights TEXT,
+        price_tags TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS products (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            category VARCHAR(100) DEFAULT '',
-            price DECIMAL(10,2) DEFAULT 0,
-            description TEXT,
-            stock VARCHAR(50) DEFAULT 'Available',
-            visible TINYINT(1) DEFAULT 1,
-            photo VARCHAR(500) DEFAULT '',
-            photos TEXT,
-            highlights TEXT,
-            price_tags TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
+    // NOTE: voice_note column added — stores the path to the saved
+    // voice-note audio file (webm/mp3) that a customer records on the
+    // Custom Order form. NULL/blank when no voice note was sent.
+    $conn->query("CREATE TABLE IF NOT EXISTS orders (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        mobile VARCHAR(20) DEFAULT '',
+        product VARCHAR(255) DEFAULT '',
+        amount DECIMAL(10,2) DEFAULT 0,
+        status VARCHAR(50) DEFAULT 'Ordered',
+        notes TEXT,
+        voice_note VARCHAR(500) DEFAULT '',
+        payment_method VARCHAR(50) DEFAULT '',
+        source VARCHAR(100) DEFAULT 'website',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-    // ========================================================
-    // NOTIFICATIONS
-    // ========================================================
+    $conn->query("CREATE TABLE IF NOT EXISTS reviews (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        rating INT DEFAULT 5,
+        review_text TEXT,
+        source VARCHAR(100) DEFAULT 'website',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS notifications (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            message TEXT,
-            type VARCHAR(50) DEFAULT 'general',
-            target_phone VARCHAR(20) DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
+    $conn->query("CREATE TABLE IF NOT EXISTS contacts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        phone VARCHAR(20) DEFAULT '',
+        email VARCHAR(255) DEFAULT '',
+        service VARCHAR(255) DEFAULT '',
+        message TEXT,
+        source VARCHAR(100) DEFAULT 'website',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
-    // ========================================================
-    // ORDERS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS orders (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            mobile VARCHAR(20) DEFAULT '',
-            product VARCHAR(255) DEFAULT '',
-            amount DECIMAL(10,2) DEFAULT 0,
-            status VARCHAR(50) DEFAULT 'Ordered',
-            notes TEXT,
-            source VARCHAR(100) DEFAULT 'website',
-            measurement TEXT,
-            voice_note LONGTEXT,
-            order_id VARCHAR(30) DEFAULT '',
-            cancel_reason TEXT,
-            payment_method VARCHAR(30) DEFAULT '',
-            payment_status VARCHAR(30) DEFAULT 'Not Required',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // REVIEWS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS reviews (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            rating INT DEFAULT 5,
-            review_text TEXT,
-            source VARCHAR(100) DEFAULT 'website',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // CONTACTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS contacts (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            phone VARCHAR(20) DEFAULT '',
-            email VARCHAR(255) DEFAULT '',
-            service VARCHAR(255) DEFAULT '',
-            message TEXT,
-            source VARCHAR(100) DEFAULT 'website',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // DATA EXPORT REQUESTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS data_export_requests (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) DEFAULT '',
-            phone VARCHAR(20) DEFAULT '',
-            email VARCHAR(255) DEFAULT '',
-            requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // DATA REQUESTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS data_requests (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) DEFAULT '',
-            phone VARCHAR(20) DEFAULT '',
-            email VARCHAR(255) DEFAULT '',
-            requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // CONSENTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS consents (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            phone VARCHAR(20) NOT NULL,
-            consent_marketing TINYINT(1) DEFAULT 0,
-            consent_order_notif TINYINT(1) DEFAULT 0,
-            consent_location TINYINT(1) DEFAULT 0,
-            consent_analytics TINYINT(1) DEFAULT 0,
-            consent_whatsapp TINYINT(1) DEFAULT 0,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                ON UPDATE CURRENT_TIMESTAMP,
-            UNIQUE KEY unique_phone (phone)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // GRIEVANCES
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS grievances (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) DEFAULT '',
-            phone VARCHAR(20) DEFAULT '',
-            email VARCHAR(255) DEFAULT '',
-            subject VARCHAR(255) DEFAULT '',
-            order_id VARCHAR(50) DEFAULT '',
-            description TEXT,
-            status VARCHAR(30) DEFAULT 'Open',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // DEACTIVATED ACCOUNTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS deactivated_accounts (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            phone VARCHAR(20) NOT NULL,
-            reason TEXT,
-            deactivated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // DELETED ACCOUNTS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS deleted_accounts (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            phone VARCHAR(20) NOT NULL,
-            deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // CUSTOMER COINS
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS customer_coins (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            mobile VARCHAR(20) NOT NULL,
-            balance INT DEFAULT 0,
-            UNIQUE KEY unique_mobile (mobile)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // COINS LEDGER
-    // ========================================================
-
-    $conn->query("
-        CREATE TABLE IF NOT EXISTS coins_ledger (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            mobile VARCHAR(20) NOT NULL,
-            order_id VARCHAR(30) DEFAULT '',
-            type VARCHAR(10) NOT NULL,
-            coins INT NOT NULL,
-            order_amount DECIMAL(10,2) DEFAULT 0,
-            note TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-    ");
-
-    // ========================================================
-    // SAFETY: PRODUCTS COLUMNS
-    // ========================================================
-
-    $res = $conn->query("SHOW COLUMNS FROM products");
-
+    // ---- Auto-migrate products table ----
+    $columns = [];
+    $res = $conn->query('SHOW COLUMNS FROM products');
     if ($res) {
-
-        $columns = [];
-
         while ($row = $res->fetch_assoc()) {
             $columns[] = $row['Field'];
         }
-
-        $alterQueries = [];
-
-        if (!in_array('price', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN price DECIMAL(10,2) DEFAULT 0";
-        }
-
-        if (!in_array('description', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN description TEXT";
-        }
-
-        if (!in_array('stock', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN stock VARCHAR(50) DEFAULT 'Available'";
-        }
-
-        if (!in_array('visible', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN visible TINYINT(1) DEFAULT 1";
-        }
-
-        if (!in_array('photo', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN photo VARCHAR(500) DEFAULT ''";
-        }
-
-        if (!in_array('photos', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN photos TEXT";
-        }
-
-        if (!in_array('highlights', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN highlights TEXT";
-        }
-
-        if (!in_array('price_tags', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN price_tags TEXT";
-        }
-
-        if (!in_array('created_at', $columns, true)) {
-            $alterQueries[] =
-                "ALTER TABLE products ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP";
-        }
-
-        foreach ($alterQueries as $query) {
-            $conn->query($query);
-        }
     }
 
-    // ========================================================
-    // SAFETY: ORDERS COLUMNS
-    // ========================================================
+    $alterQueries = [];
+    if (!in_array('price', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN price DECIMAL(10,2) DEFAULT 0";
+    if (!in_array('description', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN description TEXT";
+    if (!in_array('stock', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN stock VARCHAR(50) DEFAULT 'Available'";
+    if (!in_array('visible', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN visible TINYINT(1) DEFAULT 1";
+    if (!in_array('photo', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN photo VARCHAR(500) DEFAULT ''";
+    if (!in_array('photos', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN photos TEXT";
+    if (!in_array('highlights', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN highlights TEXT";
+    if (!in_array('price_tags', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN price_tags TEXT";
+    if (!in_array('created_at', $columns, true)) $alterQueries[] = "ALTER TABLE products ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP";
 
-    $res2 = $conn->query("SHOW COLUMNS FROM orders");
+    foreach ($alterQueries as $query) {
+        $conn->query($query);
+    }
 
+    // ---- Auto-migrate orders table (adds voice_note / payment_method
+    // to databases that were created before this update) ----
+    $orderColumns = [];
+    $res2 = $conn->query('SHOW COLUMNS FROM orders');
     if ($res2) {
-
-        $orderColumns = [];
-
         while ($row = $res2->fetch_assoc()) {
             $orderColumns[] = $row['Field'];
         }
+    }
 
-        $orderAlterQueries = [];
+    $orderAlterQueries = [];
+    if (!in_array('voice_note', $orderColumns, true)) $orderAlterQueries[] = "ALTER TABLE orders ADD COLUMN voice_note VARCHAR(500) DEFAULT ''";
+    if (!in_array('payment_method', $orderColumns, true)) $orderAlterQueries[] = "ALTER TABLE orders ADD COLUMN payment_method VARCHAR(50) DEFAULT ''";
 
-        if (!in_array('measurement', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN measurement TEXT";
-        }
-
-        if (!in_array('voice_note', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN voice_note LONGTEXT";
-        }
-
-        if (!in_array('order_id', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN order_id VARCHAR(30) DEFAULT ''";
-        }
-
-        if (!in_array('cancel_reason', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN cancel_reason TEXT";
-        }
-
-        if (!in_array('payment_method', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN payment_method VARCHAR(30) DEFAULT ''";
-        }
-
-        if (!in_array('payment_status', $orderColumns, true)) {
-            $orderAlterQueries[] =
-                "ALTER TABLE orders ADD COLUMN payment_status VARCHAR(30) DEFAULT 'Not Required'";
-        }
-
-        foreach ($orderAlterQueries as $query) {
-            $conn->query($query);
-        }
+    foreach ($orderAlterQueries as $query) {
+        $conn->query($query);
     }
 
     return $conn;
 }
 
-
-// ============================================================
-// CREATE CONNECTION
-// ============================================================
-
 $conn = getConnection();
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 ?>
