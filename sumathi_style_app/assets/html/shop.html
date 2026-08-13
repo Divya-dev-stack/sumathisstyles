@@ -91,14 +91,9 @@
         .product-wishlist-btn { position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.15); font-size:14px; color:#bbb; transition:all .2s; z-index:2; }
         .product-wishlist-btn.wishlisted { color: var(--danger); }
         .product-rating-badge { position:absolute; bottom:-10px; left:12px; background:#388e3c; color:#fff; font-size:12px; font-weight:700; padding:3px 8px; border-radius:4px; display:flex; align-items:center; gap:3px; box-shadow:0 2px 6px rgba(0,0,0,0.2); z-index:3; }
-        .product-info { padding: 16px 12px 4px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-info { padding: 16px 12px 18px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-info h3 { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
         .product-info p { display: none; }
-        .product-actions { display: flex; gap: 8px; margin-top: auto; padding: 0 12px 10px; }
-        .btn-add-cart { flex: 1; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); border: none; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .btn-add-cart:hover { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); }
-        .btn-buy { flex: 1; background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--dark); border: none; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .btn-buy:hover { box-shadow: var(--copper-glow); }
 
         .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; max-width: 100%; height: 100vh; background: var(--white); z-index: 2000; box-shadow: -5px 0 30px rgba(0,0,0,0.2); transition: right 0.4s ease; display: flex; flex-direction: column; }
         .cart-sidebar.active { right: 0; }
@@ -335,11 +330,9 @@
 
             .products-grid .product-card { width: 150px; }
             .product-img { height: 160px; }
-            .product-info { padding: 16px 12px 4px; }
+            .product-info { padding: 16px 12px 18px; }
             .product-info h3 { font-size: 13px; }
             .product-info p { font-size: 11px; margin-bottom: 8px; }
-            .product-actions { flex-direction: column; gap: 8px; }
-            .btn-add-cart, .btn-buy { padding: 8px; font-size: 12px; }
             .section { padding: 15px 15px 40px; }
             .section-header h2 { font-size: 26px; }
             .cart-sidebar { width: 100%; right: -100%; }
@@ -850,10 +843,9 @@
         }
 
         function createProductCard(p) {
-            const inCart = cart.some(item => item.id === p.id);
             const isWishlisted = wishlist.includes(p.id);
-            return `<div class="product-card fade-in">
-                <div style="position:relative;" onclick="openPDModal(${p.id})">
+            return `<div class="product-card fade-in" onclick="openPDModal(${p.id})">
+                <div style="position:relative;">
                     <img src="${p.image}" class="product-img" alt="${p.name}" loading="lazy" onerror="this.src='${PD_FALLBACK_IMG}'">
                     ${p.badge ? `<span class="product-badge ${p.badge==='Hot'?'hot':p.badge==='New'?'new':''}">${p.badge}</span>` : ''}
                     <span class="product-rating-badge">${p.rating} <i class="fas fa-star" style="font-size:10px;"></i></span>
@@ -861,18 +853,11 @@
                         <i class="${isWishlisted ? 'fas' : 'far'} fa-heart"></i>
                     </button>
                 </div>
-                <div class="product-info" onclick="openPDModal(${p.id})">
+                <div class="product-info">
                     <h3>${p.name}</h3>
-                    <div style="margin-bottom:12px;">
+                    <div style="margin-bottom:16px;">
                         <span style="font-size:20px;font-weight:700;color:#212121;">₹${p.price}</span>
                     </div>
-                </div>
-                <div class="product-actions">
-                    ${inCart
-                        ? `<button class="btn-add-cart" style="background:linear-gradient(135deg,var(--secondary),var(--secondary-light));" onclick="event.stopPropagation();toggleCart()"><i class="fas fa-shopping-cart"></i> View Cart</button>`
-                        : `<button class="btn-add-cart" onclick="event.stopPropagation();addToCart(${p.id})"><i class="fas fa-cart-plus"></i> Add to Cart</button>`
-                    }
-                    <button class="btn-buy" onclick="event.stopPropagation();buyNow(${p.id})"><i class="fas fa-bolt"></i> Buy Now</button>
                 </div>
             </div>`;
         }
