@@ -492,16 +492,6 @@
         .pd-return-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #555; }
         .pd-return-item i { color: #008080; font-size: 14px; }
 
-        /* NEW: delivery-location bar shown above the product image in the popup */
-        .pd-top-loc-bar {
-            display: flex; align-items: center; gap: 8px;
-            background: #e8f2fd; padding: 10px 14px; border-radius: 8px;
-            margin-bottom: 4px; cursor: pointer; font-size: 13px; font-weight: 600; color: #212121;
-        }
-        .pd-top-loc-bar i.fa-map-marker-alt { color: #1a73e8; font-size: 14px; }
-        .pd-top-loc-bar span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .pd-top-loc-bar i.fa-chevron-right { color: #1a73e8; font-size: 11px; }
-
         @media (max-width: 700px) {
             .pd-modal { grid-template-columns: 1fr; max-width: 100%; }
             .pd-left { border-radius: 12px 12px 0 0; max-height: none; position: relative; }
@@ -728,7 +718,6 @@
         max-height: 360px;
         border-radius: 0;
     }
-    .pd-top-loc-bar { border-radius: 0; margin-bottom: 0; }
 
     /* close button becomes a back-arrow, always visible over the image */
     .pd-close {
@@ -991,10 +980,8 @@
         document.getElementById('locLink').textContent = addressText.substring(0,28)+'...';
         const pdTextGps=document.getElementById('pdLocText');
         const pdLinkGps=document.getElementById('pdLocLink');
-        const pdTopGps=document.getElementById('pdTopLocText');
         if(pdTextGps) pdTextGps.textContent = 'Deliver to Current Location –';
         if(pdLinkGps) pdLinkGps.textContent = addressText.substring(0,28)+'...';
-        if(pdTopGps) pdTopGps.textContent = 'Deliver to Current Location – ' + addressText.substring(0,28)+'...';
         document.getElementById('locPanel').style.display='none';
         locToastMsg('📍 Location set: '+addressText);
     },function(err){
@@ -1020,10 +1007,6 @@
     var pdLink=document.getElementById('pdLocLink');
     if(pdText) pdText.textContent=deliverText;
     if(pdLink) pdLink.textContent=addrShort;
-
-    // Image ku mela irukura pudhusa location bar-um update pannanum
-    var pdTopText=document.getElementById('pdTopLocText');
-    if(pdTopText) pdTopText.textContent='Deliver to '+a.name+' – '+addrShort;
 
     document.getElementById('locPanel').style.display='none';
     locToastMsg('📍 Delivering to '+a.name+'!');
@@ -1095,11 +1078,6 @@
         <div class="pd-modal" id="pdModal">
             <button class="pd-close" onclick="closePDModal()"><i class="fas fa-times"></i></button>
             <div class="pd-left" id="pdLeft">
-                <div class="pd-top-loc-bar" onclick="document.getElementById('locPanel').style.display='flex';">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span id="pdTopLocText"></span>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
                 <div class="pd-main-img-wrap">
                     <div class="pd-img-skeleton" id="pdImgSkeleton"></div>
                     <img id="pdMainImg" src="" alt="" class="pd-main-img" onload="pdImageLoaded()" onerror="pdImageError()">
@@ -1740,18 +1718,6 @@ function renderPriceList() {
         }
     }
 
-    function pdSyncTopLocBar() {
-        const pdTopText = document.getElementById('pdTopLocText');
-        if (!pdTopText) return;
-        const pdText = document.getElementById('pdLocText');
-        if (pdText && pdText.textContent && pdText.textContent !== 'Location not set') {
-            const pdLink = document.getElementById('pdLocLink');
-            pdTopText.textContent = pdText.textContent + ' ' + (pdLink ? pdLink.textContent : '');
-        } else {
-            pdTopText.textContent = 'Select delivery location';
-        }
-    }
-
     function openPDModal(productId) {
         const p = products.find(x => x.id === productId);
         if (!p) return;
@@ -1803,10 +1769,6 @@ function renderPriceList() {
         document.getElementById('pdDeliveryInfo').style.display = 'none';
         document.getElementById('pdPincodeInput').value = '';
         pdUpdateDeliveryInfo();
-
-        // Delivery-location bar above the image — sync with whatever the person
-        // already selected via the top location panel.
-        pdSyncTopLocBar();
 
         // Sizes only (no colors)
         const sizesEl = document.getElementById('pdSizes');
