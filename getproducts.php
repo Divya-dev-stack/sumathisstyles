@@ -24,6 +24,7 @@ function normalizeProductRow($row) {
         $priceTags = [];
     }
 
+    $row['id'] = (int) ($row['id'] ?? 0); // 🔧 force id as clean integer
     $row['photos'] = array_values(array_filter($photos, 'strlen'));
     $row['photo'] = $row['photos'][0] ?? '';
     $row['highlights'] = $highlights;
@@ -32,7 +33,6 @@ function normalizeProductRow($row) {
     $row['visible'] = ((int) ($row['visible'] ?? 1) === 1) ? 'yes' : 'no';
     return $row;
 }
-
 if ($id > 0) {
     $stmt = $conn->prepare('SELECT * FROM products WHERE id = ?');
     $stmt->bind_param('i', $id);
