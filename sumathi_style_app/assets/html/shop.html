@@ -990,6 +990,60 @@
             document.getElementById('pdQty').textContent = pdQty;
         }
 
+        /* ===== FIX: Flipkart-style "Add to Cart / Buy Now" bar was floating
+           mid-screen instead of sticking to the real device bottom.
+           REASON: this shop.html runs inside an <iframe id="shopFrame"> on
+           website.html, sized to calc(100vh - 104px). A `position:fixed`
+           element inside an iframe is fixed relative to the IFRAME's own
+           viewport, not the real phone screen — so the CTA bar was "stuck"
+           to the bottom of that shorter iframe box, floating above the true
+           screen edge instead of sitting flush with it like Flipkart.
+           FIX: when the product popup opens on mobile, temporarily resize
+           the parent's #shopFrame itself to true fullscreen (top:0, 100vw,
+           100dvh) via same-origin DOM access (same technique already used
+           for the location panel). Now `position:fixed` inside the iframe
+           lines up with the real device viewport. Restored on close. */
+        const PD_MOBILE_BREAKPOINT = 768;
+        function pdIsMobile() {
+            return window.innerWidth <= PD_MOBILE_BREAKPOINT;
+        }
+        function pdExpandParentFrame() {
+            if (!pdIsMobile()) return;
+            try {
+                if (window.parent && window.parent !== window) {
+                    const frame = window.parent.document.getElementById('shopFrame');
+                    if (frame && !frame.dataset.pdExpanded) {
+                        frame.dataset.pdPrevStyle = frame.getAttribute('style') || '';
+                        frame.style.position = 'fixed';
+                        frame.style.top = '0';
+                        frame.style.left = '0';
+                        frame.style.right = '0';
+                        frame.style.bottom = '0';
+                        frame.style.width = '100vw';
+                        frame.style.height = '100dvh';
+                        frame.style.maxHeight = '100dvh';
+                        frame.style.margin = '0';
+                        frame.style.zIndex = '10000';
+                        frame.dataset.pdExpanded = 'true';
+                        window.parent.document.body.style.overflow = 'hidden';
+                    }
+                }
+            } catch (e) { /* cross-origin safety net — popup still works, just not full-bleed */ }
+        }
+        function pdRestoreParentFrame() {
+            try {
+                if (window.parent && window.parent !== window) {
+                    const frame = window.parent.document.getElementById('shopFrame');
+                    if (frame && frame.dataset.pdExpanded) {
+                        frame.setAttribute('style', frame.dataset.pdPrevStyle || '');
+                        delete frame.dataset.pdExpanded;
+                        delete frame.dataset.pdPrevStyle;
+                        window.parent.document.body.style.overflow = '';
+                    }
+                }
+            } catch (e) {}
+        }
+
         function pdCheckDelivery() {
             const val = document.getElementById('pdPincodeInput').value.trim();
             const msg = document.getElementById('pdDeliveryInfo');
@@ -1050,11 +1104,13 @@
 
             document.getElementById('pdOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
+            pdExpandParentFrame();
         }
 
         function closePDModal() {
             document.getElementById('pdOverlay').classList.remove('active');
             document.body.style.overflow = '';
+            pdRestoreParentFrame();
         }
 
         function pdAddToCart() {
