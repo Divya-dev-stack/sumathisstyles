@@ -372,10 +372,6 @@
             background: #f8f8f8; border-radius: 12px 0 0 12px;
             max-height: 92vh; overflow-y: auto;
         }
-        .pd-main-img-wrap {
-            position: relative; border-radius: 10px; overflow: hidden;
-            background: #fff; aspect-ratio: 3/4;
-        }
        .pd-main-img {
     width: 100%; height: 100%; object-fit: contain; display: block;
     transition: transform 0.4s, opacity 0.25s;
@@ -837,6 +833,35 @@
         white-space: nowrap;
         padding: 8px 16px !important;
         font-size: 12.5px !important;
+    }
+
+    /* =====================================================================
+       ★ FIX: Product-popup "Add to Cart / Buy Now" bar was floating
+       mid-screen instead of sticking to the real device bottom.
+       REASON: shop.html loads inside <iframe id="shopFrame">, which was
+       only calc(100vh - 104px) tall. A `position:fixed` element INSIDE an
+       iframe is fixed relative to the IFRAME's own (shorter) viewport, not
+       the real phone screen — so the fixed CTA bar sat above the true
+       bottom edge instead of flush with it, unlike Flipkart.
+       FIX: make #shopFrame itself permanently full device screen
+       (top:0, 100vw, 100dvh) on mobile. Now anything `position:fixed`
+       inside it lines up with the real viewport. Header/navbar keep their
+       existing z-index (999/1000) so they still render above the iframe
+       (z-index:1) — shop.html adds matching top padding so its own content
+       isn't hidden underneath them (see shop.html's pdSyncTopOffset()). ★
+       ===================================================================== */
+    #shopFrame {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        margin: 0 !important;
+        z-index: 1 !important;
+    }
+    #shop.page-section {
+        margin-top: 0 !important;
     }
 }
 @media (max-width: 420px) {
