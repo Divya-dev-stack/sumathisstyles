@@ -1,10 +1,11 @@
 <?php
 mysqli_report(MYSQLI_REPORT_OFF);
 
-define('DB_HOST', 'sql211.infinityfree.com');
-define('DB_USER', 'if0_42630205');
-define('DB_PASS', 'Uq7hPG4GqJw');
-define('DB_NAME', 'if0_42630205_sumathistyles');
+
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'product_db');
 
 function getConnection() {
     static $conn = null;
