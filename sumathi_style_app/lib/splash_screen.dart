@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'register_page.dart';
+import 'home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,14 +40,23 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const WebViewScreen(),
-        ),
-      );
+    Timer(const Duration(seconds: 5), () {
+      _checkLoginAndNavigate();
     });
+  }
+
+  Future<void> _checkLoginAndNavigate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => isLoggedIn ? const HomePage() : const RegisterPage(),
+      ),
+    );
   }
 
   @override
@@ -67,10 +78,10 @@ class _SplashScreenState extends State<SplashScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                // Logo
+                // Logo - smaller, tightly cropped so it looks fully round
                 Container(
-                  height: 210,
-                  width: 210,
+                  height: 140,
+                  width: 140,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -82,13 +93,10 @@ class _SplashScreenState extends State<SplashScreen>
                       )
                     ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/images/app.jpeg",
-                        fit: BoxFit.contain,
-                      ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      "assets/images/app.jpeg",
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
