@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'register_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,6 +23,18 @@ class _LoginPageState extends State<LoginPage> {
   final Color teal = const Color(0xff0F766E);
   final Color gold = const Color(0xffD4AF37);
 
+  Future<void> _loginSuccess() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomePage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
 
           Positioned.fill(
             child: Container(
-              color: Colors.black.withValues(alpha: 0.45),
+              // lighter overlay so the background photo shows through more
+              color: Colors.black.withValues(alpha: 0.25),
             ),
           ),
 
@@ -47,13 +63,14 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(25),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                      sigmaX: 8,
-                      sigmaY: 8,
+                      sigmaX: 6,
+                      sigmaY: 6,
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(25),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: .12),
+                        // lighter, more translucent card so background is visible
+                        color: Colors.white.withValues(alpha: .18),
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
                           color: gold,
@@ -222,13 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   );
 
-                                  // TODO:
-                                  // Navigator.pushReplacement(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const HomePage(),
-                                  //   ),
-                                  // );
+                                  _loginSuccess();
                                 }
                               },
                               child: const Text(
@@ -257,15 +268,12 @@ class _LoginPageState extends State<LoginPage> {
 
                                 TextButton(
                                   onPressed: () {
-
-                                    // TODO:
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => const RegisterPage(),
-                                    //   ),
-                                    // );
-
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const RegisterPage(),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     "Register",

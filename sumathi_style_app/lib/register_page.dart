@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -37,7 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
           Positioned.fill(
             child: Container(
-              color: Colors.black.withValues(alpha: .45)
+              // lighter overlay so the background photo shows through more
+              color: Colors.black.withValues(alpha: 0.25),
             ),
           ),
 
@@ -49,13 +51,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderRadius: BorderRadius.circular(25),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                      sigmaX: 8,
-                      sigmaY: 8,
+                      sigmaX: 6,
+                      sigmaY: 6,
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(25),
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: .45),
+                        // lighter, more translucent card so background is visible
+                        color: Colors.white.withValues(alpha: .18),
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
                           color: gold,
@@ -267,13 +270,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   );
 
-                                  // TODO
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const LoginPage(),
-                                  //   ),
-                                  // );
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginPage(),
+                                    ),
+                                  );
                                 }
                               },
                               child: Text(
@@ -300,13 +302,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    // TODO:
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => const LoginPage(),
-                                    //   ),
-                                    // );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     "Login",
@@ -318,18 +319,18 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ],
                             ),
-                          ], // Column children
-                        ), // Column
-                      ), // Form
-                    ), // Container
-                  ), // BackdropFilter
-                ), // ClipRRect
-              ), // SingleChildScrollView
-            ), // Center
-          ), // SafeArea
-        ], // Stack children
-      ), // Stack
-    ); // Scaffold
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
