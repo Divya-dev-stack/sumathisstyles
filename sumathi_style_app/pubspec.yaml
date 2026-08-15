@@ -64,9 +64,9 @@ flutter:
   # Local HTML files used inside the WebView (shop.html, settings.html, catering.html)
   assets:
     - assets/html/
-    - assets/images/app.jpeg
-    - assets/images/login_bg.png
-    - assets/images/register_bg.png
+    - assets/images/app.png
+    - assets/images/lgn_bg.png
+    - assets/images/reg_bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
