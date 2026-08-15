@@ -76,30 +76,27 @@ class _LoginPageState extends State<LoginPage> {
 
           Positioned.fill(
             child: Image.asset(
-              "assets/images/login_bg.png",
+              "assets/images/lgn_bg.png",
               fit: BoxFit.cover,
             ),
           ),
 
+          // Very light overlay only for text readability, background stays clear
           Positioned.fill(
             child: Container(
-              color: Colors.black.withValues(alpha: 0.20),
+              color: Colors.black.withValues(alpha: 0.10),
             ),
           ),
 
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: .18),
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(
-                      color: gold,
-                      width: 1.2,
-                    ),
+                    color: Colors.black.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Form(
                     key: _formKey,
@@ -107,35 +104,16 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
 
-                        Image.asset(
-                          "assets/images/app.jpeg",
-                          height: 75,
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Text(
-                          "SUMATHI'S STYLES",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: gold,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            letterSpacing: 2,
-                          ),
-                        ),
-
-                        const SizedBox(height: 6),
-
                         const Text(
                           "Welcome Back",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
 
-                        const SizedBox(height: 22),
+                        const SizedBox(height: 20),
 
                         TextFormField(
                           controller: emailController,

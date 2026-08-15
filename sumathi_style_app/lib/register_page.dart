@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              "assets/images/register_bg.png",
+              "assets/images/reg_bg.png",
               fit: BoxFit.cover,
             ),
           ),
