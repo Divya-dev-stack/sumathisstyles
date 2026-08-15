@@ -37,6 +37,7 @@ dependencies:
   url_launcher: ^6.3.1
   cupertino_icons: ^1.0.8
   permission_handler: ^11.3.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,8 @@ flutter:
   assets:
     - assets/html/
     - assets/images/app.jpeg
+    - assets/images/login_bg.png
+    - assets/images/register_bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
