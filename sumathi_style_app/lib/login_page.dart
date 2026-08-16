@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
 
   final Color teal = const Color(0xff0F766E);
-  final Color lightTeal = const Color(0xff2DA89B);
+  final Color lightTeal = const Color(0xff4FC3B0);
   final Color gold = const Color(0xffD4AF37);
 
   String _generateOtp() {
@@ -234,6 +234,10 @@ class _LoginPageState extends State<LoginPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: lightTeal,
+                            foregroundColor: Colors.white,
+                            overlayColor: gold.withValues(alpha: 0.35),
+                            elevation: 4,
+                            shadowColor: teal.withValues(alpha: 0.6),
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),

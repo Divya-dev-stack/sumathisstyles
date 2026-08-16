@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Color teal = const Color(0xff0F766E);
   Color gold = const Color(0xffD4AF37);
-  Color lightTeal = const Color(0xff2DA89B);
+  Color lightTeal = const Color(0xff4FC3B0);
 
   String _generateOtp() {
     final rand = Random();
@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -170,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -208,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -246,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             hintStyle: const TextStyle(color: Colors.white70),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -266,6 +266,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: lightTeal,
+                            foregroundColor: gold,
+                            overlayColor: gold.withValues(alpha: 0.35),
+                            elevation: 4,
+                            shadowColor: teal.withValues(alpha: 0.6),
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
