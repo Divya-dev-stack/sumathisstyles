@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Sumathi's Style - Tailoring Boutique | 30 Years Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -170,7 +170,7 @@
         .custom-form { background: var(--white); border-radius: 20px; padding: 40px; color: var(--text); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 14px; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .voice-record { display: flex; align-items: center; gap: 10px; padding: 12px; border: 2px dashed var(--primary-light); border-radius: 12px; cursor: pointer; transition: all 0.3s; }
@@ -324,7 +324,7 @@
         .chat-msg.bot { background: var(--gray); color: var(--text); align-self: flex-start; border-bottom-left-radius: 5px; }
         .chat-msg.user { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white); align-self: flex-end; border-bottom-right-radius: 5px; }
         .chat-input { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
-        .chat-input input { flex: 1; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 14px; outline: none; }
+        .chat-input input { flex: 1; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 25px; font-size: 16px; outline: none; }
         .chat-input input:focus { border-color: var(--primary); }
         .chat-send { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border: none; border-radius: 50%; color: var(--white); cursor: pointer; transition: all 0.3s; }
         .chat-send:hover { transform: scale(1.1); }
@@ -497,7 +497,7 @@
         .pd-delivery-date-text { font-size: 14px; font-weight: 700; color: #212121; margin-bottom: 3px; }
         .pd-delivery-countdown { font-size: 13px; font-weight: 600; color: #e65100; }
         .pd-delivery-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; margin-top: 12px; }
-        .pd-delivery-input { flex: 1; padding: 8px 12px; border: 1.5px solid #e0e0e0; border-radius: 6px; font-size: 13px; font-family: 'Poppins',sans-serif; outline: none; }
+        .pd-delivery-input { flex: 1; padding: 8px 12px; border: 1.5px solid #e0e0e0; border-radius: 6px; font-size: 16px; font-family: 'Poppins',sans-serif; outline: none; }
         .pd-delivery-input:focus { border-color: #008080; }
         .pd-delivery-check { padding: 8px 18px; background: #008080; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
         .pd-delivery-info { font-size: 12px; color: #388e3c; font-weight: 600; }
@@ -938,7 +938,7 @@
         <div style="padding:14px 16px 0;flex-shrink:0;">
           <div style="display:flex;align-items:center;gap:10px;border:1px solid #ddd;border-radius:8px;padding:10px 13px;background:#fff;">
             <i class="fas fa-search" style="color:#878787;font-size:13px;"></i>
-            <input id="locSearchBox" type="text" placeholder="Search by area, street name, pin code" oninput="locSearch(this.value)" style="border:none;outline:none;font-size:13px;color:#212121;width:100%;font-family:'Poppins',sans-serif;background:transparent;">
+            <input id="locSearchBox" type="text" placeholder="Search by area, street name, pin code" oninput="locSearch(this.value)" style="border:none;outline:none;font-size:16px;color:#212121;width:100%;font-family:'Poppins',sans-serif;background:transparent;">
           </div>
         </div>
         <div onclick="locUseGPS()" style="margin:14px 16px 10px;display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-radius:10px;background:#e8f2fd;flex-shrink:0;">
@@ -966,9 +966,9 @@
     <div id="locAddModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:999999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none';">
       <div style="background:#fff;border-radius:14px;padding:24px;width:90%;max-width:400px;">
         <h3 id="locModalTitle" style="font-size:16px;font-weight:700;color:#0F6E56;font-family:'Poppins',sans-serif;margin-bottom:16px;">Add New Address</h3>
-        <input id="locNewName" type="text" placeholder="Name (e.g. Home, Office)" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:12px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
-        <input id="locNewAddr" type="text" placeholder="Area, Street, City" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:12px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
-        <input id="locNewPin" type="text" placeholder="Pincode (optional)" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:16px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
+        <input id="locNewName" type="text" placeholder="Name (e.g. Home, Office)" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;font-family:'Poppins',sans-serif;margin-bottom:12px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
+        <input id="locNewAddr" type="text" placeholder="Area, Street, City" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;font-family:'Poppins',sans-serif;margin-bottom:12px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
+        <input id="locNewPin" type="text" placeholder="Pincode (optional)" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:16px;font-family:'Poppins',sans-serif;margin-bottom:16px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#1D9E75'" onblur="this.style.borderColor='#e0e0e0'">
         <div style="display:flex;gap:10px;">
           <button onclick="locCancelModal()" style="flex:1;padding:11px;border:1.5px solid #ddd;background:#fff;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;color:#666;font-family:'Poppins',sans-serif;">Cancel</button>
           <button onclick="locSaveAddress()" style="flex:1;padding:11px;border:none;background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;">Save Address</button>
