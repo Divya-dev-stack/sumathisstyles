@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const SizedBox(height: 35),
 
                 const Text(
-                  "Style. Elegance. Confidence.",
+                  "Style Speaks Louder 🩵",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,

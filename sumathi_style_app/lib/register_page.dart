@@ -24,6 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Color teal = const Color(0xff0F766E);
   Color gold = const Color(0xffD4AF37);
+  Color lightTeal = const Color(0xff2DA89B);
 
   String _generateOtp() {
     final rand = Random();
@@ -89,10 +90,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: gold.withValues(alpha: 0.7),
-                      width: 0.8,
-                    ),
                   ),
                   child: Form(
                     key: _formKey,
@@ -268,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: teal,
+                            backgroundColor: lightTeal,
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),

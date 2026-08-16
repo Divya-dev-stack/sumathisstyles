@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
 
   final Color teal = const Color(0xff0F766E);
+  final Color lightTeal = const Color(0xff2DA89B);
   final Color gold = const Color(0xffD4AF37);
 
   String _generateOtp() {
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                             fillColor: Colors.white.withValues(alpha: 0.06),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -169,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: gold),
+                              borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -232,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: teal,
+                            backgroundColor: lightTeal,
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
