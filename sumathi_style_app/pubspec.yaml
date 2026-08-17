@@ -68,7 +68,8 @@ flutter:
     - assets/images/app.png
     - assets/images/lgn_bg.png
     - assets/images/reg_bg.png
-
+    - assets/images/splash_bg.png
+   
 
 flutter_launcher_icons:
   android: true
