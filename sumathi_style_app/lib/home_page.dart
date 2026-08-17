@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: teal,
         title: const Text(
-          "SUMATHI'S STYLES",
+          "",
           style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
         ),
         actions: [

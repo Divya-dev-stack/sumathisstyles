@@ -1002,6 +1002,7 @@
     .app-quick-cat-icon { width: 52px; height: 52px; border-radius: 14px; }
     .app-quick-cat-item span { font-size: 10px; min-height: 24px; }
 }
+
 /* ===== Product Scroll Wrapper with Arrows ===== */
 .product-scroll-wrap { position: relative; }
 .product-scroll-arrow {
@@ -1504,9 +1505,7 @@
         <!-- SHOP -->
 <div id="shop" class="page-section" style="display:none; margin-top:104px;">
     <iframe id="shopFrame" src="shop.html" style="width:100%; height:calc(100vh - 104px); border:none; display:block;" title="Sumathi Shop"></iframe>
-    <script>
-     document.getElementById('shopFrame').src = 'shop.html?v=' + new Date().getTime();
-    </script>
+    
 </div>
         
         <!-- CLASSES -->
@@ -3109,6 +3108,19 @@ setInterval(fetchNotifications, 15000);
         }
     }, { passive: true });
 })();
+
+
+     document.getElementById('shopFrame').src = 'shop.html?v=' + new Date().getTime();
+
+     const currentPage = window.location.pathname.split('/').pop();
+
+const homePages = ["", "index.html"];
+
+if (!homePages.includes(currentPage)) {
+  const header = document.querySelector(".header");
+  if (header) header.style.display = "none";
+}
+    
 
     </script>
 </body>
