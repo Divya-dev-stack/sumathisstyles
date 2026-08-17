@@ -891,34 +891,71 @@
     .footer { display: none !important; }
 }
 
+.app-header { position: fixed; top:0; left:0; width:100%; z-index:1000; background:var(--white); box-shadow: var(--shadow); padding: 12px 15px 14px; }
+.app-header-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+.app-menu-btn { background:none; border:none; font-size:20px; color:var(--text); cursor:pointer; }
+.app-logo { display:flex; align-items:center; gap:8px; cursor:pointer; flex:1; }
+.app-logo-img { width:34px; height:34px; border-radius:50%; object-fit:cover; }
+.app-logo h2 { font-family:'Playfair Display',serif; font-size:16px; color:var(--primary); margin:0; }
+.app-logo h2 span { color:var(--secondary); }
+.app-logo-sub { font-size:8px; color:var(--text-light); letter-spacing:1px; display:block; }
+.app-header-icons { display:flex; align-items:center; gap:14px; }
+.app-icon-btn { position:relative; background:none; border:none; font-size:19px; color:var(--text); cursor:pointer; padding:4px; }
+.app-icon-badge { position:absolute; top:-4px; right:-6px; background:var(--secondary); color:#fff; font-size:10px; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.app-greeting { font-size:17px; font-weight:600; color:var(--text); margin-bottom:8px; }
+.app-location-row { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--primary); font-weight:600; margin-bottom:12px; cursor:pointer; width:fit-content; }
+.app-search-bar { display:flex; align-items:center; gap:10px; background:var(--gray); border-radius:12px; padding:10px 14px; }
+.app-search-bar input { flex:1; border:none; background:transparent; outline:none; font-size:14px; font-family:'Poppins',sans-serif; }
+.app-search-bar i { color:var(--text-light); font-size:14px; }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <div class="header" id="siteHeader">
-        <div class="top-bar">
-            <div>
-                <i class="fas fa-phone"></i> 86107 03658 |
-                <i class="fas fa-envelope"></i> sumathisstyle@gmail.com |
-                <span class="experience-badge"><i class="fas fa-award"></i> 30 Years Experience</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:15px;">
-                <div id="locPill" onclick="document.getElementById('locPanel').style.display='flex';"
-                  style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:3px 8px;border-radius:4px;"
-                  onmouseover="this.style.background='rgba(255,255,255,0.1)'"
-                  onmouseout="this.style.background='transparent'">
-                  <i class="fas fa-map-marker-alt" style="color:#fff;font-size:12px;"></i>
-                  <span id="locLabel" style="color:rgba(255,255,255,0.75);font-size:12px;">Location not set</span>
-                  <span id="locLink" style="color:#D4A574;font-size:12px;font-weight:600;">Select delivery location</span>
-                  <i class="fas fa-chevron-right" style="color:#D4A574;font-size:10px;"></i>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showSection('home')">
+                <div class="logo-icon">
+                    <img src="uploads/lgo.jpg" alt="Sumathi's Style" class="logo-img">
                 </div>
-                <a href="https://www.instagram.com/_bridal__designer_/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.youtube.com/@sumathicateringserviceoffi4046/shorts" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://wa.me/918610703658" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <div>
+                    <h2>Sumathi's Style</h2>
+                    <span>TAILORING BOUTIQUE</span>
+                </div>
+            </div>
+ <div class="nav-links">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('shop')">Shop</a>
+                <a href="#" onclick="showSection('classes')">Classes</a>
+                <a href="#" onclick="showSection('custom')">Custom Order</a>
+                <a href="#" onclick="showSection('catering')">Catering Site</a>
+                <a href="#" onclick="showSection('contact')">Contact</a>
+                <a href="#" onclick="showSection('reviews')">Reviews</a>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="toggleCart()" title="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('wishlist')" title="Wishlist" id="wishlistNavBtn">
+                    <i class="fas fa-heart"></i>
+                    <span class="cart-count" id="wishlistCount" style="background:var(--danger);">0</span>
+                </button>
+
+                <button class="nav-btn" onclick="toggleNotifPanel()" title="Notifications" id="notifBellBtn">
+    <i class="fas fa-bell"></i>
+    <span class="cart-count" id="notifBadge" style="display:none;">0</span>
+</button>
+                <button class="nav-btn" onclick="showSection('settings')" title="Settings">
+                    <i class="fas fa-user-cog"></i>
+                </button>
+                <button class="login-btn" onclick="showModal('login')" id="loginBtn">Login</button>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
-    </div>
+    </nav>
 
     <!-- Location Panel / Add Address Modal / Toast — kept OUTSIDE .header so they are not
          trapped inside .header's stacking context (position:fixed + z-index:1000 on .header
@@ -1060,52 +1097,47 @@
     document.addEventListener('DOMContentLoaded',function(){locRender();});
     </script>
 
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo" onclick="showSection('home')">
-                <div class="logo-icon">
-                    <img src="uploads/lgo.jpg" alt="Sumathi's Style" class="logo-img">
-                </div>
+    <!-- App-style Header -->
+    <div class="app-header" id="appHeader">
+        <div class="app-header-top">
+            <button class="app-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+            <div class="app-logo" onclick="showSection('home')">
+                <img src="uploads/lgo.jpg" alt="Sumathi's Style" class="app-logo-img">
                 <div>
-                    <h2>Sumathi's Style</h2>
-                    <span>TAILORING BOUTIQUE</span>
+                    <h2>Sumathi's <span>Styles</span></h2>
+                    <span class="app-logo-sub">TAILORING BOUTIQUE</span>
                 </div>
             </div>
- <div class="nav-links">
-                <a href="#" onclick="showSection('home')">Home</a>
-                <a href="#" onclick="showSection('shop')">Shop</a>
-                <a href="#" onclick="showSection('classes')">Classes</a>
-                <a href="#" onclick="showSection('custom')">Custom Order</a>
-                <a href="#" onclick="showSection('catering')">Catering Site</a>
-                <a href="#" onclick="showSection('contact')">Contact</a>
-                <a href="#" onclick="showSection('reviews')">Reviews</a>
-            </div>
-            <div class="nav-actions">
-                <button class="nav-btn" onclick="toggleCart()" title="Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cartCount">0</span>
+            <div class="app-header-icons">
+                <button class="app-icon-btn" onclick="toggleNotifPanel()" id="notifBellBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="app-icon-badge" id="notifBadge" style="display:none;">0</span>
                 </button>
-                <button class="nav-btn" onclick="showSection('wishlist')" title="Wishlist" id="wishlistNavBtn">
+                <button class="app-icon-btn" onclick="showSection('wishlist')">
                     <i class="fas fa-heart"></i>
-                    <span class="cart-count" id="wishlistCount" style="background:var(--danger);">0</span>
+                    <span class="app-icon-badge" id="wishlistCount">0</span>
                 </button>
-
-                <button class="nav-btn" onclick="toggleNotifPanel()" title="Notifications" id="notifBellBtn">
-    <i class="fas fa-bell"></i>
-    <span class="cart-count" id="notifBadge" style="display:none;">0</span>
-</button>
-                <button class="nav-btn" onclick="showSection('settings')" title="Settings">
-                    <i class="fas fa-user-cog"></i>
-                </button>
-                <button class="login-btn" onclick="showModal('login')" id="loginBtn">Login</button>
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
+                <button class="app-icon-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="app-icon-badge" id="cartCount">0</span>
                 </button>
             </div>
         </div>
-    </nav>
 
+        <div class="app-greeting" id="appGreeting">Good Morning ✨</div>
+
+        <div class="app-location-row" onclick="document.getElementById('locPanel').style.display='flex';">
+            <i class="fas fa-map-marker-alt"></i>
+            <span id="appLocText">Deliver to Chennai</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+
+        <div class="app-search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="appSearchInput" placeholder="Search for sarees, blouses, aari work..." oninput="appSearchProducts(this.value)">
+            <i class="fas fa-camera"></i>
+        </div>
+    </div>
     <!-- Mobile Menu -->
     <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-nav" id="mobileNav">
@@ -2653,18 +2685,9 @@ function removeFromCart(productId) {
     });
 
      function adjustHeaderOffsets() {
-    const header = document.getElementById('siteHeader');
-    const navbar = document.getElementById('navbar');
-    if (!header || !navbar) return;
-
-    if (navbar.classList.contains('scrolled')) {
-        navbar.style.top = '0px';
-    } else {
-        navbar.style.top = header.offsetHeight + 'px';
-    }
-
-    const totalOffset = header.offsetHeight + navbar.offsetHeight;
-
+    const appHeader = document.getElementById('appHeader');
+    if (!appHeader) return;
+    const totalOffset = appHeader.offsetHeight;
     document.querySelectorAll('.page-section').forEach(sec => {
         sec.style.marginTop = totalOffset + 'px';
     });
@@ -2675,6 +2698,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadReviews();
     updateCartUI();
     adjustHeaderOffsets();
+    updateAppGreeting();
 
     // Restore login state from localStorage (shared with settings.html iframe)
     try {
@@ -2712,6 +2736,20 @@ document.addEventListener('DOMContentLoaded', function() {
             closePDModal();
         }
     });
+    function updateAppGreeting(){
+    const hour = new Date().getHours();
+    let greet = hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
+    const name = currentUser && currentUser.name && currentUser.name !== 'User' ? currentUser.name.split(' ')[0] : '';
+    document.getElementById('appGreeting').textContent = greet + (name ? ', ' + name : '') + ' ✨';
+}
+
+function appSearchProducts(q){
+    q = q.trim().toLowerCase();
+    showSection('shop');
+    if(!q){ filterProducts(currentCategory || 'All'); return; }
+    const filtered = products.filter(p => p.name.toLowerCase().includes(q) || (p.categoryLabel||'').toLowerCase().includes(q));
+    renderProducts('shopProducts', filtered);
+}
 
     
 
