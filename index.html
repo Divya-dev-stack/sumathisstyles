@@ -2774,7 +2774,8 @@ function playNotifSound() {
 
 async function fetchNotifications() {
     try {
-        const res = await fetch('get_notifications.php?ts=' + Date.now());
+        const phoneParam = currentUser && currentUser.phone ? '&phone=' + encodeURIComponent(currentUser.phone) : '';
+        const res = await fetch('get_notifications.php?ts=' + Date.now() + phoneParam);
         const data = await res.json();
         if (!Array.isArray(data)) return;
 
