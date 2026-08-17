@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
         Tween<double>(begin: 0, end: 1).animate(_controller);
 
     _scaleAnimation =
-        Tween<double>(begin: 0.7, end: 1.0).animate(
+        Tween<double>(begin: 0.85, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeOutBack,
@@ -47,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _checkLoginAndNavigate() async {
     final prefs = await SharedPreferences.getInstance();
-    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final bool isLoggedIn =
+        prefs.getBool('isLoggedIn') ?? false;
 
     if (!mounted) return;
 
@@ -83,11 +84,11 @@ class _SplashScreenState extends State<SplashScreen>
           // Light Overlay
           Positioned.fill(
             child: Container(
-              color: const Color(0xffF8F4EC).withValues(alpha: 0.70),
+              color: Colors.white.withAlpha(40),
             ),
           ),
 
-          // Main Content
+          // Logo & Loading
           Center(
             child: FadeTransition(
               opacity: _fadeAnimation,
@@ -97,18 +98,18 @@ class _SplashScreenState extends State<SplashScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    // Logo
+                    // Small Logo
                     Container(
-                      height: 140,
-                      width: 140,
+                      height: 100,
+                      width: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black12,
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+                            blurRadius: 15,
+                            offset: Offset(0, 6),
                           ),
                         ],
                       ),
@@ -120,42 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 30),
-
-                    const Text(
-                      "",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff0B6E69),
-                        letterSpacing: 1,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    const Text(
-                      "Tailoring Boutique",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xffC89A2B),
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 2,
-                      ),
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    const Text(
-                      "Crafted with Elegance",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black54,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-
-                    const SizedBox(height: 45),
+                    const SizedBox(height: 180),
 
                     const SizedBox(
                       width: 32,
