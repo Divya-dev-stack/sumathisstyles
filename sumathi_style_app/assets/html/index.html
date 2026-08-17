@@ -67,7 +67,7 @@
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,128,128,0.4); }
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; color: var(--primary); cursor: pointer; }
 
-        .hero { margin-top: 104px; min-height: auto; background: linear-gradient(135deg, rgba(0,128,128,0.93) 0%, rgba(26,42,58,0.95) 100%); display: flex; align-items: stretch; justify-content: space-between; text-align: left; color: var(--white); position: relative; overflow: hidden; padding: 0; }
+        .hero { min-height: auto; background: linear-gradient(135deg, rgba(0,128,128,0.93) 0%, rgba(26,42,58,0.95) 100%); display: flex; align-items: stretch; justify-content: space-between; text-align: left; color: var(--white); position: relative; overflow: hidden; padding: 0; }
         .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; }
         .hero-content { position: relative; z-index: 2; max-width: 480px; padding: 40px 30px; display: flex; flex-direction: column; justify-content: center; }
         .hero-badge { display: none; }
@@ -122,25 +122,28 @@
         .category-card p { font-size: 12px; color: var(--text-light); }
 
         .products-grid {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding-bottom: 10px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+       
         .products-grid::-webkit-scrollbar { display: none; }
-          .products-grid .product-card {
+        .products-grid .product-card {
     flex: 0 0 auto;
-    flex-shrink: 0;      /* ← add pannunga */
-    width: 160px;
-    max-width: 160px;    /* ← add pannunga, safety ku */
+    flex-shrink: 0;
+    width: 210px;
+    max-width: 210px;
     scroll-snap-align: start;
 }
         .product-card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; position: relative; cursor: pointer; display: flex; flex-direction: column; height: auto;  }
         .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
-        .product-img { width: 100%; height: 120px; object-fit: cover; display: block; }
+        .product-img { width: 100%; height: 250px; object-fit: cover; display: block; }
         .product-badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--dark); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .product-badge.hot { background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; }
         .product-badge.new { background: linear-gradient(135deg, var(--success), #2ed573); color: white; }
@@ -538,9 +541,20 @@
     .login-btn { padding: 8px 14px; font-size: 12px; }
 }
     .categories-grid { 
-        grid-template-columns: repeat(5, 1fr); 
-        gap: 8px; 
-    }
+    display: flex;
+    overflow-x: auto;
+    gap: 14px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.categories-grid::-webkit-scrollbar { display: none; }
+.categories-grid .category-card {
+    flex: 0 0 auto;
+    width: 90px;
+    scroll-snap-align: start;
+}
   
     .category-card { 
         padding: 10px 4px; 
@@ -624,6 +638,16 @@
       .price-item-name { font-size:14px; color:var(--text); font-weight:500; }
       .price-item-value { font-size:14px; color:var(--primary); font-weight:700; white-space:nowrap; margin-left:10px; }
 
+      /* ===== HERO SLIDER — proper overlay carousel with dots ===== */
+      .hero-slider { position: relative; overflow: hidden; min-height: 420px; }
+      .hero-slide { position: absolute !important; top: 0; left: 0; width: 100%; height: 100%; margin-top: 0 !important; opacity: 0; visibility: hidden; transition: opacity 0.7s ease; }
+      .hero-slide.active { opacity: 1; visibility: visible; z-index: 2; }
+      .hero-dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 6; }
+      .hero-dot { width: 8px; height: 8px; border-radius: 50%; border: none; background: rgba(255,255,255,0.55); cursor: pointer; padding: 0; transition: all 0.3s; }
+      .hero-dot.active { background: var(--secondary); width: 22px; border-radius: 4px; }
+
+      /* ===== App-header login button ===== */
+      .app-login-btn { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; border: none; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 
       /* ===== FULL MOBILE RESPONSIVE FIX ===== */
 @media (max-width: 768px) {
@@ -646,13 +670,17 @@
     .login-btn { padding: 7px 12px; font-size: 12px; }
 
     /* ---- Hero ---- */
-    .hero { min-height: 70vh; padding: 0 15px; }
-    .hero h2 { font-size: 30px; }
-    .hero p { font-size: 14px; }
+    .hero-slider { min-height: 340px; border-radius: 0 0 24px 24px; overflow: hidden; }
+    .hero { min-height: 340px; padding: 0; flex-direction: column-reverse; }
+    .hero-content { padding: 18px 20px 40px; max-width: 100%; }
+    .hero h2 { font-size: 22px; margin-bottom: 6px; }
+    .hero p { font-size: 12px; margin-bottom: 14px; }
     .hero-exp { font-size: 13px; margin-bottom: 25px; }
     .hero-badge { font-size: 11px; padding: 8px 18px; }
-    .hero-btns { flex-direction: column; width: 100%; }
-    .btn-primary, .btn-outline, .btn-secondary, .btn-call { width: 100%; justify-content: center; padding: 12px 20px; font-size: 14px; }
+    .hero-btns { flex-direction: row; width: auto; }
+    .hero-btns .btn-primary { width: auto; padding: 10px 20px; font-size: 13px; }
+    .hero-img-wrap { flex: none; max-width: 100%; height: 170px; }
+    .hero-img-wrap::before { display: none; }
 
     /* ---- Stats Bar ---- */
     .stats-bar { padding: 30px 15px; }
@@ -667,12 +695,12 @@
     .section-header p { font-size: 13px; }
 
     /* ---- Products Grid ---- */
-    .products-grid .product-card {
-    width: 140px;
-    max-width: 140px;    /* ← add pannunga */
+   .products-grid .product-card {
+    width: 165px;
+    max-width: 165px;
     flex-shrink: 0;
 }
-    .product-img { height: 100px; }
+    .product-img { height: 200px; }
     .product-info { padding: 12px; }
     .product-info h3 { font-size: 13px; }
     .product-info p { font-size: 11px; margin-bottom: 8px; }
@@ -917,9 +945,86 @@
 .app-search-bar { display:flex; align-items:center; gap:10px; background:var(--gray); border-radius:12px; padding:10px 14px; }
 .app-search-bar input { flex:1; border:none; background:transparent; outline:none; font-size:14px; font-family:'Poppins',sans-serif; }
 .app-search-bar i { color:var(--text-light); font-size:14px; }
+.app-quick-cats {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    gap: 16px;
+    margin-top: 14px;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+.app-quick-cats::-webkit-scrollbar { display: none; }
+.app-quick-cat-item {
+    flex: 0 0 auto;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-align: center;
+}
+.app-quick-cat-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: #FDF1E7;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+.app-quick-cat-item:active .app-quick-cat-icon {
+    transform: scale(0.92);
+    background: #F9E4D0;
+}
+.app-quick-cat-item span {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 26px;
+    width: 100%;
+}
+@media (max-width: 768px) {
+    .app-quick-cats { gap: 12px; }
+    .app-quick-cat-item { width: 62px; }
+    .app-quick-cat-icon { width: 52px; height: 52px; border-radius: 14px; }
+    .app-quick-cat-item span { font-size: 10px; min-height: 24px; }
+}
+/* ===== Product Scroll Wrapper with Arrows ===== */
+.product-scroll-wrap { position: relative; }
+.product-scroll-arrow {
+    position: absolute; top: 45%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #fff; border: 1px solid #e0e0e0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    z-index: 5; color: var(--primary); font-size: 16px;
+    transition: all 0.2s;
+}
+.product-scroll-arrow:hover { background: var(--primary); color: #fff; }
+.product-scroll-arrow.left { left: -18px; }
+.product-scroll-arrow.right { right: -18px; }
+
+/* Hide arrows on mobile — swipe only there */
+@media (max-width: 768px) {
+    .product-scroll-arrow { display: none; }
+    .product-scroll-wrap { margin: 0; }
+}
+
     </style>
 </head>
-<body>
+ <body>
 
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
@@ -942,6 +1047,7 @@
                 <a href="#" onclick="showSection('contact')">Contact</a>
                 <a href="#" onclick="showSection('reviews')">Reviews</a>
             </div>
+
             <div class="nav-actions">
                 <button class="nav-btn" onclick="toggleCart()" title="Cart">
                     <i class="fas fa-shopping-cart"></i>
@@ -952,7 +1058,7 @@
                     <span class="cart-count" id="wishlistCount" style="background:var(--danger);">0</span>
                 </button>
 
-                <button class="nav-btn" onclick="toggleNotifPanel()" title="Notifications" id="notifBellBtn">
+                <button class="nav-btn" onclick="toggleNotifPanel(event)" title="Notifications" id="notifBellBtn">
     <i class="fas fa-bell"></i>
     <span class="cart-count" id="notifBadge" style="display:none;">0</span>
 </button>
@@ -1105,6 +1211,14 @@
     locToastMsg('📍 Delivering to '+a.name+'!');
 }
     document.addEventListener('DOMContentLoaded',function(){locRender();});
+
+    function scrollProductGrid(gridId, direction) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    const card = grid.querySelector('.product-card');
+    const scrollAmount = card ? (card.offsetWidth + 18) * 2 : 400; // scroll ~2 cards at a time
+    grid.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+}
     </script>
 
     <!-- App-style Header -->
@@ -1119,9 +1233,9 @@
                 </div>
             </div>
             <div class="app-header-icons">
-                <button class="app-icon-btn" onclick="toggleNotifPanel()" id="notifBellBtn">
+                <button class="app-icon-btn" onclick="toggleNotifPanel(event)" id="notifBellBtnMobile">
                     <i class="fas fa-bell"></i>
-                    <span class="app-icon-badge" id="notifBadge" style="display:none;">0</span>
+                    <span class="app-icon-badge" id="notifBadgeMobile" style="display:none;">0</span>
                 </button>
                 <button class="app-icon-btn" onclick="showSection('wishlist')">
                     <i class="fas fa-heart"></i>
@@ -1134,7 +1248,10 @@
             </div>
         </div>
 
-        <div class="app-greeting" id="appGreeting">Good Morning ✨</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;">
+            <div class="app-greeting" id="appGreeting" style="margin-bottom:0;">Good Morning ✨</div>
+            <button class="app-login-btn" id="appLoginBtn" onclick="showModal('login')">Login</button>
+        </div>
 
         <div class="app-location-row" onclick="document.getElementById('locPanel').style.display='flex';">
             <i class="fas fa-map-marker-alt"></i>
@@ -1147,6 +1264,49 @@
             <input type="text" id="appSearchInput" placeholder="Search for sarees, blouses, aari work..." oninput="appSearchProducts(this.value)">
             <i class="fas fa-camera"></i>
         </div>
+        <div class="app-quick-cats">
+    <div class="app-quick-cat-item" onclick="filterProducts('Kids')">
+        <div class="app-quick-cat-icon"><img src="Screenshot 2026-07-12 204545.png" alt="Kids Wear" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Kids Wear</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Uniform')">
+        <div class="app-quick-cat-icon"><img src="unifrom.png" alt="Uniform" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Uniform</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Modern')">
+        <div class="app-quick-cat-icon"><img src="Modernwear.png" alt="Modern Wear" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Modern Wear</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Salwar')">
+        <div class="app-quick-cat-icon"><img src="salwar.png" alt="Salwar" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Salwar</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Blouse')">
+        <div class="app-quick-cat-icon"><img src="Blouse.png" alt="Blouse" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Blouse</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Aari')">
+        <div class="app-quick-cat-icon"><img src="Aari wrk.png" alt="Aari Work" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Aari Work</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Saree')">
+        <div class="app-quick-cat-icon"><img src="SareePrepleting.png" alt="Saree" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Saree Pre-pleating</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Frock')">
+        <div class="app-quick-cat-icon"><img src="Frocks.png" alt="Frock" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Frocks</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Lehenga')">
+        <div class="app-quick-cat-icon"><img src="lenghagha.png" alt="Lehenga" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Lehenga</span>
+    </div>
+    <div class="app-quick-cat-item" onclick="filterProducts('Kurthi')">
+        <div class="app-quick-cat-icon"><img src="kurthi.png" alt="Kurthi" style="width:100%;height:100%;object-fit:cover;border-radius:16px;"></div>
+        <span>Kurthi</span>
+    </div>
+</div>
+</div>
     </div>
     <!-- Mobile Menu -->
     <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
@@ -1265,53 +1425,56 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="mainContent">
-
-        <!-- HOME -->
+       <!-- Main Content -->
         <div id="home" class="page-section">
-          <section class="hero">
-                <div class="hero-content">
-                    <h2>Traditional Elegance<span>Modern Style</span></h2>
-                    <p>Custom Stitching &bull; Bridal Wear &bull; Aari Work</p>
-                    <div class="hero-btns">
-                        <a href="#" class="btn-primary" onclick="showSection('shop')"><i class="fas fa-arrow-right"></i> Shop Now</a>
-                    </div>
-                </div>
-                <div class="hero-img-wrap">
-                    <img src="uploads/model.png" alt="Bridal Wear">
-                </div>
-            </section>
-
-            <div class="stats-bar">
-                <div class="stats-grid">
-                    <div class="stat-item"><i class="fas fa-award"></i><h3>30+</h3><p>Years Experience</p></div>
-                    <div class="stat-item"><i class="fas fa-users"></i><h3>5000+</h3><p>Happy Customers</p></div>
-                    <div class="stat-item"><i class="fas fa-tshirt"></i><h3>50+</h3><p>Designs Available</p></div>
-                    <div class="stat-item"><i class="fas fa-heart"></i><h3>100%</h3><p>Satisfaction</p></div>
-                </div>
+            <section class="hero-slider" id="heroSlider">
+    <div class="hero-slide active hero">
+        <div class="hero-content">
+            <h2>Traditional Elegance<span>Modern Style</span></h2>
+            <p>Custom Stitching &bull; Bridal Wear &bull; Aari Work</p>
+            <div class="hero-btns">
+                <a href="shop.html" class="btn-primary" onclick="showSection('shop')"><i class="fas fa-arrow-right"></i> Shop Now</a>
             </div>
+        </div>
+        <div class="hero-img-wrap">
+            <img src="uploads/model.png" alt="Shop Now">
+        </div>
+    </div>
+
+    <div class="hero-slide hero">
+        <div class="hero-content">
+            <h2>Exclusive<span>Bridal Package</span></h2>
+            <p>Full Bridal Set &bull; Aari Work &bull; Custom Fit</p>
+            <div class="hero-btns">
+                <a href="poster.html" class="btn-primary" onclick="filterProducts('Lehenga')"><i class="fas fa-arrow-right"></i> Bridal Package</a>
+            </div>
+        </div>
+        <div class="hero-img-wrap">
+            <img src="uploads/model.png" alt="Bridal Package">
+        </div>
+    </div>
+
+    <div class="hero-slide hero">
+        <div class="hero-content">
+            <h2>Design It<span>Your Way</span></h2>
+            <p>Any Design &bull; Any Fabric &bull; Perfect Fit</p>
+            <div class="hero-btns">
+                <a href="" class="btn-primary" onclick="showSection('custom')"><i class="fas fa-arrow-right"></i> Custom Order</a>
+            </div>
+        </div>
+        <div class="hero-img-wrap">
+            <img src="uploads/model.png" alt="Custom Order">
+        </div>
+    </div>
+
+    <div class="hero-dots" id="heroDots"></div>
+</section>
+
+           
 
             <section class="section">
                 <div class="section-header">
-                    <h2>Our Categories</h2>
-                    <p>Explore our exclusive women's wear collections</p>
-                    <div class="line"></div>
-                </div>
-                <div class="categories-grid" style="margin-top:1.5rem;">
-                    <div class="category-card" onclick="filterProducts('Kids')"><div class="category-icon"><img src="Screenshot 2026-07-12 204545.png" alt="Kids Wear"></div><h3>Kids Wear</h3><p>Adorable outfits</p></div>
-                    <div class="category-card" onclick="filterProducts('Uniform')"><div class="category-icon"><img src="unifrom.png" alt="Uniform"></div><h3>Uniform</h3><p>School & work</p></div>
-                    <div class="category-card" onclick="filterProducts('Modern')"><div class="category-icon"><img src="Modernwear.png" alt="Modern Wear"></div><h3>Modern Wear</h3><p>Western styles</p></div>
-                    <div class="category-card" onclick="filterProducts('Salwar')"><div class="category-icon"><img src="salwar.png" alt="Salwar"></div><h3>Salwar</h3><p>Designer suits</p></div>
-                    <div class="category-card" onclick="filterProducts('Blouse')"><div class="category-icon"><img src="Blouse.png" alt="Blouse"></div><h3>Blouse</h3><p>From ₹400</p></div>
-                </div>
-                <div class="categories-grid" style="margin-top:1.5rem;">
-                    <div class="category-card" onclick="filterProducts('Aari')"><div class="category-icon"><img src="Aari wrk.png" alt="Aari Work"></div><h3>Aari Work</h3><p>Hand embroidery</p></div>
-                    <div class="category-card" onclick="filterProducts('Saree')"><div class="category-icon"><img src="SareePrepleting.png" alt="Saree"></div><h3>Saree</h3><p>Pre-pleating</p></div>
-                    <div class="category-card" onclick="filterProducts('Frock')"><div class="category-icon"><img src="Frocks.png" alt="Frock"></div><h3>Frocks</h3><p>Party & daily</p></div>
-                    <div class="category-card" onclick="filterProducts('Lehenga')"><div class="category-icon"><img src="lenghagha.png" alt="Lehenga"></div><h3>Lehenga</h3><p>Bridal & party</p></div>
-                    <div class="category-card" onclick="filterProducts('Kurthi')"><div class="category-icon"><img src="kurthi.png" alt="Kurthi"></div><h3>Kurthi</h3><p>Ethnic wear</p></div>
-                </div>
+                    
             </section>
 
             <section class="section" style="background: var(--gray); padding-top:60px; padding-bottom:60px; max-width:100%;">
@@ -1321,7 +1484,15 @@
                         <p>Handpicked designs — 30 years of crafting perfection</p>
                         <div class="line"></div>
                     </div>
-                    <div class="products-grid" id="featuredProducts"></div>
+                    <div class="product-scroll-wrap">
+    <div class="product-scroll-arrow left" onclick="scrollProductGrid('featuredProducts', -1)">
+        <i class="fas fa-chevron-left"></i>
+    </div>
+    <div class="products-grid" id="featuredProducts"></div>
+    <div class="product-scroll-arrow right" onclick="scrollProductGrid('featuredProducts', 1)">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+</div>
                     <div style="text-align:center; margin-top:40px;">
                         <button class="btn-primary" onclick="filterProducts('All')"><i class="fas fa-arrow-right"></i> View All Products</button>
                     </div>
@@ -2096,7 +2267,7 @@ function removeFromCart(productId) {
 
     function updateCartUI() {
         const count = cart.reduce((sum, item) => sum + item.qty, 0);
-        document.getElementById('cartCount').textContent = count;
+        document.querySelectorAll('#cartCount').forEach(el => el.textContent = count);
         const cartItems = document.getElementById('cartItems');
         const cartFooter = document.getElementById('cartFooter');
         if (cart.length === 0) {
@@ -2384,9 +2555,13 @@ function removeFromCart(productId) {
     function closeModal(type) { document.getElementById(type + 'Modal').classList.remove('active'); }
 
     function toggleMobileMenu() {
-        document.getElementById('mobileNav').classList.toggle('active');
-        document.getElementById('mobileOverlay').classList.toggle('active');
-    }
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    if (!nav || !overlay) { console.error('mobileNav or mobileOverlay missing!'); return; }
+    nav.classList.toggle('active');
+    overlay.classList.toggle('active');
+}
+    
 
     function sendOTP() {
         const phone = document.getElementById('loginPhone').value;
@@ -2411,6 +2586,8 @@ function removeFromCart(productId) {
             closeModal('login');
             document.getElementById('loginBtn').textContent = 'Hi, User';
             document.getElementById('loginBtn').onclick = () => showSection('settings');
+            const appLoginBtn1 = document.getElementById('appLoginBtn');
+            if (appLoginBtn1) { appLoginBtn1.textContent = 'Hi, User'; appLoginBtn1.onclick = () => showSection('settings'); }
             document.getElementById('profileName').textContent = 'User';
             document.getElementById('profilePhone').textContent = '+91' + phone;
             document.getElementById('viewMobile').textContent = '+91' + phone;
@@ -2439,6 +2616,8 @@ function removeFromCart(productId) {
             closeModal('register');
             document.getElementById('loginBtn').textContent = 'Hi, ' + name.split(' ')[0];
             document.getElementById('loginBtn').onclick = () => showSection('settings');
+            const appLoginBtn2 = document.getElementById('appLoginBtn');
+            if (appLoginBtn2) { appLoginBtn2.textContent = 'Hi, ' + name.split(' ')[0]; appLoginBtn2.onclick = () => showSection('settings'); }
             document.getElementById('profileName').textContent = name;
             document.getElementById('profilePhone').textContent = '+91' + phone;
             document.getElementById('viewMobile').textContent = '+91' + phone;
@@ -2453,6 +2632,8 @@ function removeFromCart(productId) {
         localStorage.removeItem('sumathiUser');
         document.getElementById('loginBtn').textContent = 'Login';
         document.getElementById('loginBtn').onclick = () => showModal('login');
+        const appLoginBtn3 = document.getElementById('appLoginBtn');
+        if (appLoginBtn3) { appLoginBtn3.textContent = 'Login'; appLoginBtn3.onclick = () => showModal('login'); }
         document.getElementById('profileName').textContent = 'Guest User';
         document.getElementById('profilePhone').textContent = 'Not logged in';
         showToast('Logged out!', 'success');
@@ -2463,7 +2644,7 @@ function removeFromCart(productId) {
         const idx = wishlist.indexOf(id);
         if (idx === -1) { wishlist.push(id); showToast('Added to Wishlist! ❤️', 'success'); }
         else { wishlist.splice(idx, 1); showToast('Removed from Wishlist', ''); }
-        document.getElementById('wishlistCount').textContent = wishlist.length;
+        document.querySelectorAll('#wishlistCount').forEach(el => el.textContent = wishlist.length);
         renderProducts('shopProducts', (currentCategory === 'All' || currentCategory === 'all') ? products : products.filter(p => categoryMatches(p, currentCategory)));
         renderProducts('featuredProducts', products.slice(0, 8));
         renderWishlistPage();
@@ -2681,6 +2862,8 @@ function removeFromCart(productId) {
             if (u.name) {
                 document.getElementById('loginBtn').textContent = 'Hi, ' + u.name.split(' ')[0];
                 document.getElementById('loginBtn').onclick = () => showSection('settings');
+                const appLoginBtn4 = document.getElementById('appLoginBtn');
+                if (appLoginBtn4) { appLoginBtn4.textContent = 'Hi, ' + u.name.split(' ')[0]; appLoginBtn4.onclick = () => showSection('settings'); }
                 document.getElementById('profileName').textContent = u.name;
                 document.getElementById('viewFirstName').textContent = u.name.split(' ')[0];
                 document.getElementById('viewLastName').textContent = u.name.split(' ').slice(1).join(' ') || '—';
@@ -2700,6 +2883,8 @@ function removeFromCart(productId) {
     document.querySelectorAll('.page-section').forEach(sec => {
         sec.style.marginTop = totalOffset + 'px';
     });
+    const heroSlider = document.getElementById('heroSlider');
+    if (heroSlider) heroSlider.style.marginTop = totalOffset + 'px';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -2716,6 +2901,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentUser = savedUser;
             document.getElementById('loginBtn').textContent = 'Hi, ' + (savedUser.name ? savedUser.name.split(' ')[0] : 'User');
             document.getElementById('loginBtn').onclick = () => showSection('settings');
+            const appLoginBtn5 = document.getElementById('appLoginBtn');
+            if (appLoginBtn5) { appLoginBtn5.textContent = 'Hi, ' + (savedUser.name ? savedUser.name.split(' ')[0] : 'User'); appLoginBtn5.onclick = () => showSection('settings'); }
             document.getElementById('profileName').textContent = savedUser.name || 'User';
             document.getElementById('profilePhone').textContent = '+91' + savedUser.phone;
             document.getElementById('viewMobile').textContent = '+91' + savedUser.phone;
@@ -2803,61 +2990,18 @@ async function fetchNotifications() {
 
 function updateNotifBadge() {
     const unread = allNotifications.filter(n => Number(n.id) > lastSeenNotifId).length;
-    const badge = document.getElementById('notifBadge');
-    if (!badge) return;
-    if (unread > 0) {
-        badge.textContent = unread;
-        badge.style.display = 'flex';
-    } else {
-        badge.style.display = 'none';
-    }
-}
-  
-  function toggleNotifPanel(e) {
-    if (e) e.stopPropagation();
-
-    let panel = document.getElementById('notifDropdownPanel');
-    const appHeader = document.getElementById('appHeader');
-    const headerHeight = appHeader ? appHeader.offsetHeight : 104;
-
-    if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'notifDropdownPanel';
-        panel.style.cssText = "position:fixed; top:" + (headerHeight + 8) + "px; right:15px; width:340px; max-height:70vh; overflow-y:auto; background:#fff; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:5000; padding:10px 0;";
-        document.body.appendChild(panel);
-    } else {
-        panel.style.top = (headerHeight + 8) + 'px';
-    }
-
-    const isOpen = panel.style.display === 'block';
-    if (isOpen) {
-        panel.style.display = 'none';
-        return;
-    }
-
-    if (allNotifications.length) {
-        lastSeenNotifId = Math.max(...allNotifications.map(n => Number(n.id)));
-        localStorage.setItem('sumathiLastSeenNotifId', lastSeenNotifId);
-    }
-    updateNotifBadge();
-
-    if (!allNotifications.length) {
-        panel.innerHTML = '<div style="padding:30px 20px;text-align:center;color:#888;"><i class="fas fa-bell-slash" style="font-size:30px;color:#ddd;margin-bottom:10px;display:block;"></i>No notifications yet</div>';
-    } else {
-        panel.innerHTML = [...allNotifications].reverse().map(function(n) {
-            const dateStr = n.created_at ? new Date(n.created_at).toLocaleString('en-IN') : '';
-            return '<div style="padding:12px 18px;border-bottom:1px solid #f0f0f0;">' +
-                '<div style="font-weight:700;font-size:14px;color:#212121;margin-bottom:3px;">' + n.title + '</div>' +
-                '<div style="font-size:13px;color:#666;line-height:1.4;">' + n.message + '</div>' +
-                '<div style="font-size:11px;color:#aaa;margin-top:5px;">' + dateStr + '</div>' +
-                '</div>';
-        }).join('');
-    }
-
-    panel.style.display = 'block';
+    document.querySelectorAll('#notifBadge, #notifBadgeMobile').forEach(function(badge) {
+        if (!badge) return;
+        if (unread > 0) {
+            badge.textContent = unread;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    });
 }
 
-   function toggleNotifPanel(e) {
+function toggleNotifPanel(e) {
     if (e) e.stopPropagation();
 
     let panel = document.getElementById('notifDropdownPanel');
@@ -2904,21 +3048,7 @@ function updateNotifBadge() {
 // Close panel when clicking outside
 document.addEventListener('click', function(e) {
     const panel = document.getElementById('notifDropdownPanel');
-    const bellBtn = document.getElementById('notifBellBtn');
-    if (panel && panel.style.display === 'block' && !panel.contains(e.target) && !bellBtn.contains(e.target)) {
-        panel.style.display = 'none';
-    }
-});
-
-// Initial fetch + poll every 15 seconds for new notifications
-fetchNotifications();
-setInterval(fetchNotifications, 15000);
-
-// Close panel when clicking outside
-document.addEventListener('click', function(e) {
-    const panel = document.getElementById('notifDropdownPanel');
-    const bellBtn = document.getElementById('notifBellBtn');
-    if (panel && panel.style.display === 'block' && !panel.contains(e.target) && !bellBtn.contains(e.target)) {
+    if (panel && panel.style.display === 'block' && !panel.contains(e.target) && !e.target.closest('#notifBellBtn, #notifBellBtnMobile')) {
         panel.style.display = 'none';
     }
 });
@@ -2937,6 +3067,47 @@ setInterval(fetchNotifications, 15000);
         });
     }
 });
+// ===== HERO SLIDER LOGIC =====
+(function(){
+    const slides = document.querySelectorAll('#heroSlider .hero-slide');
+    const dotsWrap = document.getElementById('heroDots');
+    let current = 0, autoTimer = null;
+
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsWrap.appendChild(dot);
+    });
+    const dots = document.querySelectorAll('.hero-dot');
+
+    function goToSlide(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        resetAutoSlide();
+    }
+
+    function nextSlide() { goToSlide(current + 1); }
+
+    function resetAutoSlide() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(nextSlide, 4000);
+    }
+    resetAutoSlide();
+
+    let touchStartX = 0;
+    const slider = document.getElementById('heroSlider');
+    slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+            diff > 0 ? nextSlide() : goToSlide(current - 1);
+        }
+    }, { passive: true });
+})();
 
     </script>
 </body>
