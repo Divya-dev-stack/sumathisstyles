@@ -7,7 +7,7 @@ mysqli_report(MYSQLI_REPORT_OFF);
 // fall back to localhost/root/blank — same file works in both places.
 define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
 define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'ELcRETJebXRSvogeqSHoHPtJTNaWDPDJ');
 define('DB_NAME', getenv('MYSQLDATABASE') ?: 'product_db');
 define('DB_PORT', getenv('MYSQLPORT') ?: 3306);
 
