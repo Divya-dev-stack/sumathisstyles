@@ -37,6 +37,23 @@ body { font-family:'Poppins',sans-serif; background:var(--light); color:var(--te
 .acc-grid-item span { font-size:12.5px; font-weight:600; color:var(--text); }
 @media (max-width:640px){ .acc-grid { grid-template-columns:repeat(4,1fr); gap:8px; } .acc-grid-item { padding:14px 4px; } .acc-grid-item i{ font-size:18px; } .acc-grid-item span{ font-size:10.5px; } }
 
+@media (max-width:480px){
+    .acc-wrap { padding:14px 12px 50px; }
+    .acc-profile-card { padding:20px 16px; gap:14px; border-radius:16px; }
+    .acc-avatar { width:52px; height:52px; font-size:22px; }
+    .acc-profile-info h2 { font-size:17px; }
+    .acc-profile-info p { font-size:12px; }
+    .acc-login-btn { padding:8px 18px; font-size:12px; }
+    .acc-grid { gap:8px; }
+    .acc-grid-item { padding:14px 4px; border-radius:12px; }
+    .acc-grid-item i { font-size:18px; margin-bottom:6px; }
+    .acc-grid-item span { font-size:10.5px; }
+    .acc-menu-section-title { font-size:11px; padding:12px 16px 6px; }
+    .acc-menu-row { padding:13px 16px; gap:12px; }
+    .acc-menu-row span.acc-label { font-size:13.5px; }
+    .acc-menu-row i.acc-ico { font-size:15px; }
+}
+
 /* List Menu */
 .acc-menu-card { background:var(--white); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; margin-bottom:20px; }
 .acc-menu-section-title { font-size:12px; font-weight:700; color:var(--text-light); letter-spacing:0.5px; text-transform:uppercase; padding:14px 20px 6px; }

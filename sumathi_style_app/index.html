@@ -87,6 +87,67 @@
             .hero h2 { font-size: 26px; }
             .hero-img-wrap { flex: none; max-width: 100%; height: 180px; }
         }
+        @media (max-width:768px){
+
+.contact-container{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.contact-info{
+    order:2;
+    width:100%;
+}
+
+.contact-form{
+    order:1;
+    width:100%;
+}
+
+.social-buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.social-buttons a{
+    width:100%;
+    justify-content:center;
+}
+
+.contact-card{
+    padding:18px;
+    border-radius:20px;
+}
+
+.contact-card .icon{
+    width:55px;
+    height:55px;
+    font-size:22px;
+}
+
+.contact-card h4{
+    font-size:22px;
+}
+
+.contact-card p{
+    font-size:17px;
+}
+
+.contact-form input,
+.contact-form textarea{
+    width:100%;
+    font-size:17px;
+}
+
+.contact-form button{
+    width:100%;
+    height:58px;
+    border-radius:35px;
+}
+
+}
         .btn-primary { background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--dark); padding: 14px 35px; border-radius: 30px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--copper-glow); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(184,115,51,0.4); }
         .btn-outline { background: transparent; color: var(--white); padding: 14px 35px; border-radius: 30px; font-size: 15px; font-weight: 700; border: 2px solid var(--secondary); cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
@@ -669,18 +730,19 @@
     .nav-btn { font-size: 17px; padding: 6px; }
     .login-btn { padding: 7px 12px; font-size: 12px; }
 
-    /* ---- Hero ---- */
-    .hero-slider { min-height: 340px; border-radius: 0 0 24px 24px; overflow: hidden; }
-    .hero { min-height: 340px; padding: 0; flex-direction: column-reverse; }
-    .hero-content { padding: 18px 20px 40px; max-width: 100%; }
-    .hero h2 { font-size: 22px; margin-bottom: 6px; }
-    .hero p { font-size: 12px; margin-bottom: 14px; }
+            /* ---- Hero (side-by-side, compact, fallback colour if image fails) ---- */
+    .hero-slider { min-height: 190px; border-radius: 0 0 24px 24px; overflow: hidden; }
+    .hero { min-height: 190px; padding: 0; flex-direction: row; align-items: stretch; }
+    .hero-content { padding: 14px 12px; max-width: 60%; justify-content: center; }
+    .hero h2 { font-size: 15px; margin-bottom: 3px; line-height: 1.2; }
+    .hero p { font-size: 9.5px; margin-bottom: 8px; }
     .hero-exp { font-size: 13px; margin-bottom: 25px; }
     .hero-badge { font-size: 11px; padding: 8px 18px; }
     .hero-btns { flex-direction: row; width: auto; }
-    .hero-btns .btn-primary { width: auto; padding: 10px 20px; font-size: 13px; }
-    .hero-img-wrap { flex: none; max-width: 100%; height: 170px; }
-    .hero-img-wrap::before { display: none; }
+    .hero-btns .btn-primary { width: auto; padding: 6px 12px; font-size: 10px; }
+    .hero-img-wrap { flex: 0 0 40%; max-width: 40%; height: auto; background: #0006; }
+    .hero-img-wrap::before { display: block; }
+    .hero-img-wrap img { object-position: top center; height: 100%; width: 100%; object-fit: cover; }
 
     /* ---- Stats Bar ---- */
     .stats-bar { padding: 30px 15px; }
@@ -708,14 +770,45 @@
     .product-actions { padding: 0 12px 12px; flex-direction: column; gap: 8px; }
     .btn-add-cart, .btn-buy { padding: 8px; font-size: 12px; }
 
-    /* ---- Classes ---- */
-    .classes-grid { grid-template-columns: 1fr; gap: 18px; }
-    .class-content { padding: 18px; }
+       /* ---- Classes (compact horizontal cards, image left) ---- */
+    .classes-grid { grid-template-columns: 1fr; gap: 14px; }
+    .class-card { display: flex; flex-direction: row; align-items: stretch; border-radius: 16px; }
+    .class-img { width: 110px; min-width: 110px; height: auto; object-fit: cover; flex-shrink: 0; }
+    .class-content { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .class-content h3 { font-size: 15px; margin-bottom: 6px; }
+    .class-content p {
+        font-size: 11.5px; margin-bottom: 10px; line-height: 1.4;
+        display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .class-meta { font-size: 10.5px; gap: 8px; margin-bottom: 10px; }
+    .btn-enroll { padding: 9px; font-size: 12px; border-radius: 20px; }
 
-    /* ---- Custom Order ---- */
-    .custom-order { grid-template-columns: 1fr; gap: 30px; padding: 30px 20px; border-radius: 20px; }
-    .custom-order h2 { font-size: 26px; }
-    .custom-form { padding: 22px; }
+        /* ---- Custom Order ---- */
+    .custom-order { grid-template-columns: 1fr; gap: 22px; padding: 26px 18px; border-radius: 20px; }
+    .custom-order h2 { font-size: 24px; margin-bottom: 12px; }
+    .custom-order > div:first-child { display: flex; flex-direction: column; }
+    .custom-order > div:first-child p { order: 1; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+    .custom-features {
+        order: 2;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px;
+    }
+    .custom-feature {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 14px;
+    }
+    .custom-feature i {
+        width: 36px; height: 36px; min-width: 36px;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, var(--secondary), var(--secondary-light)) !important;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px;
+    }
+    .custom-feature span { font-size: 14px; font-weight: 500; }
+    .custom-form { padding: 22px; margin-top: 4px; }
     .form-row { grid-template-columns: 1fr; gap: 12px; }
 
     /* ---- Contact ---- */
@@ -1022,6 +1115,58 @@
 @media (max-width: 768px) {
     .product-scroll-arrow { display: none; }
     .product-scroll-wrap { margin: 0; }
+}
+@media (max-width:768px){
+
+.reviews-grid{
+
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+
+}
+
+.review-card{
+
+    width:100%;
+    border-radius:22px;
+    padding:24px;
+
+}
+
+.review-header{
+
+    gap:16px;
+
+}
+
+.review-avatar{
+
+    width:56px;
+    height:56px;
+    font-size:28px;
+
+}
+
+.review-info h3{
+
+    font-size:18px;
+
+}
+
+.review-stars{
+
+    font-size:15px;
+
+}
+
+.review-card p{
+
+    font-size:16px;
+    line-height:1.8;
+
+}
+
 }
 
     </style>
@@ -2520,7 +2665,7 @@ function removeFromCart(productId) {
     openCheckoutFlow();
 }
 
-     function showSection(sectionId, clickedLink) {
+                    function showSection(sectionId, clickedLink) {
         document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
         const section = document.getElementById(sectionId);
         if (section) { section.style.display = 'block'; window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -2540,6 +2685,23 @@ function removeFromCart(productId) {
             const showFooterSections = ['home','shop','classes','custom','contact','reviews','wishlist','settings'];
             footer.style.display = showFooterSections.includes(sectionId) ? 'block' : 'none';
         }
+
+        // ══ App-header (search bar / location / quick cats) — Home page mattum, ══
+        // ══ shop / settings / catering / reviews / contact page la varakoodathu ══
+               const appHeader = document.getElementById('appHeader');
+        const hideAppHeaderOn = ['shop','settings', 'catering', 'reviews', 'contact', 'classes', 'custom'];
+        if (appHeader) {
+            appHeader.style.display = hideAppHeaderOn.includes(sectionId) ? 'none' : '';
+        }
+
+        // ══ Old navbar (logo + cart/wishlist/bell/settings + Login + hamburger) ══
+        // ══ Home page la mattum varanum, matha ella pages layum poyidanum ══
+        const oldNavbar = document.getElementById('navbar');
+        if (oldNavbar) {
+            oldNavbar.style.display = (sectionId === 'home') ? '' : 'none';
+        }
+
+        adjustHeaderOffsets(); // marginTop ah recalculate pannum (header illa na 0)
     }
 
     function showModal(type) { 

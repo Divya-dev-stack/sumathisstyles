@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final WebViewController _controller;
 
-  final Color teal = const Color.fromARGB(255, 200, 211, 210);
+  final Color teal = const Color.fromARGB(255, 249, 250, 250);
 
   @override
   void initState() {
