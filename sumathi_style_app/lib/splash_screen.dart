@@ -16,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -30,17 +29,9 @@ class _SplashScreenState extends State<SplashScreen>
     _fadeAnimation =
         Tween<double>(begin: 0, end: 1).animate(_controller);
 
-    _scaleAnimation =
-        Tween<double>(begin: 0.85, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOutBack,
-      ),
-    );
-
     _controller.forward();
 
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 4), () {
       _checkLoginAndNavigate();
     });
   }
@@ -71,14 +62,15 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
 
           // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/splash_bg.png",
-              fit: BoxFit.cover,
-            ),
+          Image.asset(
+            "assets/images/splash_bg.png",
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
 
           // Light Overlay
@@ -88,50 +80,109 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // Logo & Loading
+          // Logo + Brand Text
           Center(
             child: FadeTransition(
               opacity: _fadeAnimation,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
 
-                    // Small Logo
-                    Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 15,
-                            offset: Offset(0, 6),
-                          ),
-                        ],
+                  // Logo
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 15,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/app.png",
+                        fit: BoxFit.cover,
                       ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          "assets/images/app.png",
-                          fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Brand Name
+                  const Text(
+                    "Sumathi's Styles",
+                    style: TextStyle(
+                      fontFamily: 'Serif',
+                      fontSize: 32,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff0F766E),
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  // Tagline row with divider dashes
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      SizedBox(
+                        width: 24,
+                        child: Divider(color: Color(0xffC89A2B), thickness: 1),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        "Fashion Designer",
+                        style: TextStyle(
+                          fontSize: 13,
+                          letterSpacing: 2,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xffC89A2B),
                         ),
                       ),
-                    ),
-
-                    const SizedBox(height: 180),
-
-                    const SizedBox(
-                      width: 32,
-                      height: 32,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        color: Color(0xffC89A2B),
+                      SizedBox(width: 8),
+                      SizedBox(
+                        width: 24,
+                        child: Divider(color: Color(0xffC89A2B), thickness: 1),
                       ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // Sub-tagline
+                  const Text(
+                    "Crafted with Elegance",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      color: Color(0xff0F766E),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Loading indicator pinned near bottom
+          Positioned(
+            bottom: 60,
+            left: 0,
+            right: 0,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: const Center(
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Color(0xffC89A2B),
+                  ),
                 ),
               ),
             ),
