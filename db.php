@@ -80,6 +80,16 @@ function getConnection() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    // NOTE: notifications table — stores admin broadcast notifications
+    // sent from the "Send Notification" panel in the admin dashboard.
+    $conn->query("CREATE TABLE IF NOT EXISTS notifications (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        type ENUM('order','promotion','class','general') DEFAULT 'general',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
     // ---- Auto-migrate products table ----
     $columns = [];
     $res = $conn->query('SHOW COLUMNS FROM products');
