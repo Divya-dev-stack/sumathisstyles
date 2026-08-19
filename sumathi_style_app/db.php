@@ -5,9 +5,9 @@ mysqli_report(MYSQLI_REPORT_OFF);
 // MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT) when a MySQL service
 // is linked to this app. On local XAMPP these env vars won't exist, so we
 // fall back to localhost/root/blank — same file works in both places.
-define('DB_HOST', getenv('MYSQLHOST') ?: 'mysql.railway.internal');
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
 define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'ELcRETJebXRSvogeqSHoHPtJTNaWDPDJ');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
 define('DB_NAME', getenv('MYSQLDATABASE') ?: 'product_db');
 define('DB_PORT', getenv('MYSQLPORT') ?: 3306);
 
