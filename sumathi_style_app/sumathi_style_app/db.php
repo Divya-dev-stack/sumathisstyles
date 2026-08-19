@@ -7,8 +7,8 @@ mysqli_report(MYSQLI_REPORT_OFF);
 // fall back to localhost/root/blank — same file works in both places.
 define('DB_HOST', getenv('MYSQLHOST') ?: 'mysql.railway.internal');
 define('DB_USER', getenv('MYSQLUSER') ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'ELcRETJebXRSvogeqSHoHPtJTNaWDPDJ');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'product_db');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: 'veRIQknUkCBgwcMcdVmTjkkLzTLojzwd');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
 define('DB_PORT', getenv('MYSQLPORT') ?: 3306);
 
 function getConnection() {
@@ -77,16 +77,6 @@ function getConnection() {
         service VARCHAR(255) DEFAULT '',
         message TEXT,
         source VARCHAR(100) DEFAULT 'website',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-
-    // NOTE: notifications table — stores admin broadcast notifications
-    // sent from the "Send Notification" panel in the admin dashboard.
-    $conn->query("CREATE TABLE IF NOT EXISTS notifications (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        message TEXT NOT NULL,
-        type ENUM('order','promotion','class','general') DEFAULT 'general',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 

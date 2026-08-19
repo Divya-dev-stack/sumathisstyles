@@ -1,0 +1,7 @@
+{
+    "name": "sumathi/sumathisstyles",
+    "description": "Sumathi's Styles - Tailoring Boutique website",
+    "require": {
+        "php": ">=8.0"
+    }
+}

@@ -87,6 +87,67 @@
             .hero h2 { font-size: 26px; }
             .hero-img-wrap { flex: none; max-width: 100%; height: 180px; }
         }
+        @media (max-width:768px){
+
+.contact-container{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.contact-info{
+    order:2;
+    width:100%;
+}
+
+.contact-form{
+    order:1;
+    width:100%;
+}
+
+.social-buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.social-buttons a{
+    width:100%;
+    justify-content:center;
+}
+
+.contact-card{
+    padding:18px;
+    border-radius:20px;
+}
+
+.contact-card .icon{
+    width:55px;
+    height:55px;
+    font-size:22px;
+}
+
+.contact-card h4{
+    font-size:22px;
+}
+
+.contact-card p{
+    font-size:17px;
+}
+
+.contact-form input,
+.contact-form textarea{
+    width:100%;
+    font-size:17px;
+}
+
+.contact-form button{
+    width:100%;
+    height:58px;
+    border-radius:35px;
+}
+
+}
         .btn-primary { background: linear-gradient(135deg, var(--secondary), var(--secondary-light)); color: var(--dark); padding: 14px 35px; border-radius: 30px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--copper-glow); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(184,115,51,0.4); }
         .btn-outline { background: transparent; color: var(--white); padding: 14px 35px; border-radius: 30px; font-size: 15px; font-weight: 700; border: 2px solid var(--secondary); cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
@@ -669,19 +730,19 @@
     .nav-btn { font-size: 17px; padding: 6px; }
     .login-btn { padding: 7px 12px; font-size: 12px; }
 
-        /* ---- Hero (side-by-side, desktop-style, on mobile too) ---- */
-    .hero-slider { min-height: 220px; border-radius: 0 0 24px 24px; overflow: hidden; }
-    .hero { min-height: 220px; padding: 0; flex-direction: row; align-items: stretch; }
-    .hero-content { padding: 16px 14px; max-width: 58%; justify-content: center; }
-    .hero h2 { font-size: 17px; margin-bottom: 4px; line-height: 1.2; }
-    .hero p { font-size: 10.5px; margin-bottom: 10px; }
+            /* ---- Hero (side-by-side, compact, fallback colour if image fails) ---- */
+    .hero-slider { min-height: 190px; border-radius: 0 0 24px 24px; overflow: hidden; }
+    .hero { min-height: 190px; padding: 0; flex-direction: row; align-items: stretch; }
+    .hero-content { padding: 14px 12px; max-width: 60%; justify-content: center; }
+    .hero h2 { font-size: 15px; margin-bottom: 3px; line-height: 1.2; }
+    .hero p { font-size: 9.5px; margin-bottom: 8px; }
     .hero-exp { font-size: 13px; margin-bottom: 25px; }
     .hero-badge { font-size: 11px; padding: 8px 18px; }
     .hero-btns { flex-direction: row; width: auto; }
-    .hero-btns .btn-primary { width: auto; padding: 7px 14px; font-size: 11px; }
-    .hero-img-wrap { flex: 0 0 42%; max-width: 42%; height: auto; }
+    .hero-btns .btn-primary { width: auto; padding: 6px 12px; font-size: 10px; }
+    .hero-img-wrap { flex: 0 0 40%; max-width: 40%; height: auto; background: #0006; }
     .hero-img-wrap::before { display: block; }
-    .hero-img-wrap img { object-position: top center; height: 100%; }
+    .hero-img-wrap img { object-position: top center; height: 100%; width: 100%; object-fit: cover; }
 
     /* ---- Stats Bar ---- */
     .stats-bar { padding: 30px 15px; }
@@ -717,20 +778,37 @@
     .class-content h3 { font-size: 15px; margin-bottom: 6px; }
     .class-content p {
         font-size: 11.5px; margin-bottom: 10px; line-height: 1.4;
-        display: -webkit-box;
-display: box;
--webkit-box-orient: vertical;
-line-clamp: 3;
--webkit-line-clamp: 3;
-overflow: hidden;
+        display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
     .class-meta { font-size: 10.5px; gap: 8px; margin-bottom: 10px; }
     .btn-enroll { padding: 9px; font-size: 12px; border-radius: 20px; }
 
-    /* ---- Custom Order ---- */
-    .custom-order { grid-template-columns: 1fr; gap: 30px; padding: 30px 20px; border-radius: 20px; }
-    .custom-order h2 { font-size: 26px; }
-    .custom-form { padding: 22px; }
+        /* ---- Custom Order ---- */
+    .custom-order { grid-template-columns: 1fr; gap: 22px; padding: 26px 18px; border-radius: 20px; }
+    .custom-order h2 { font-size: 24px; margin-bottom: 12px; }
+    .custom-order > div:first-child { display: flex; flex-direction: column; }
+    .custom-order > div:first-child p { order: 1; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+    .custom-features {
+        order: 2;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px;
+    }
+    .custom-feature {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 14px;
+    }
+    .custom-feature i {
+        width: 36px; height: 36px; min-width: 36px;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, var(--secondary), var(--secondary-light)) !important;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px;
+    }
+    .custom-feature span { font-size: 14px; font-weight: 500; }
+    .custom-form { padding: 22px; margin-top: 4px; }
     .form-row { grid-template-columns: 1fr; gap: 12px; }
 
     /* ---- Contact ---- */
@@ -1038,13 +1116,57 @@ overflow: hidden;
     .product-scroll-arrow { display: none; }
     .product-scroll-wrap { margin: 0; }
 }
+@media (max-width:768px){
 
-/* Old navbar (hamburger + cart/wishlist/bell/login) should NEVER show on
-   mobile — app-header already handles all mobile navigation. Force-hide it
-   regardless of what showSection()'s JS display logic decides, so it can't
-   flash/stick on pages like Custom Order. */
-@media (max-width: 768px) {
-    .navbar { display: none !important; }
+.reviews-grid{
+
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+
+}
+
+.review-card{
+
+    width:100%;
+    border-radius:22px;
+    padding:24px;
+
+}
+
+.review-header{
+
+    gap:16px;
+
+}
+
+.review-avatar{
+
+    width:56px;
+    height:56px;
+    font-size:28px;
+
+}
+
+.review-info h3{
+
+    font-size:18px;
+
+}
+
+.review-stars{
+
+    font-size:15px;
+
+}
+
+.review-card p{
+
+    font-size:16px;
+    line-height:1.8;
+
+}
+
 }
 
     </style>
@@ -1060,7 +1182,7 @@ overflow: hidden;
                 </div>
                 <div>
                     <h2>Sumathi's Style</h2>
-                    <span>Fashion Designer</span>
+                    <span>TAILORING BOUTIQUE</span>
                 </div>
             </div>
  <div class="nav-links">
@@ -1248,7 +1370,7 @@ overflow: hidden;
                 <img src="assets/images/app.png" alt="Sumathi's Style" class="app-logo-img">
                 <div>
                     <h2>Sumathi's <span>Styles</span></h2>
-                    <span class="app-logo-sub">FASHION DESIGNER</span>
+                    <span class="app-logo-sub">TAILORING BOUTIQUE</span>
                 </div>
             </div>
             <div class="app-header-icons">
@@ -1478,7 +1600,7 @@ overflow: hidden;
             <h2>Design It<span>Your Way</span></h2>
             <p>Any Design &bull; Any Fabric &bull; Perfect Fit</p>
             <div class="hero-btns">
-                <a href="javascript:void(0)" class="btn-primary" onclick="showSection('custom')"><i class="fas fa-arrow-right"></i> Custom Order</a>
+                <a href="" class="btn-primary" onclick="showSection('custom')"><i class="fas fa-arrow-right"></i> Custom Order</a>
             </div>
         </div>
         <div class="hero-img-wrap">
@@ -1641,9 +1763,10 @@ overflow: hidden;
             </script>
         </div>
 
-              <!-- WISHLIST -->
+        <!-- WISHLIST -->
         <div id="wishlist" class="page-section" style="display:none; margin-top:104px;">
             <section class="section">
+                <div class="section-header"><h2><i class="fas fa-heart" style="color:var(--danger);"></i> My Wishlist</h2><p>Your saved items — pick your favourite anytime!</p><div class="line"></div></div>
                 <div id="wishlistGrid" class="products-grid"></div>
                 <div id="wishlistEmpty" style="text-align:center;padding:60px 20px;display:none;"><i class="fas fa-heart-broken" style="font-size:60px;color:#ddd;margin-bottom:20px;display:block;"></i><h3 style="color:var(--text-light);margin-bottom:10px;">Your wishlist is empty</h3><p style="color:var(--text-light);margin-bottom:25px;">Save your favourite products here!</p><button class="btn-primary" onclick="showSection('shop')"><i class="fas fa-shopping-bag"></i> Explore Shop</button></div>
             </section>
@@ -2562,6 +2685,23 @@ function removeFromCart(productId) {
             const showFooterSections = ['home','shop','classes','custom','contact','reviews','wishlist','settings'];
             footer.style.display = showFooterSections.includes(sectionId) ? 'block' : 'none';
         }
+
+        // ══ App-header (search bar / location / quick cats) — Home page mattum, ══
+        // ══ shop / settings / catering / reviews / contact page la varakoodathu ══
+               const appHeader = document.getElementById('appHeader');
+        const hideAppHeaderOn = ['shop','settings', 'catering', 'reviews', 'contact', 'classes', 'custom'];
+        if (appHeader) {
+            appHeader.style.display = hideAppHeaderOn.includes(sectionId) ? 'none' : '';
+        }
+
+        // ══ Old navbar (logo + cart/wishlist/bell/settings + Login + hamburger) ══
+        // ══ Home page la mattum varanum, matha ella pages layum poyidanum ══
+        const oldNavbar = document.getElementById('navbar');
+        if (oldNavbar) {
+            oldNavbar.style.display = (sectionId === 'home') ? '' : 'none';
+        }
+
+        adjustHeaderOffsets(); // marginTop ah recalculate pannum (header illa na 0)
     }
 
     function showModal(type) { 
@@ -3017,29 +3157,20 @@ function updateNotifBadge() {
     });
 }
 
-  function toggleNotifPanel(e) {
+function toggleNotifPanel(e) {
     if (e) e.stopPropagation();
 
     let panel = document.getElementById('notifDropdownPanel');
-
-    // Bell icon (whichever one was clicked — desktop or mobile) exact position
-    // eduthu, adhoda kீழே panel ah vைkkurom. Idhu full header height (quick-cats
-    // row kூடa) use panra pazhaya logic ah replace pannuthu — andha logic
-    // panel ah romba kீழே (hero banner varaikkum) தள்ளிடுchu.
-    const bellBtn = (e && e.currentTarget) || document.getElementById('notifBellBtnMobile') || document.getElementById('notifBellBtn');
-    const bellRect = bellBtn ? bellBtn.getBoundingClientRect() : { bottom: 104, right: window.innerWidth - 15 };
-    const topPos = bellRect.bottom + 8;
-    let rightPos = window.innerWidth - bellRect.right;
-    if (rightPos < 10) rightPos = 10;
+    const appHeader = document.getElementById('appHeader');
+    const headerHeight = appHeader ? appHeader.offsetHeight : 104;
 
     if (!panel) {
         panel = document.createElement('div');
         panel.id = 'notifDropdownPanel';
-        panel.style.cssText = "position:fixed; top:" + topPos + "px; right:" + rightPos + "px; width:340px; max-width:calc(100vw - 20px); max-height:70vh; overflow-y:auto; background:#fff; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:5000; padding:10px 0;";
+        panel.style.cssText = "position:fixed; top:" + (headerHeight + 8) + "px; right:15px; width:340px; max-height:70vh; overflow-y:auto; background:#fff; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:5000; padding:10px 0;";
         document.body.appendChild(panel);
     } else {
-        panel.style.top = topPos + 'px';
-        panel.style.right = rightPos + 'px';
+        panel.style.top = (headerHeight + 8) + 'px';
     }
 
     const isOpen = panel.style.display === 'block';
