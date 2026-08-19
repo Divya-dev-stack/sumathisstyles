@@ -3027,20 +3027,29 @@ function updateNotifBadge() {
     });
 }
 
-function toggleNotifPanel(e) {
+  function toggleNotifPanel(e) {
     if (e) e.stopPropagation();
 
     let panel = document.getElementById('notifDropdownPanel');
-    const appHeader = document.getElementById('appHeader');
-    const headerHeight = appHeader ? appHeader.offsetHeight : 104;
+
+    // Bell icon (whichever one was clicked — desktop or mobile) exact position
+    // eduthu, adhoda kீழே panel ah vைkkurom. Idhu full header height (quick-cats
+    // row kூடa) use panra pazhaya logic ah replace pannuthu — andha logic
+    // panel ah romba kீழே (hero banner varaikkum) தள்ளிடுchu.
+    const bellBtn = (e && e.currentTarget) || document.getElementById('notifBellBtnMobile') || document.getElementById('notifBellBtn');
+    const bellRect = bellBtn ? bellBtn.getBoundingClientRect() : { bottom: 104, right: window.innerWidth - 15 };
+    const topPos = bellRect.bottom + 8;
+    let rightPos = window.innerWidth - bellRect.right;
+    if (rightPos < 10) rightPos = 10;
 
     if (!panel) {
         panel = document.createElement('div');
         panel.id = 'notifDropdownPanel';
-        panel.style.cssText = "position:fixed; top:" + (headerHeight + 8) + "px; right:15px; width:340px; max-height:70vh; overflow-y:auto; background:#fff; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:5000; padding:10px 0;";
+        panel.style.cssText = "position:fixed; top:" + topPos + "px; right:" + rightPos + "px; width:340px; max-width:calc(100vw - 20px); max-height:70vh; overflow-y:auto; background:#fff; border-radius:14px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:5000; padding:10px 0;";
         document.body.appendChild(panel);
     } else {
-        panel.style.top = (headerHeight + 8) + 'px';
+        panel.style.top = topPos + 'px';
+        panel.style.right = rightPos + 'px';
     }
 
     const isOpen = panel.style.display === 'block';
