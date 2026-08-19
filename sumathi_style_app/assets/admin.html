@@ -55,7 +55,17 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .content{padding:28px;flex:1;}
 
 /* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px;}
+/* Mobile-only card dashboard (Image 2 style) */
+.mobile-stats{display:none;}
+@media(max-width:640px){
+  .stats-row{display:none;}
+  .mobile-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+  .mobile-stat-card{background:#fff;border-radius:16px;padding:20px 16px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center;}
+  .mobile-stat-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 10px;}
+  .mobile-stat-value{font-size:24px;font-weight:700;color:var(--text);}
+  .mobile-stat-label{font-size:13px;color:var(--muted);margin-top:4px;}
+}
+
 .stat-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.06);border-left:4px solid var(--teal);}
 .stat-card.copper{border-left-color:var(--copper);}
 .stat-card.danger{border-left-color:var(--danger);}
@@ -271,13 +281,33 @@ select.status-select{padding:5px 8px;border-radius:6px;border:1.5px solid var(--
         <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
          <button class="btn btn-danger" onclick="clearData('all_demo_data','⚠️ This will delete ALL Orders + Boutique + Catering contact submissions (Products will not be touched). Do you want to continue?')">🗑️ Clear All Demo Data</button>
         </div>
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value" id="stat-products">0</div></div>
-          <div class="stat-card copper"><div class="stat-label">Total Orders</div><div class="stat-value" id="stat-orders">0</div></div>
-          <div class="stat-card success"><div class="stat-label">Delivered</div><div class="stat-value" id="stat-delivered">0</div></div>
-          <div class="stat-card danger"><div class="stat-label">Pending</div><div class="stat-value" id="stat-pending">0</div></div>
-          <div class="stat-card warning"><div class="stat-label">Total Revenue</div><div class="stat-value" id="stat-revenue">₹0</div></div>
-        </div>
+        <div class="mobile-stats">
+  <div class="mobile-stat-card">
+    <div class="mobile-stat-icon" style="background:#FFF3E0;">🛒</div>
+    <div class="mobile-stat-value" id="m-stat-orders">0</div>
+    <div class="mobile-stat-label">Orders</div>
+  </div>
+  <div class="mobile-stat-card">
+    <div class="mobile-stat-icon" style="background:#E8F5E9;">₹</div>
+    <div class="mobile-stat-value" id="m-stat-revenue">₹0</div>
+    <div class="mobile-stat-label">Revenue</div>
+  </div>
+  <div class="mobile-stat-card">
+    <div class="mobile-stat-icon" style="background:#E0F2F1;">📦</div>
+    <div class="mobile-stat-value" id="m-stat-products">0</div>
+    <div class="mobile-stat-label">Products</div>
+  </div>
+  <div class="mobile-stat-card">
+    <div class="mobile-stat-icon" style="background:#E3F2FD;">👥</div>
+    <div class="mobile-stat-value" id="m-stat-delivered">0</div>
+    <div class="mobile-stat-label">Delivered</div>
+  </div>
+  <div class="mobile-stat-card">
+    <div class="mobile-stat-icon" style="background:#FFEBEE;">⏳</div>
+    <div class="mobile-stat-value" id="m-stat-pending">0</div>
+    <div class="mobile-stat-label">Pending</div>
+  </div>
+</div>
 
         <div class="grid-2">
           <div class="section-card">
@@ -1182,13 +1212,11 @@ function initDashboard(){
 function refreshDashboard(){
   Promise.all([loadProductsFromServer(), loadOrdersFromServer()]).then(([_, orders])=>{
     const products=getProducts();
-    document.getElementById('stat-products').textContent=products.length;
-    document.getElementById('stat-orders').textContent=orders.length;
-    document.getElementById('stat-delivered').textContent=orders.filter(o=>o.status==='Delivered').length;
-    const pending=orders.filter(o=>o.status==='Pending'||o.status==='Ordered').length;
-    document.getElementById('stat-pending').textContent=pending;
-    const revenue=orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+Number(o.amount),0);
-    document.getElementById('stat-revenue').textContent='₹'+revenue.toLocaleString('en-IN');
+   document.getElementById('m-stat-products').textContent=products.length;
+document.getElementById('m-stat-orders').textContent=orders.length;
+document.getElementById('m-stat-delivered').textContent=orders.filter(o=>o.status==='Delivered').length;
+document.getElementById('m-stat-pending').textContent=pending;
+document.getElementById('m-stat-revenue').textContent='₹'+revenue.toLocaleString('en-IN');
     const pb=document.getElementById('pending-badge');
     if(pending>0){pb.style.display='inline';pb.textContent=pending;}else pb.style.display='none';
 
